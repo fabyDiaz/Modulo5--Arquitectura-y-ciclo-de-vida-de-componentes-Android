@@ -1,12 +1,11 @@
 package com.example.alkewalletm5.data.model
 
-import android.media.Image
+import android.widget.ImageView
 
 data class Destinatarios (
+    val fotoPerfil: Int,
     val nombre: String,
-    val apellido: String,
-    val correo: String,
-    val fotoPerfil: Image
+    val correo: String
 ) {
 
 
