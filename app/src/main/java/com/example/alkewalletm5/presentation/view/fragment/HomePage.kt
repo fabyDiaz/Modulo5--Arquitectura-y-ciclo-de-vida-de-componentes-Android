@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +16,7 @@ import com.example.alkewalletm5.data.local.TransaccionesDataSet
 import com.example.alkewalletm5.data.model.Transaccion
 import com.example.alkewalletm5.databinding.FragmentHomePageBinding
 import com.example.alkewalletm5.presentation.view.adapter.TransaccionAdapter
+import com.example.alkewalletm5.presentation.viewmodel.TransaccionViewModel
 
 
 class HomePage : Fragment() {
@@ -23,6 +25,7 @@ class HomePage : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: TransaccionAdapter
     private lateinit var itemList: MutableList<Transaccion>
+    private val transaccionViewModel: TransaccionViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
@@ -58,15 +61,23 @@ class HomePage : Fragment() {
         // Initialize the data list
        //itemList = TransaccionesDataSet().dataEmpty()
 
-        itemList = TransaccionesDataSet().createTransactionsForUSer()
+       /* itemList = TransaccionesDataSet().createTransactionsForUSer()
 
         // Initialize the adapter with data
-        initAdapter()
+        initAdapter()*/
+
+        transaccionViewModel.transacciones.observe(viewLifecycleOwner) { transacciones ->
+            adapter.items = transacciones
+            adapter.notifyDataSetChanged()
+            updateEmptyState()
+        }
+
+        updateEmptyState()
 
 
     }
 
-   fun initAdapter(){
+   /*fun initAdapter(){
        adapter.items = itemList
        adapter.notifyDataSetChanged()
 
@@ -77,5 +88,15 @@ class HomePage : Fragment() {
            binding.layoutTransaccionesEmpty.visibility = View.GONE
            binding.recyclerTransacciones.visibility = View.VISIBLE
        }
-   }
+   }*/
+
+    private fun updateEmptyState() {
+        if (adapter.items.isEmpty()) {
+            binding.layoutTransaccionesEmpty.visibility = View.VISIBLE
+            binding.recyclerTransacciones.visibility = View.GONE
+        } else {
+            binding.layoutTransaccionesEmpty.visibility = View.GONE
+            binding.recyclerTransacciones.visibility = View.VISIBLE
+        }
+    }
 }

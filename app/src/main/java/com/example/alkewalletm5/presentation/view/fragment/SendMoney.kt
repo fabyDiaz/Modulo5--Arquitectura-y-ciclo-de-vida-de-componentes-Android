@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.alkewalletm5.R
@@ -19,11 +20,13 @@ import com.example.alkewalletm5.data.model.Destinatarios
 import com.example.alkewalletm5.data.model.Transaccion
 import com.example.alkewalletm5.databinding.FragmentSendMoneyBinding
 import com.example.alkewalletm5.presentation.view.adapter.DestinatarioAdpater
+import com.example.alkewalletm5.presentation.viewmodel.TransaccionViewModel
 import com.google.android.material.appbar.MaterialToolbar
 
 class SendMoney : Fragment() {
 
     private lateinit var binding: FragmentSendMoneyBinding
+    private val transaccionViewModel: TransaccionViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
@@ -63,7 +66,7 @@ class SendMoney : Fragment() {
         val monto = binding.editTextMontoEnviarDinero.text
         val nota = binding.editTextNotaEnviarDinero.text
         val editTextMonto = binding.editTextMontoEnviarDinero
-        val destinatario = spinner.selectedItem as Destinatarios
+        val destinatario = binding.spinnerEnviarDinero.selectedItem as Destinatarios
 
         // Configurar el TextWatcher para cambiar el color del texto y el borde
         editTextMonto.addTextChangedListener(object : TextWatcher {
@@ -104,10 +107,18 @@ class SendMoney : Fragment() {
             Toast.makeText(requireContext(), "Envío de dinero exitoso", Toast.LENGTH_SHORT).show()
             val montoEnviado: Double = monto.toString().toDouble()
 
-            val nuevaTransaccion = Transaccion(id="5", fotoPerfil = destinatario.fotoPerfil, idReceriver = destinatario.nombre, monto=montoEnviado )
+            val nuevaTransaccion = Transaccion(
+                id="5",
+                fotoPerfil = destinatario.fotoPerfil,
+                idReceriver = destinatario.nombre,
+                monto=montoEnviado )
 
-            val transaccion = TransaccionesDataSet().createTransactionsForUSer().add(nuevaTransaccion)
-            Log.i("Transacciones",nuevaTransaccion.idReceriver)
+            // Añadir la nueva transacción al ViewModel compartido
+            transaccionViewModel.addTransaccion(nuevaTransaccion)
+            Toast.makeText(requireContext(), "Envío de dinero exitoso", Toast.LENGTH_SHORT).show()
+
+            // Navegar de regreso a HomePage
+            findNavController().navigate(R.id.homePage)
 
         }
 
