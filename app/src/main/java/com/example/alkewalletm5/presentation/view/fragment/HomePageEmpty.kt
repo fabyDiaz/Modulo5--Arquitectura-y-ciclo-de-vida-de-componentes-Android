@@ -5,14 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.alkewalletm5.R
-import com.example.alkewalletm5.data.local.TransaccionesDataSet
-import com.example.alkewalletm5.data.model.Transaccion
-import com.example.alkewalletm5.databinding.FragmentHomePageBinding
-import com.example.alkewalletm5.databinding.FragmentSendMoneyBinding
-import com.example.alkewalletm5.presentation.view.adapter.TransaccionAdapter
 
 class HomePageEmpty : Fragment() {
     // TODO: Rename and change types of parameters
