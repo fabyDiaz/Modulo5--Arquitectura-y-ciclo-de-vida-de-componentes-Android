@@ -74,15 +74,5 @@ class LoginPage : Fragment() {
 
 
 
-       /* var txtEmail = binding.editTextEmail.text.toString()
-        var txtPassword = binding.editTextPasswordLogin.text.toString()
-
-        if(txtEmail=="Amanda@gmail.com" && txtPassword=="amanda123"){
-            findNavController().navigate(R.id.action_loginPage_to_homePage)
-        }else{
-            Toast.makeText(requireContext(), "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
-        }*/
-
-
 
 }
