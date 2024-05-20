@@ -22,9 +22,7 @@ import com.example.alkewalletm5.presentation.viewmodel.TransaccionViewModel
 class HomePage : Fragment() {
 
     private lateinit var binding: FragmentHomePageBinding
-    private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: TransaccionAdapter
-    private lateinit var itemList: MutableList<Transaccion>
     private val transaccionViewModel: TransaccionViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +64,7 @@ class HomePage : Fragment() {
         // Initialize the adapter with data
         initAdapter()*/
 
-        transaccionViewModel.transacciones.observe(viewLifecycleOwner) { transacciones ->
+        transaccionViewModel.getLiveDataObserver().observe(viewLifecycleOwner) { transacciones ->
             adapter.items = transacciones
             adapter.notifyDataSetChanged()
             updateEmptyState()
@@ -76,19 +74,6 @@ class HomePage : Fragment() {
 
 
     }
-
-   /*fun initAdapter(){
-       adapter.items = itemList
-       adapter.notifyDataSetChanged()
-
-       if (adapter.items.isEmpty()) {
-           binding.layoutTransaccionesEmpty.visibility = View.VISIBLE
-           binding.recyclerTransacciones.visibility = View.GONE
-       } else {
-           binding.layoutTransaccionesEmpty.visibility = View.GONE
-           binding.recyclerTransacciones.visibility = View.VISIBLE
-       }
-   }*/
 
     private fun updateEmptyState() {
         if (adapter.items.isEmpty()) {

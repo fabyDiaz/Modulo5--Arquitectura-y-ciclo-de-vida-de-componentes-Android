@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.alkewalletm5.R
+import com.example.alkewalletm5.data.local.UsuariosDataSet
 import com.example.alkewalletm5.databinding.FragmentLoginPageBinding
 
 class LoginPage : Fragment() {
@@ -48,16 +49,31 @@ class LoginPage : Fragment() {
     }
 
    fun VerificarEmailPassword(){
-        var txtEmail = binding.editTextEmail.text.toString()
+
+       val txtEmail = binding.editTextEmail.text.toString()
+       val txtPassword = binding.editTextPasswordLogin.text.toString()
+
+       val usuariosDataSet = UsuariosDataSet()
+       val usuarios = usuariosDataSet.Listausuarios()
+
+       val usuario = usuarios.find { it.email == txtEmail }
+
+       if (usuario != null && usuario.password == txtPassword) {
+           findNavController().navigate(R.id.action_loginPage_to_homePage)
+       } else {
+           Toast.makeText(requireContext(), "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
+       }
+   }
+
+       /* var txtEmail = binding.editTextEmail.text.toString()
         var txtPassword = binding.editTextPasswordLogin.text.toString()
 
         if(txtEmail=="Amanda@gmail.com" && txtPassword=="amanda123"){
             findNavController().navigate(R.id.action_loginPage_to_homePage)
         }else{
             Toast.makeText(requireContext(), "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
-        }
+        }*/
 
-    }
 
 
 }

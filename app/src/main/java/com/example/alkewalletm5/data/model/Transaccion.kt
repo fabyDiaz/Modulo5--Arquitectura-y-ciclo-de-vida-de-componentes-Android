@@ -6,7 +6,7 @@ data class Transaccion (
     val monto: Double = 0.0,
     val idSender: String = "Amanda",
     val idReceriver: String = "",
-    val fecha: String = "19/05/2004"
+    val fecha: String = "Oct 14 10:24 AM"
 ) {
 
 
