@@ -84,11 +84,10 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:ems">10</item>
-        <item name="android:textColor">@color/verde</item>
         <item name="android:textSize">16sp</item> <!-- Tamaño del texto del placeholder -->
         <item name="android:paddingLeft">14sp</item>
         <item name="android:textStyle">normal</item> <!-- Estilo del texto del placeholder -->
-        <item name="android:background">@drawable/edittextverde_style</item>
+        <item name="android:background">@drawable/edittextt_background_verde</item>
     </style>
 
     <style name="ToolbarTitle">

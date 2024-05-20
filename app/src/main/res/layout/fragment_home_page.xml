@@ -157,7 +157,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_sismo"
+        android:id="@+id/recycler_transacciones"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:listitem="@layout/transaccion_item"
@@ -166,7 +166,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txtultimasTransacciones" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_container_view"
+        android:id="@+id/layoutTransaccionesEmpty"
         android:name="com.example.alkewalletm5.presentation.view.fragment.NoHayTransacciones"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

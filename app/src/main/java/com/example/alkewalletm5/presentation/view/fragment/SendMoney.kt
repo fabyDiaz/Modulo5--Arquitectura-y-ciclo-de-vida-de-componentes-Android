@@ -7,12 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Spinner
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.alkewalletm5.R
 import com.example.alkewalletm5.data.model.Destinatarios
 import com.example.alkewalletm5.databinding.FragmentSendMoneyBinding
@@ -64,7 +63,7 @@ class SendMoney : Fragment() {
         val nota = binding.editTextNotaEnviarDinero.text
         val editTextMonto = binding.editTextMontoEnviarDinero
 
-        // Configurar el TextWatcher para cambiar el color del texto
+        // Configurar el TextWatcher para cambiar el color del texto y el borde
         editTextMonto.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // No se necesita implementación
@@ -83,6 +82,17 @@ class SendMoney : Fragment() {
             }
         })
 
+
+    /*    val recyclerView = binding.
+        val recyclerViewAdapter = RecyclerViewAdapter(mutableListOf())
+        recyclerView.adapter = recyclerViewAdapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        binding.btnEnviarDinero.setOnClickListener {
+            val selectedItem = spinner.selectedItem as Destinatario
+            recyclerViewAdapter.items.add(selectedItem)
+            recyclerViewAdapter.notifyDataSetChanged()
+        }*/
 
         binding.btnEnviarDinero.setOnClickListener(){
             if (monto.isBlank()) {

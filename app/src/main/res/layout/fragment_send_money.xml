@@ -57,8 +57,10 @@
         <EditText
             android:id="@+id/editTextMontoEnviarDinero"
             style="@style/style_input_form_enviar_dinero"
-            android:autofillHints="emailAddress"
-            android:text="@string/monto_send"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="0.0"
+            android:textColorHint="@color/semiblackOpacity"
             android:inputType="numberDecimal" />
 
     </LinearLayout>
