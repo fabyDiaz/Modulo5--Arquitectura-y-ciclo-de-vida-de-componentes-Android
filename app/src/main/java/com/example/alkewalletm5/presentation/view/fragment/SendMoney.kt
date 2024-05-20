@@ -20,12 +20,14 @@ import com.example.alkewalletm5.data.model.Transaccion
 import com.example.alkewalletm5.databinding.FragmentSendMoneyBinding
 import com.example.alkewalletm5.presentation.view.adapter.DestinatarioAdpater
 import com.example.alkewalletm5.presentation.viewmodel.TransaccionViewModel
+import com.example.alkewalletm5.presentation.viewmodel.UsuarioViewModel
 import com.google.android.material.appbar.MaterialToolbar
 
 class SendMoney : Fragment() {
 
     private lateinit var binding: FragmentSendMoneyBinding
     private val transaccionViewModel: TransaccionViewModel by activityViewModels()
+    private val usuarioViewModel: UsuarioViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
@@ -112,6 +114,10 @@ class SendMoney : Fragment() {
 
             // Añadir la nueva transacción al ViewModel compartido
             transaccionViewModel.addTransaccion(nuevaTransaccion)
+
+            // Actualizar el balance del usuario logueado
+            usuarioViewModel.actualizarBalanceUsuario(montoEnviado)
+
             Toast.makeText(requireContext(), "Envío de dinero exitoso", Toast.LENGTH_SHORT).show()
 
             // Navegar de regreso a HomePage
