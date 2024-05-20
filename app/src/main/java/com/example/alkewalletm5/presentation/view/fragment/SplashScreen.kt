@@ -1,15 +1,21 @@
 package com.example.alkewalletm5.presentation.view.fragment
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.alkewalletm5.R
 
 
 class SplashScreen : Fragment() {
+
+    private val SPLASH_SCREEN_DURATION = 3000L
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
@@ -26,11 +32,18 @@ class SplashScreen : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val viewspashScreen = view.findViewById<View>(R.id.splashScreen)
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            // Navegar al siguiente destino después del tiempo deseado
+            findNavController().navigate(R.id.action_spashScreen_to_loginSignupPage)
+        }, SPLASH_SCREEN_DURATION)
+
+
+        /*val viewspashScreen = view.findViewById<View>(R.id.splashScreen)
         viewspashScreen.setOnClickListener { v: View? ->
             findNavController(
                 v!!
             ).navigate(R.id.loginSignupPage)
-        }
+        }*/
     }
 }
