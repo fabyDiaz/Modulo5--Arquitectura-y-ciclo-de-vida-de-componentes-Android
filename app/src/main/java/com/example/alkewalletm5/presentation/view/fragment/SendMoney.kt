@@ -81,8 +81,10 @@ class SendMoney : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 if (s.isNullOrEmpty()) {
                     editTextMonto.setTextColor(ContextCompat.getColor(requireContext(), R.color.semiblack))
+                    editTextMonto.setBackgroundResource(R.drawable.edittext_backgraound_gris)
                 } else {
                     editTextMonto.setTextColor(ContextCompat.getColor(requireContext(), R.color.verde))
+                    editTextMonto.setBackgroundResource(R.drawable.edittextt_background_verde)
                 }
             }
         })
