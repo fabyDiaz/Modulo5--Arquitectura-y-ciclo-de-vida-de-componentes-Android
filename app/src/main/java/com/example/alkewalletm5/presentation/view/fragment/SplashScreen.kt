@@ -14,7 +14,7 @@ import com.example.alkewalletm5.R
 
 class SplashScreen : Fragment() {
 
-    private val SPLASH_SCREEN_DURATION = 3000L
+    private val SPLASH_SCREEN_DURATION = 1000L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

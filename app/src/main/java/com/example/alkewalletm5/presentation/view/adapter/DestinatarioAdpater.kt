@@ -8,10 +8,10 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.alkewalletm5.R
-import com.example.alkewalletm5.data.model.Destinatarios
+import com.example.alkewalletm5.data.model.Destinatario
 
-class DestinatarioAdpater (context: Context, private val items: List<Destinatarios>) :
-    ArrayAdapter<Destinatarios>(context, 0, items) {
+class DestinatarioAdpater (context: Context, private val items: List<Destinatario>) :
+    ArrayAdapter<Destinatario>(context, 0, items) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         return createViewFromResource(position, convertView, parent, R.layout.destinatarios_item)

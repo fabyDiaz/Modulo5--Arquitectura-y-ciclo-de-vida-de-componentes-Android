@@ -3,7 +3,6 @@ package com.example.alkewalletm5.presentation.view.fragment
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,8 +14,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.alkewalletm5.R
-import com.example.alkewalletm5.data.local.TransaccionesDataSet
-import com.example.alkewalletm5.data.model.Destinatarios
+import com.example.alkewalletm5.data.local.DestinatariosDataSet
+import com.example.alkewalletm5.data.model.Destinatario
 import com.example.alkewalletm5.data.model.Transaccion
 import com.example.alkewalletm5.databinding.FragmentSendMoneyBinding
 import com.example.alkewalletm5.presentation.view.adapter.DestinatarioAdpater
@@ -52,21 +51,15 @@ class SendMoney : Fragment() {
         val spinner = view.findViewById<Spinner>(R.id.spinnerEnviarDinero)
 
         // Lista de elementos para el Spinner
-        val items = listOf(
-            Destinatarios(R.mipmap.pp_standar, "Amanda", "Amanda@gmail.com"),
-            Destinatarios(R.mipmap.pp1, "John Doe", "john.doe@example.com"),
-            Destinatarios(R.mipmap.pp2, "Jane Smith", "jane.smith@example.com")
-        )
+        val items = DestinatariosDataSet().ListaDestintarios()
 
         // Adapter para el Spinner
         val adapter = DestinatarioAdpater(requireContext(), items)
         spinner.adapter = adapter
 
         binding = FragmentSendMoneyBinding.bind(view)
-        val monto = binding.editTextMontoEnviarDinero.text
-        val nota = binding.editTextNotaEnviarDinero.text
+
         val editTextMonto = binding.editTextMontoEnviarDinero
-        val destinatario = binding.spinnerEnviarDinero.selectedItem as Destinatarios
 
         // Configurar el TextWatcher para cambiar el color del texto y el borde
         editTextMonto.addTextChangedListener(object : TextWatcher {
@@ -93,6 +86,10 @@ class SendMoney : Fragment() {
 
         binding.btnEnviarDinero.setOnClickListener() {
 
+            val monto = binding.editTextMontoEnviarDinero.text
+            val destinatario = binding.spinnerEnviarDinero.selectedItem as Destinatario
+            val nota = binding.editTextNotaEnviarDinero.text
+
             if (monto.isBlank()) {
                 Toast.makeText(requireContext(), "Por favor ingrese un monto", Toast.LENGTH_SHORT)
                     .show()
@@ -105,8 +102,6 @@ class SendMoney : Fragment() {
                 return@setOnClickListener
             }
 
-            // Si el monto y la nota no están vacíos, mostrar el mensaje de éxito
-            Toast.makeText(requireContext(), "Envío de dinero exitoso", Toast.LENGTH_SHORT).show()
             val montoEnviado: Double = monto.toString().toDouble()
 
             val nuevaTransaccion = Transaccion(
