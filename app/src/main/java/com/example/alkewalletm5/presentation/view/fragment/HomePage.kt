@@ -17,13 +17,16 @@ import com.example.alkewalletm5.data.model.Transaccion
 import com.example.alkewalletm5.databinding.FragmentHomePageBinding
 import com.example.alkewalletm5.presentation.view.adapter.TransaccionAdapter
 import com.example.alkewalletm5.presentation.viewmodel.TransaccionViewModel
+import com.example.alkewalletm5.presentation.viewmodel.UsuarioViewModel
 
 
 class HomePage : Fragment() {
 
     private lateinit var binding: FragmentHomePageBinding
     private lateinit var adapter: TransaccionAdapter
+    private val usuarioViewModel: UsuarioViewModel by activityViewModels()
     private val transaccionViewModel: TransaccionViewModel by activityViewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
@@ -70,9 +73,13 @@ class HomePage : Fragment() {
             updateEmptyState()
         }
 
+        usuarioViewModel.usuarioLogueado.observe(viewLifecycleOwner) { usuario ->
+            binding.textSaludo.text = "Hola, ${usuario.nombre}"
+            binding.textMontoTotal.text = usuario.saldo.toString()
+            binding.imagenHomeAmanda.setImageResource(usuario.imgPerfil)
+        }
+
         updateEmptyState()
-
-
     }
 
     private fun updateEmptyState() {

@@ -8,16 +8,20 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.alkewalletm5.R
 import com.example.alkewalletm5.data.local.UsuariosDataSet
 import com.example.alkewalletm5.databinding.FragmentLoginPageBinding
+import com.example.alkewalletm5.presentation.viewmodel.UsuarioViewModel
 
 class LoginPage : Fragment() {
 
     private var _binding: FragmentLoginPageBinding? = null
     private val binding get() = _binding!!
+
+    private val usuarioViewModel: UsuarioViewModel by activityViewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,17 +57,22 @@ class LoginPage : Fragment() {
        val txtEmail = binding.editTextEmail.text.toString()
        val txtPassword = binding.editTextPasswordLogin.text.toString()
 
-       val usuariosDataSet = UsuariosDataSet()
-       val usuarios = usuariosDataSet.Listausuarios()
+       val usuario = usuarioViewModel.autenticarUsuario(txtEmail, txtPassword)
 
-       val usuario = usuarios.find { it.email == txtEmail }
-
-       if (usuario != null && usuario.password == txtPassword) {
-           findNavController().navigate(R.id.action_loginPage_to_homePage)
+       if (usuario != null) {
+           usuarioViewModel.setUsuarioLogueado(usuario)
+           findNavController().navigate(R.id.homePage)
        } else {
            Toast.makeText(requireContext(), "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
        }
    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+
 
        /* var txtEmail = binding.editTextEmail.text.toString()
         var txtPassword = binding.editTextPasswordLogin.text.toString()

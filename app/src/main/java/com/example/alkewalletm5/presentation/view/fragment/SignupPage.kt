@@ -67,6 +67,7 @@ class SignupPage : Fragment() {
 
         val nuevoUsuario = Usuario(nombre, apellido, email, password)
         usuarioViewModel.addUsuario(nuevoUsuario)
+        usuarioViewModel.setUsuarioLogueado(nuevoUsuario)
 
         Toast.makeText(requireContext(), "Registro exitoso", Toast.LENGTH_SHORT).show()
         findNavController().navigate(R.id.homePage)

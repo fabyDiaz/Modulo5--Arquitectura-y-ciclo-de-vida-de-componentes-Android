@@ -12,6 +12,9 @@ class UsuarioViewModel: ViewModel() {
     private val _usuarios = MutableLiveData<MutableList<Usuario>>()
     val usuarios: LiveData<MutableList<Usuario>> get() = _usuarios
 
+    private val _usuarioLogueado = MutableLiveData<Usuario>()
+    val usuarioLogueado: LiveData<Usuario> get() = _usuarioLogueado
+
     init {
         // Inicializa con una lista vacía o con datos iniciales
         _usuarios.value = mutableListOf(
@@ -19,9 +22,17 @@ class UsuarioViewModel: ViewModel() {
         )
     }
 
+    fun setUsuarioLogueado(usuario: Usuario) {
+        _usuarioLogueado.value = usuario
+    }
+
     fun addUsuario(usuario: Usuario) {
         val currentList = _usuarios.value ?: mutableListOf()
         currentList.add(usuario)
         _usuarios.value = currentList
+    }
+
+    fun autenticarUsuario(email: String, password: String): Usuario? {
+        return _usuarios.value?.find { it.email == email && it.password == password }
     }
 }
