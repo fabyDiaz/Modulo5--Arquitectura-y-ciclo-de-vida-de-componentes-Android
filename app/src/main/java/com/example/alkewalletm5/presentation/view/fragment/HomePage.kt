@@ -59,20 +59,13 @@ class HomePage : Fragment() {
         adapter = TransaccionAdapter()
         binding.recyclerTransacciones.adapter = adapter
 
-        // Initialize the data list
-       //itemList = TransaccionesDataSet().dataEmpty()
-
-       /* itemList = TransaccionesDataSet().createTransactionsForUSer()
-
-        // Initialize the adapter with data
-        initAdapter()*/
-
+        //Actualiza el recyclerview
         transaccionViewModel.getLiveDataObserver().observe(viewLifecycleOwner) { transacciones ->
             adapter.items = transacciones
             adapter.notifyDataSetChanged()
             updateEmptyState()
         }
-
+        //Actualiza cabecera del home
         usuarioViewModel.usuarioLogueado.observe(viewLifecycleOwner) { usuario ->
             binding.textSaludo.text = "Hola, ${usuario.nombre}"
             binding.textMontoTotal.text = usuario.saldo.toString()

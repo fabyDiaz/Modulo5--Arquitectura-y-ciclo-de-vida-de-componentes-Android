@@ -61,6 +61,57 @@ class SendMoney : Fragment() {
 
         binding = FragmentSendMoneyBinding.bind(view)
 
+       cambioColorTextViewMonto()
+
+        binding.btnEnviarDinero.setOnClickListener() {
+
+            val monto = binding.editTextMontoEnviarDinero.text
+            val destinatario = binding.spinnerEnviarDinero.selectedItem as Destinatario
+            val nota = binding.editTextNotaEnviarDinero.text
+
+            if (monto.isBlank()) {
+                Toast.makeText(requireContext(), "Por favor ingrese un monto", Toast.LENGTH_SHORT)
+                    .show()
+                return@setOnClickListener
+            }
+
+            if (nota.isBlank()) {
+                Toast.makeText(requireContext(), "Por favor ingrese una nota", Toast.LENGTH_SHORT)
+                    .show()
+                return@setOnClickListener
+            }
+
+            val montoEnviado: Double = monto.toString().toDouble()
+            // Verificar si el saldo es suficiente antes de realizar la transacción
+            val saldoSuficiente = usuarioViewModel.actualizarSaldoUsuario(montoEnviado)
+            if (!saldoSuficiente) {
+                Toast.makeText(
+                    requireContext(),
+                    "Saldo insuficiente para realizar la transacción",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+            val nuevaTransaccion = Transaccion(
+                id="5",
+                fotoPerfil = destinatario.fotoPerfil,
+                idReceriver = destinatario.nombre,
+                monto=montoEnviado )
+
+            // Añadir la nueva transacción al ViewModel compartido
+            transaccionViewModel.addTransaccion(nuevaTransaccion)
+
+            Toast.makeText(requireContext(), "Envío de dinero exitoso", Toast.LENGTH_SHORT).show()
+
+            // Navegar de regreso a HomePage
+            findNavController().navigate(R.id.homePage)
+
+        }
+
+
+    }
+
+    fun cambioColorTextViewMonto(){
         val editTextMonto = binding.editTextMontoEnviarDinero
 
         // Configurar el TextWatcher para cambiar el color del texto y el borde
@@ -83,49 +134,6 @@ class SendMoney : Fragment() {
                 }
             }
         })
-
-
-
-        binding.btnEnviarDinero.setOnClickListener() {
-
-            val monto = binding.editTextMontoEnviarDinero.text
-            val destinatario = binding.spinnerEnviarDinero.selectedItem as Destinatario
-            val nota = binding.editTextNotaEnviarDinero.text
-
-            if (monto.isBlank()) {
-                Toast.makeText(requireContext(), "Por favor ingrese un monto", Toast.LENGTH_SHORT)
-                    .show()
-                return@setOnClickListener
-            }
-
-            if (nota.isBlank()) {
-                Toast.makeText(requireContext(), "Por favor ingrese una nota", Toast.LENGTH_SHORT)
-                    .show()
-                return@setOnClickListener
-            }
-
-            val montoEnviado: Double = monto.toString().toDouble()
-
-            val nuevaTransaccion = Transaccion(
-                id="5",
-                fotoPerfil = destinatario.fotoPerfil,
-                idReceriver = destinatario.nombre,
-                monto=montoEnviado )
-
-            // Añadir la nueva transacción al ViewModel compartido
-            transaccionViewModel.addTransaccion(nuevaTransaccion)
-
-            // Actualizar el balance del usuario logueado
-            usuarioViewModel.actualizarBalanceUsuario(montoEnviado)
-
-            Toast.makeText(requireContext(), "Envío de dinero exitoso", Toast.LENGTH_SHORT).show()
-
-            // Navegar de regreso a HomePage
-            findNavController().navigate(R.id.homePage)
-
-        }
-
-
     }
 
 }

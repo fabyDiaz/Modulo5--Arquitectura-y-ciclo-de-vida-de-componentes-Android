@@ -29,46 +29,13 @@
         android:background="@color/blackOpacity" />
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <Spinner
+        android:id="@+id/spinnerRecibirDinero"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24sp">
-
-        <ImageView
-            android:id="@+id/ImagenPerfilIngresoDinero"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="24dp"
-            app:layout_constraintEnd_toStartOf="@+id/textNombreIngresoDinero"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@mipmap/profile_picture" />
-
-        <TextView
-            android:id="@+id/textNombreIngresoDinero"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="11dp"
-            android:text="@string/nombre_request"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toEndOf="@+id/ImagenPerfilIngresoDinero"
-            app:layout_constraintTop_toTopOf="@+id/ImagenPerfilIngresoDinero" />
-
-        <TextView
-            android:id="@+id/textEmailIngresoDinero"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:text="@string/email_request"
-            android:textColor="@color/semiblackOpacity"
-            app:layout_constraintBottom_toBottomOf="@+id/ImagenPerfilIngresoDinero"
-            app:layout_constraintStart_toEndOf="@+id/ImagenPerfilIngresoDinero"
-            app:layout_constraintTop_toBottomOf="@+id/textNombreIngresoDinero" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_marginBottom="24sp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
