@@ -11,15 +11,17 @@ import com.example.alkewalletm5.data.model.Transaccion
 
 class TransaccionAdapter(): RecyclerView.Adapter<TransaccionAdapter.ViewHolder>() {
 
-    var items= mutableListOf<Transaccion>()
+    var items = mutableListOf<Transaccion>()
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val imagen = view.findViewById<ImageView>(R.id.imagenPerfilEnviarDinero)
-        val nombreReceptor = view.findViewById<TextView>(R.id.textNombreEnviarDinero)
-        val monto = view.findViewById<TextView>(R.id.editTextMontoEnviarDinero)
+        val imagen: ImageView = view.findViewById(R.id.imagenYara)
+        val nombreReceptor: TextView = view.findViewById(R.id.txtYaraMovimiento)
+        val monto: TextView = view.findViewById(R.id.MontoEnvioYara)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.transaccion_item, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.transaccion_item, parent, false)
         return ViewHolder(view)
     }
 
@@ -30,5 +32,8 @@ class TransaccionAdapter(): RecyclerView.Adapter<TransaccionAdapter.ViewHolder>(
         holder.monto.text = item.monto.toString()
     }
 
-    override fun getItemCount() = items.size
+    override fun getItemCount(): Int {
+        return items.size
+    }
+
 }

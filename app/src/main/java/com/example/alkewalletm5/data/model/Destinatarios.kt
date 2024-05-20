@@ -8,6 +8,4 @@ data class Destinatarios (
     val correo: String
 ) {
 
-
-
 }
