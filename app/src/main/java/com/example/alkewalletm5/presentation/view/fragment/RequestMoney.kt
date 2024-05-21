@@ -71,6 +71,8 @@ class RequestMoney : Fragment() {
             val monto = binding.editTextMontoIngresarDinero.text
             val destinatario = binding.spinnerRecibirDinero.selectedItem as Destinatario
             val nota = binding.editTextNota.text
+            val iconoRequest = R.drawable.request_icon2
+
             if (monto.isBlank()) {
                 Toast.makeText(requireContext(), "Por favor ingrese un monto", Toast.LENGTH_SHORT)
                     .show()
@@ -84,16 +86,19 @@ class RequestMoney : Fragment() {
             }
 
             val montoRecibido: Double = monto.toString().toDouble()
-            // Verificar si el saldo es suficiente antes de realizar la transacción
+
 
             val nuevaTransaccion = Transaccion(
                 id="5",
                 fotoPerfil = destinatario.fotoPerfil,
-                idSender = destinatario.nombre,
-                monto=montoRecibido )
+                idReceriver = destinatario.nombre,
+                monto=montoRecibido,
+                icono = iconoRequest
+            )
 
             // Añadir la nueva transacción al ViewModel compartido
             transaccionViewModel.addTransaccion(nuevaTransaccion)
+            usuarioViewModel.sumarSaldoUsuario(montoRecibido)
 
             Toast.makeText(requireContext(), "Envío de dinero exitoso", Toast.LENGTH_SHORT).show()
 

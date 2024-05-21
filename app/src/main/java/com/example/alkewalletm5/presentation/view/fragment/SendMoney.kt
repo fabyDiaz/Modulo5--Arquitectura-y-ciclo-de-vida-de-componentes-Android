@@ -68,6 +68,7 @@ class SendMoney : Fragment() {
             val monto = binding.editTextMontoEnviarDinero.text
             val destinatario = binding.spinnerEnviarDinero.selectedItem as Destinatario
             val nota = binding.editTextNotaEnviarDinero.text
+            val iconoSend = R.drawable.send_icon_yellow
 
             if (monto.isBlank()) {
                 Toast.makeText(requireContext(), "Por favor ingrese un monto", Toast.LENGTH_SHORT)
@@ -83,7 +84,7 @@ class SendMoney : Fragment() {
 
             val montoEnviado: Double = monto.toString().toDouble()
             // Verificar si el saldo es suficiente antes de realizar la transacción
-            val saldoSuficiente = usuarioViewModel.actualizarSaldoUsuario(montoEnviado)
+            val saldoSuficiente = usuarioViewModel.restarSaldoUsuario(montoEnviado)
             if (!saldoSuficiente) {
                 Toast.makeText(
                     requireContext(),
@@ -96,7 +97,9 @@ class SendMoney : Fragment() {
                 id="5",
                 fotoPerfil = destinatario.fotoPerfil,
                 idReceriver = destinatario.nombre,
-                monto=montoEnviado )
+                monto=montoEnviado,
+                icono = iconoSend
+            )
 
             // Añadir la nueva transacción al ViewModel compartido
             transaccionViewModel.addTransaccion(nuevaTransaccion)

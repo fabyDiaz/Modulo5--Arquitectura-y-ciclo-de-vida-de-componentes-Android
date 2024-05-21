@@ -12,14 +12,15 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.alkewalletm5.R
-import com.example.alkewalletm5.data.local.UsuariosDataSet
 import com.example.alkewalletm5.databinding.FragmentLoginPageBinding
 import com.example.alkewalletm5.presentation.viewmodel.UsuarioViewModel
 
 class LoginPage : Fragment() {
 
-    private var _binding: FragmentLoginPageBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentLoginPageBinding
+
+    /*private var _binding: FragmentLoginPageBinding? = null
+    private val binding get() = _binding!!*/
 
     private val usuarioViewModel: UsuarioViewModel by activityViewModels()
 
@@ -35,7 +36,7 @@ class LoginPage : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentLoginPageBinding.inflate(inflater, container, false)
+        binding = FragmentLoginPageBinding.inflate(inflater, container, false)
         val view = binding.root
         return view
         // Inflate the layout for this fragment
@@ -66,13 +67,6 @@ class LoginPage : Fragment() {
            Toast.makeText(requireContext(), "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
        }
    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-
 
 
 }

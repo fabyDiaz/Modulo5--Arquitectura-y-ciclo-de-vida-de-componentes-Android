@@ -17,6 +17,7 @@ class TransaccionAdapter(): RecyclerView.Adapter<TransaccionAdapter.ViewHolder>(
         val imagen: ImageView = view.findViewById(R.id.imagenYara)
         val nombreReceptor: TextView = view.findViewById(R.id.txtYaraMovimiento)
         val monto: TextView = view.findViewById(R.id.MontoEnvioYara)
+        val icono: ImageView = view.findViewById(R.id.IconoEnvioYara)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,6 +31,7 @@ class TransaccionAdapter(): RecyclerView.Adapter<TransaccionAdapter.ViewHolder>(
         holder.imagen.setImageResource(item.fotoPerfil)
         holder.nombreReceptor.text = item.idReceriver
         holder.monto.text = item.monto.toString()
+        holder.icono.setImageResource((item.icono))
     }
 
     override fun getItemCount(): Int {

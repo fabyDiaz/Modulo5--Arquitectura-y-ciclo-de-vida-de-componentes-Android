@@ -36,7 +36,7 @@ class UsuarioViewModel: ViewModel() {
         return _usuarios.value?.find { it.email == email && it.password == password }
     }
 
-    fun actualizarSaldoUsuario(monto: Double): Boolean {
+    fun restarSaldoUsuario(monto: Double): Boolean {
         _usuarioLogueado.value?.let { usuario ->
             val nuevoSaldo = usuario.saldo - monto
             return if (nuevoSaldo >= 0) {
@@ -53,5 +53,18 @@ class UsuarioViewModel: ViewModel() {
             }
         }
         return false
+    }
+
+    fun sumarSaldoUsuario(monto: Double){
+        _usuarioLogueado.value?.let { usuario ->
+            val nuevoSaldo = usuario.saldo + monto
+            val usuarioActualizado = usuario.copy(saldo = nuevoSaldo)
+            _usuarioLogueado.value = usuarioActualizado
+
+            _usuarios.value = _usuarios.value?.map {
+                if (it.email == usuario.email) usuarioActualizado else it
+            }?.toMutableList()
+        }
+
     }
 }
