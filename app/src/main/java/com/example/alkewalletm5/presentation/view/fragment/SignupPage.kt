@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -33,6 +34,12 @@ class SignupPage : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentSignupPageBinding.inflate(inflater, container, false)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Navegar de vuelta a Fragment1
+                findNavController().navigate(R.id.loginSignupPage)
+            }
+        })
         return binding.root
     }
 

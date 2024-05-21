@@ -9,8 +9,8 @@ data class Usuario(
     val email: String,
     val password: String,
     val imgPerfil: Int = R.mipmap.pp_standar,
-    val saldo: Double = 1000.0
-
+    val saldo: Double = 1000.0,
+    val transacciones: MutableList<Transaccion> = mutableListOf()
 ) {
 
 }

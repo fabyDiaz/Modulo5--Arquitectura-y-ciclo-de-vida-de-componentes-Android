@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.alkewalletm5.R
@@ -39,6 +41,13 @@ class HomePage : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentHomePageBinding.inflate(inflater, container, false)
+        // Manejar el botón de retroceso del dispositivo
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Navegar de vuelta a Fragment1
+                findNavController().navigate(R.id.loginSignupPage)
+            }
+        })
         return binding.root
     }
 
@@ -73,6 +82,8 @@ class HomePage : Fragment() {
         }
 
         updateEmptyState()
+
+
     }
 
     private fun updateEmptyState() {
@@ -84,4 +95,5 @@ class HomePage : Fragment() {
             binding.recyclerTransacciones.visibility = View.VISIBLE
         }
     }
+
 }

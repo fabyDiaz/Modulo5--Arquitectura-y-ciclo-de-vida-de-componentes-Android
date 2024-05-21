@@ -36,6 +36,7 @@ class UsuarioViewModel: ViewModel() {
         return _usuarios.value?.find { it.email == email && it.password == password }
     }
 
+
     fun restarSaldoUsuario(monto: Double): Boolean {
         _usuarioLogueado.value?.let { usuario ->
             val nuevoSaldo = usuario.saldo - monto

@@ -23,6 +23,9 @@ import com.example.alkewalletm5.presentation.view.adapter.DestinatarioAdpater
 import com.example.alkewalletm5.presentation.viewmodel.TransaccionViewModel
 import com.example.alkewalletm5.presentation.viewmodel.UsuarioViewModel
 import com.google.android.material.appbar.MaterialToolbar
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class RequestMoney : Fragment() {
 
@@ -86,6 +89,12 @@ class RequestMoney : Fragment() {
             }
 
             val montoRecibido: Double = monto.toString().toDouble()
+            // Obtener la fecha y hora actual
+            val calendar = Calendar.getInstance()
+
+            // Formatear la fecha y hora según el formato deseado
+            val dateFormat = SimpleDateFormat("MMM d, hh:mm a", Locale.getDefault())
+            val formattedDateTime = dateFormat.format(calendar.time)
 
 
             val nuevaTransaccion = Transaccion(
@@ -93,7 +102,8 @@ class RequestMoney : Fragment() {
                 fotoPerfil = destinatario.fotoPerfil,
                 idReceriver = destinatario.nombre,
                 monto=montoRecibido,
-                icono = iconoRequest
+                icono = iconoRequest,
+                fecha = formattedDateTime
             )
 
             // Añadir la nueva transacción al ViewModel compartido

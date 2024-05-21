@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.alkewalletm5.R
 
 class LoginSignupPage : Fragment() {
@@ -21,7 +23,13 @@ class LoginSignupPage : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        //Tengo que buscar la forma de salir de la app
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Navegar de vuelta a Fragment1
+                findNavController().navigate(R.id.loginSignupPage)
+            }
+        })
         return inflater.inflate(R.layout.fragment_login_signup_page, container, false)
     }
 

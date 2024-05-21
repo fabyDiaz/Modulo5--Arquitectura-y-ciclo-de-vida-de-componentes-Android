@@ -33,6 +33,10 @@ class TransaccionViewModel: ViewModel() {
         _transacciones.value = _transacciones.value // Trigger LiveData observer
     }
 
+    fun limpiarTransacciones() {
+        _transacciones.value = mutableListOf()
+    }
+
    /* private val _transacciones = MutableLiveData<MutableList<Transaccion>>()
     val transacciones: LiveData<MutableList<Transaccion>> get() = _transacciones
 

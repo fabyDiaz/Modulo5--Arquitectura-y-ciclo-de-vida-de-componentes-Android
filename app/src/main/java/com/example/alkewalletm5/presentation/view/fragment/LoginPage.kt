@@ -8,11 +8,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.alkewalletm5.R
 import com.example.alkewalletm5.databinding.FragmentLoginPageBinding
+import com.example.alkewalletm5.presentation.viewmodel.TransaccionViewModel
 import com.example.alkewalletm5.presentation.viewmodel.UsuarioViewModel
 
 class LoginPage : Fragment() {
@@ -23,6 +25,7 @@ class LoginPage : Fragment() {
     private val binding get() = _binding!!*/
 
     private val usuarioViewModel: UsuarioViewModel by activityViewModels()
+    private val transaccionViewModel: TransaccionViewModel by activityViewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +41,13 @@ class LoginPage : Fragment() {
 
         binding = FragmentLoginPageBinding.inflate(inflater, container, false)
         val view = binding.root
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Navegar de vuelta a Fragment1
+                findNavController().navigate(R.id.loginSignupPage)
+            }
+        })
         return view
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_login_page, container, false)
@@ -62,6 +72,7 @@ class LoginPage : Fragment() {
 
        if (usuario != null) {
            usuarioViewModel.setUsuarioLogueado(usuario)
+           transaccionViewModel.setListTransactionsData(usuario.transacciones) // Cargar las transacciones del usuario logueado
            findNavController().navigate(R.id.homePage)
        } else {
            Toast.makeText(requireContext(), "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
