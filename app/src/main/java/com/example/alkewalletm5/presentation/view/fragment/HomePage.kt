@@ -12,10 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.alkewalletm5.R
-import com.example.alkewalletm5.data.local.TransaccionesDataSet
-import com.example.alkewalletm5.data.model.Transaccion
 import com.example.alkewalletm5.databinding.FragmentHomePageBinding
 import com.example.alkewalletm5.presentation.view.adapter.TransaccionAdapter
 import com.example.alkewalletm5.presentation.viewmodel.TransaccionViewModel
@@ -68,6 +65,7 @@ class HomePage : Fragment() {
         adapter = TransaccionAdapter()
         binding.recyclerTransacciones.adapter = adapter
 
+
         //Actualiza el recyclerview
         transaccionViewModel.getLiveDataObserver().observe(viewLifecycleOwner) { transacciones ->
             adapter.items = transacciones
@@ -79,6 +77,7 @@ class HomePage : Fragment() {
             binding.textSaludo.text = "Hola, ${usuario.nombre}"
             binding.textMontoTotal.text = usuario.saldo.toString()
             binding.imagenHomeAmanda.setImageResource(usuario.imgPerfil)
+            transaccionViewModel.setListTransactionsData(usuario.transacciones)
         }
 
         updateEmptyState()

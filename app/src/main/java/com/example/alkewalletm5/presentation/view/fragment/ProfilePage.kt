@@ -13,41 +13,38 @@ import com.example.alkewalletm5.databinding.FragmentProfilePageBinding
 import com.example.alkewalletm5.presentation.viewmodel.UsuarioViewModel
 
 class ProfilePage : Fragment() {
-    private lateinit var binding: FragmentProfilePageBinding
+    private var _binding: FragmentProfilePageBinding? = null
+    private val binding get() = _binding!!
     private val usuarioViewModel: UsuarioViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments != null) {
-
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        binding = FragmentProfilePageBinding.inflate(inflater, container, false)
+        _binding = FragmentProfilePageBinding.inflate(inflater, container, false)
+        //Navegación con el botón de retroceder del teléfono hacia el homePage
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                // Navegar de vuelta a Fragment1
                 findNavController().navigate(R.id.homePage)
             }
         })
         return binding.root
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //Actualiza cabecera del home
+        //Actualiza la foto y nombre del perfil del  usuario logueado
         usuarioViewModel.usuarioLogueado.observe(viewLifecycleOwner) { usuario ->
             binding.textNombrePerfil.text = usuario.nombre
             binding.imagenFotoPerfil.setImageResource(usuario.imgPerfil)
         }
 
+        //Actualiza los cardView del usuario logueado. Por el momento solo muestra
+        //Mi información y mis trarjetas
         usuarioViewModel.usuarioLogueado.observe(viewLifecycleOwner) { usuario ->
             binding.txtMostrarInformaccion.text = "Nombre: ${usuario.nombre} \n" +
                                                     "Apellido: ${usuario.apellido} \n" +
@@ -55,9 +52,11 @@ class ProfilePage : Fragment() {
             binding.txtMostrarTarjetas.text = "No tiene tarjetas asociadas"
         }
 
+        //Muestra la información cuando se hace click en el CardView "Mi información"
         binding.tarjetaMiInformacion.setOnClickListener{
             cambiarVisibilidadCard(binding.infoContainerMiInformacion)
         }
+        //Muestra la información cuando se hace click en el CardView "Mis tarjetas"
         binding.tarjetaMisTarjetas.setOnClickListener{
             cambiarVisibilidadCard(binding.infoContainerMiMistarjetas)
         }
@@ -65,6 +64,10 @@ class ProfilePage : Fragment() {
 
     }
 
+    /**
+     * Cambia la visibilidad del layout que se encuentran bajo los CarsView, para cuando le hagan
+     * Click en el CardView se muestre o se oculte
+     */
     private fun cambiarVisibilidadCard(view: View) {
         if (view.visibility == View.VISIBLE) {
             view.visibility = View.GONE
@@ -73,7 +76,9 @@ class ProfilePage : Fragment() {
         }
     }
 
-
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null // Evita fugas de memoria
+    }
 
 }

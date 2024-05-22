@@ -17,8 +17,10 @@ import com.example.alkewalletm5.R
 import com.example.alkewalletm5.data.local.DestinatariosDataSet
 import com.example.alkewalletm5.data.model.Destinatario
 import com.example.alkewalletm5.data.model.Transaccion
+import com.example.alkewalletm5.databinding.FragmentRequestMoneyBinding
 import com.example.alkewalletm5.databinding.FragmentSendMoneyBinding
 import com.example.alkewalletm5.presentation.view.adapter.DestinatarioAdpater
+import com.example.alkewalletm5.presentation.viewmodel.DestinatarioViewModel
 import com.example.alkewalletm5.presentation.viewmodel.TransaccionViewModel
 import com.example.alkewalletm5.presentation.viewmodel.UsuarioViewModel
 import com.google.android.material.appbar.MaterialToolbar
@@ -28,13 +30,13 @@ import java.util.Locale
 
 class SendMoney : Fragment() {
 
-    private lateinit var binding: FragmentSendMoneyBinding
+    private var _binding: FragmentSendMoneyBinding? = null
+    private val binding get() = _binding!!
     private val transaccionViewModel: TransaccionViewModel by activityViewModels()
     private val usuarioViewModel: UsuarioViewModel by activityViewModels()
+    private val destinatarioViewModel: DestinatarioViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments != null) {
-        }
     }
 
     override fun onCreateView(
@@ -42,29 +44,18 @@ class SendMoney : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentSendMoneyBinding.inflate(inflater, container, false)
+        _binding = FragmentSendMoneyBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       val flecha = view.findViewById<MaterialToolbar>(R.id.volverSendMoney)
+        //Al presionar la flecha de la aprte superior vuelve al homePage
+        binding.volverSendMoney.setOnClickListener{findNavController().navigate(R.id.homePage)}
 
-        flecha.setOnClickListener { v: View? -> findNavController(v!!).navigate(R.id.homePage)
-        }
+        mostrarListadeDestinatarios()
 
-        val spinner = view.findViewById<Spinner>(R.id.spinnerEnviarDinero)
-
-        // Lista de elementos para el Spinner
-        val items = DestinatariosDataSet().ListaDestintarios()
-
-        // Adapter para el Spinner
-        val adapter = DestinatarioAdpater(requireContext(), items)
-        spinner.adapter = adapter
-
-        binding = FragmentSendMoneyBinding.bind(view)
-
-       cambioColorTextViewMonto()
+        cambioColorTextViewMonto()
 
         binding.btnEnviarDinero.setOnClickListener() {
 
@@ -72,7 +63,9 @@ class SendMoney : Fragment() {
             val destinatario = binding.spinnerEnviarDinero.selectedItem as Destinatario
             val nota = binding.editTextNotaEnviarDinero.text
             val iconoSend = R.drawable.send_icon_yellow
+            val montoEnviado: Double = monto.toString().toDouble()
 
+            //No permite Enviar dinero si no se han llenado los campos
             if (monto.isBlank()) {
                 Toast.makeText(requireContext(), "Por favor ingrese un monto", Toast.LENGTH_SHORT)
                     .show()
@@ -85,7 +78,6 @@ class SendMoney : Fragment() {
                 return@setOnClickListener
             }
 
-            val montoEnviado: Double = monto.toString().toDouble()
             // Verificar si el saldo es suficiente antes de realizar la transacción
             val saldoSuficiente = usuarioViewModel.restarSaldoUsuario(montoEnviado)
             if (!saldoSuficiente) {
@@ -97,24 +89,17 @@ class SendMoney : Fragment() {
                 return@setOnClickListener
             }
 
-            // Obtener la fecha y hora actual
-            val calendar = Calendar.getInstance()
-
-            // Formatear la fecha y hora según el formato deseado
-            val dateFormat = SimpleDateFormat("MMM d, hh:mm a", Locale.getDefault())
-            val formattedDateTime = dateFormat.format(calendar.time)
-
-            val nuevaTransaccion = Transaccion(
-                id="5",
+            //Creamos una nueva transacción
+            transaccionViewModel.nuevaTransaccion(
                 fotoPerfil = destinatario.fotoPerfil,
-                idReceriver = destinatario.nombre,
-                monto=montoEnviado,
+                idReceiver = destinatario.nombre,
+                monto = montoEnviado,
                 icono = iconoSend,
-                fecha = formattedDateTime
+                fecha = obtenerFecha()
             )
 
-            // Añadir la nueva transacción al ViewModel compartido
-            transaccionViewModel.addTransaccion(nuevaTransaccion)
+            // Añadir la nueva transacción a la lista de transacciones
+            transaccionViewModel.addTransaccion()
 
             Toast.makeText(requireContext(), "Envío de dinero exitoso", Toast.LENGTH_SHORT).show()
 
@@ -126,6 +111,41 @@ class SendMoney : Fragment() {
 
     }
 
+    /**
+     * Obtener la fecha actual y retornarla como un String
+     * Se obtiene una instancia de Calendar que representa la fecha y hora actuales.
+     * Se crea un objeto SimpleDateFormat, que permite formatear fechas y horas
+     * @return La fecha y hora actual formateada como una cadena de texto en el formato "MMM d, hh:mm a"
+     */
+    fun mostrarListadeDestinatarios(){
+        // Lista de elementos para el Spinner
+        val spinner = binding.spinnerEnviarDinero
+
+        // Lista de elementos para el Spinner
+        destinatarioViewModel.destinatarios.observe(viewLifecycleOwner) { destinatarios ->
+            // Adapter para el Spinner
+            val adapter = DestinatarioAdpater(requireContext(), destinatarios)
+            spinner.adapter = adapter
+        }
+    }
+
+    /**
+     * Obtener la fecha actual y retornarla como un String
+     */
+    fun obtenerFecha(): String{
+        // Obtener la fecha y hora actual
+        val calendar = Calendar.getInstance()
+
+        // Formatear la fecha y hora según el formato deseado
+        val dateFormat = SimpleDateFormat("MMM d, hh:mm a", Locale.getDefault())
+        return dateFormat.format(calendar.time)
+    }
+
+    /**
+     * Esta función pinta el editText del monto
+     * cuando no se ha ingresado un monto, está en gris
+     * Cuando se empieza a escribir se pone verde
+     */
     fun cambioColorTextViewMonto(){
         val editTextMonto = binding.editTextMontoEnviarDinero
 

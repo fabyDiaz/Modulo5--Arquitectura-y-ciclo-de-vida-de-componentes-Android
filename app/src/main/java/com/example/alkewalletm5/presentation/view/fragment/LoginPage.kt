@@ -19,19 +19,14 @@ import com.example.alkewalletm5.presentation.viewmodel.UsuarioViewModel
 
 class LoginPage : Fragment() {
 
-    private lateinit var binding: FragmentLoginPageBinding
-
-    /*private var _binding: FragmentLoginPageBinding? = null
-    private val binding get() = _binding!!*/
+    private var _binding: FragmentLoginPageBinding? = null
+    private val binding get() = _binding!!
 
     private val usuarioViewModel: UsuarioViewModel by activityViewModels()
-    private val transaccionViewModel: TransaccionViewModel by activityViewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments != null) {
-        }
     }
 
     override fun onCreateView(
@@ -39,30 +34,31 @@ class LoginPage : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = FragmentLoginPageBinding.inflate(inflater, container, false)
+        _binding = FragmentLoginPageBinding.inflate(inflater, container, false)
         val view = binding.root
-
+        // Navegar de vuelta al loginSignupPage
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                // Navegar de vuelta a Fragment1
                 findNavController().navigate(R.id.loginSignupPage)
             }
         })
         return view
-        // Inflate the layout for this fragment
-        //return inflater.inflate(R.layout.fragment_login_page, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val navController = findNavController(view)
-        val btnLogin = view.findViewById<Button>(R.id.buttonLoginLogin)
-        val btnNuevaCuenta = view.findViewById<TextView>(R.id.enlaceCrearCuentaLogin)
-        //btnLogin.setOnClickListener { v: View? -> navController.navigate(R.id.homePage) }
-        btnLogin.setOnClickListener { VerificarEmailPassword() }
-        btnNuevaCuenta.setOnClickListener { v: View? -> navController.navigate(R.id.signupPage) }
+
+        binding.buttonLoginLogin.setOnClickListener { VerificarEmailPassword() }
+        binding.enlaceCrearCuentaLogin.setOnClickListener { navController.navigate(R.id.signupPage) }
+
     }
 
+    /**
+     * Este método verifica si el usuario ingresado desde el LoginPage con su email y su contraseña
+     * existe en la lista de usuarios. Si lo encuentra lo agrega a la lista de usuarioLogueado y
+     * luego entra al HomePage
+     */
    fun VerificarEmailPassword(){
 
        val txtEmail = binding.editTextEmail.text.toString()
@@ -72,12 +68,16 @@ class LoginPage : Fragment() {
 
        if (usuario != null) {
            usuarioViewModel.setUsuarioLogueado(usuario)
-           transaccionViewModel.setListTransactionsData(usuario.transacciones) // Cargar las transacciones del usuario logueado
            findNavController().navigate(R.id.homePage)
        } else {
            Toast.makeText(requireContext(), "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
        }
    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null // Evita fugas de memoria
+    }
 
 
 }

@@ -13,6 +13,8 @@ import com.example.alkewalletm5.data.model.Destinatario
 class DestinatarioAdpater (context: Context, private val items: List<Destinatario>) :
     ArrayAdapter<Destinatario>(context, 0, items) {
 
+    private val inflater: LayoutInflater = LayoutInflater.from(context)
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         return createViewFromResource(position, convertView, parent, R.layout.destinatarios_item)
     }

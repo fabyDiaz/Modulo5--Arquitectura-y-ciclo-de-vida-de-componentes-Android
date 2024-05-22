@@ -11,34 +11,47 @@ import androidx.activity.OnBackPressedCallback
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.alkewalletm5.R
+import com.example.alkewalletm5.databinding.FragmentLoginPageBinding
+import com.example.alkewalletm5.databinding.FragmentLoginSignupPageBinding
 
 class LoginSignupPage : Fragment() {
+
+    private var _binding: FragmentLoginSignupPageBinding? = null
+    private val binding get() = _binding!!
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments != null) {
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //Tengo que buscar la forma de salir de la app
+        _binding = FragmentLoginSignupPageBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+        // Manejar el botón de retroceso para salir de la app
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                // Navegar de vuelta a Fragment1
-                findNavController().navigate(R.id.loginSignupPage)
+                requireActivity().finishAffinity() // Salir de la aplicación
             }
         })
-        return inflater.inflate(R.layout.fragment_login_signup_page, container, false)
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val navController = findNavController(view)
-        val btnCrearCuenta = view.findViewById<Button>(R.id.btnCrearCuenta)
-        val btnCuentaCreada = view.findViewById<TextView>(R.id.enlaceYaTienesCuenta)
-        btnCrearCuenta.setOnClickListener { v: View? -> navController.navigate(R.id.signupPage) }
-        btnCuentaCreada.setOnClickListener { v: View? -> navController.navigate(R.id.loginPage) }
+        binding.btnCrearCuenta.setOnClickListener {
+            navController.navigate(R.id.signupPage)
+        }
+
+        binding.enlaceYaTienesCuenta.setOnClickListener {
+            navController.navigate(R.id.loginPage)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null // Evita fugas de memoria
     }
 }
