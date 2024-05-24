@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -17,6 +18,7 @@ import com.example.alkewalletm5.databinding.FragmentHomePageBinding
 import com.example.alkewalletm5.presentation.view.adapter.TransaccionAdapter
 import com.example.alkewalletm5.presentation.viewmodel.TransaccionViewModel
 import com.example.alkewalletm5.presentation.viewmodel.UsuarioViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 class HomePage : Fragment() {
@@ -45,6 +47,7 @@ class HomePage : Fragment() {
                 findNavController().navigate(R.id.loginSignupPage)
             }
         })
+
         return binding.root
     }
 
@@ -94,5 +97,6 @@ class HomePage : Fragment() {
             binding.recyclerTransacciones.visibility = View.VISIBLE
         }
     }
+
 
 }

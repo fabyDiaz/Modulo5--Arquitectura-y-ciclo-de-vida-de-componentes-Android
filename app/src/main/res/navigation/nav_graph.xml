@@ -51,6 +51,9 @@
         <action
             android:id="@+id/action_homePage_to_profilePage"
             app:destination="@id/profilePage" />
+        <action
+            android:id="@+id/action_homePage_to_loginSignupPage"
+            app:destination="@id/loginSignupPage" />
     </fragment>
     <fragment
         android:id="@+id/signupPage"

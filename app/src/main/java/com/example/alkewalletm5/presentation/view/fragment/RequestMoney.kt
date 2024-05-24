@@ -55,11 +55,10 @@ class RequestMoney : Fragment() {
 
         binding.btnIngresarDinero.setOnClickListener() {
 
-            val monto = binding.editTextMontoIngresarDinero.text
+            val monto = binding.editTextMontoIngresarDinero.text.toString()
             val destinatario = binding.spinnerRecibirDinero.selectedItem as Destinatario
-            val nota = binding.editTextNota.text
+            val nota = binding.editTextNota.text.toString()
             val iconoRequest = R.drawable.request_icon2
-            val montoRecibido: Double = monto.toString().toDouble()
 
             //No permite Recibir dinero si no se han llenado los campos
             if (monto.isBlank()) {
@@ -73,6 +72,8 @@ class RequestMoney : Fragment() {
                     .show()
                 return@setOnClickListener
             }
+
+            val montoRecibido: Double = monto.toDouble()
 
             transaccionViewModel.nuevaTransaccion(
                 fotoPerfil = destinatario.fotoPerfil,
