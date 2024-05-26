@@ -40,9 +40,9 @@ contraseña: amanda123<br>
 - Para enviar o recibir dinero puede seleccionar el destinatario. A modo de prueba tenemos un dataSet de destinatario fija que aparece tanto para usuarios logueado como usuarios nuevos
 
 **Imagenes de la App** <br>
-![Inicio de la app AlkeWallet](/RecursosReadme/loginsignuppage.jpg)
-![Inicio de la app AlkeWallet](/RecursosReadme/loginpapge.jpg)
-![Inicio de la app AlkeWallet](/RecursosReadme/homepage.jpg)
-![Inicio de la app AlkeWallet](/RecursosReadme/Spinnerenviodinero.jpg)
-![Inicio de la app AlkeWallet](/RecursosReadme/eviodinero.jpg)
-![Inicio de la app AlkeWallet](/RecursosReadme/muesratransacciones.jpg)
+<img src="/RecursosReadme/loginsignuppage.jpg" alt="Inicio de la app AlkeWallet" width="200"/>
+<img src="/RecursosReadme/loginpapge.jpg" alt="Inicio de la app AlkeWallet" width="200"/>
+<img src="/RecursosReadme/homepage.jpg" alt="Inicio de la app AlkeWallet" width="200"/>
+<img src="/RecursosReadme/Spinnerenviodinero.jpg" alt="Inicio de la app AlkeWallet" width="200"/>
+<img src="/RecursosReadme/eviodinero.jpg" alt="Inicio de la app AlkeWallet" width="200"/>
+<img src="/RecursosReadme/muesratransacciones.jpg" alt="Inicio de la app AlkeWallet" width="200"/>
