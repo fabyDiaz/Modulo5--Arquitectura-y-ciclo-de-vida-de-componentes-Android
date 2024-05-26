@@ -41,4 +41,6 @@ contraseña: amanda123<br>
 
 **Video de muestra de funcionamiento de la app** <br>
 
-![](demo alkewallet M5.mp4)
+<video width="320" height="240" controls>
+  <source src="/demo alkewallet M5.mp4" type="video/mp4">
+</video>
