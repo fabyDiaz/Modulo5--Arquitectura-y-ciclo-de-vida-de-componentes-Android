@@ -41,6 +41,4 @@ contraseña: amanda123<br>
 
 **Video de muestra de funcionamiento de la app** <br>
 
-[![Watch the video]()](https://raw.githubusercontent.com/fabyDiaz/Modulo5--Arquitectura-y-ciclo-de-vida-de-componentes-Android/blob/master/demo%20alkewallet%20M5.mp4)
-
- 
+![](demo alkewallet M5.mp4)
