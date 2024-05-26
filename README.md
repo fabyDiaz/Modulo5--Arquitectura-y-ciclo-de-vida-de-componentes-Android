@@ -39,8 +39,5 @@ contraseña: amanda123<br>
 - Puede recibir o enviar dinero. 
 - Para enviar o recibir dinero puede seleccionar el destinatario. A modo de prueba tenemos un dataSet de destinatario fija que aparece tanto para usuarios logueado como usuarios nuevos
 
-**Video de muestra de funcionamiento de la app** <br>
-
-<video width="320" height="240" controls>
-  <source src="/demo alkewallet M5.mp4" type="video/mp4">
-</video>
+**Imagenes de la App** <br>
+![Inicio de la app AlkeWallet](demoalkewalletm5.mp4)
