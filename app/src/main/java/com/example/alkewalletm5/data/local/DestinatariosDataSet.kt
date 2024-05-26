@@ -1,9 +1,17 @@
 package com.example.alkewalletm5.data.local
-
+/**
+ * Clase DataSet
+ * @author Fabiola Díaz
+ * @since v1.1 24/05/2024
+ *
+ */
 import com.example.alkewalletm5.R
 import com.example.alkewalletm5.data.model.Destinatario
 import com.example.alkewalletm5.data.model.Transaccion
 
+/**
+ * Clase que conteine la lista de destinatarios que se mostrará luego en el Spinner
+ */
 class DestinatariosDataSet {
 
     fun ListaDestintarios():MutableList<Destinatario>{

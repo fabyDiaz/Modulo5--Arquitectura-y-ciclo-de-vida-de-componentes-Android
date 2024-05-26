@@ -1,5 +1,10 @@
 package com.example.alkewalletm5.presentation.view.fragment
-
+/**
+ * Clase Fragmento
+ * @author Fabiola Díaz
+ * @since v1.1 24/05/2024
+ *
+ */
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -21,7 +26,9 @@ import com.example.alkewalletm5.presentation.viewmodel.UsuarioViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-
+/**
+ * Fragmento que representa la página de envío de dinero.
+ */
 class SendMoney : Fragment(){
 
     private var _binding: FragmentSendMoneyBinding? = null
@@ -33,6 +40,15 @@ class SendMoney : Fragment(){
         super.onCreate(savedInstanceState)
     }
 
+    /**
+     * Crea y retorna la jerarquía de vistas asociada con el fragmento.
+     *
+     * @param inflater El LayoutInflater que se puede usar para inflar cualquier vista en el fragmento.
+     * @param container Si no es nulo, este es el padre que contiene la vista del fragmento.
+     * @param savedInstanceState Si no es nulo, este fragmento está siendo recreado a partir de un
+     * estado previamente guardado.
+     * @return La vista para la interfaz de usuario del fragmento.
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,8 +58,16 @@ class SendMoney : Fragment(){
         return binding.root
     }
 
+    /**
+     * Método llamado después de que la vista asociada con el fragmento haya sido creada.
+     *
+     * @param view La vista retornada por `onCreateView`.
+     * @param savedInstanceState Si no es nulo, este fragmento está siendo recreado a partir de un
+     * estado previamente guardado.
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         //Al presionar la flecha de la aprte superior vuelve al homePage
         binding.volverSendMoney.setOnClickListener{findNavController().navigate(R.id.homePage)}
 
@@ -71,6 +95,7 @@ class SendMoney : Fragment(){
                 return@setOnClickListener
             }
             val montoEnviado: Double = monto.toDouble()
+
             // Verificar si el saldo es suficiente antes de realizar la transacción
             val saldoSuficiente = usuarioViewModel.restarSaldoUsuario(montoEnviado)
             if (!saldoSuficiente) {
@@ -88,7 +113,8 @@ class SendMoney : Fragment(){
                 idReceiver = destinatario.nombre,
                 monto = montoEnviado,
                 icono = iconoSend,
-                fecha = obtenerFecha()
+                fecha = obtenerFecha(),
+                simbolo = "-$"
             )
 
             // Añadir la nueva transacción a la lista de transacciones

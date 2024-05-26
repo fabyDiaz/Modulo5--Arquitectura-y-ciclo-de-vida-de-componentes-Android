@@ -1,5 +1,10 @@
 package com.example.alkewalletm5.presentation.view.fragment
-
+/**
+ * Clase Fragmento
+ * @author Fabiola Díaz
+ * @since v1.1 24/05/2024
+ *
+ */
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,15 +16,23 @@ import androidx.navigation.fragment.findNavController
 import com.example.alkewalletm5.R
 import com.example.alkewalletm5.databinding.FragmentProfilePageBinding
 import com.example.alkewalletm5.presentation.viewmodel.UsuarioViewModel
-
+/**
+ * Fragmento que representa la página de perfil del usuario.
+ */
 class ProfilePage : Fragment() {
     private var _binding: FragmentProfilePageBinding? = null
     private val binding get() = _binding!!
     private val usuarioViewModel: UsuarioViewModel by activityViewModels()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
+    /**
+     * Crea y retorna la jerarquía de vistas asociada con el fragmento.
+     *
+     * @param inflater El LayoutInflater que se puede usar para inflar cualquier vista en el fragmento.
+     * @param container Si no es nulo, este es el padre que contiene la vista del fragmento.
+     * @param savedInstanceState Si no es nulo, este fragmento está siendo recreado a partir de un
+     * estado previamente guardado.
+     * @return La vista para la interfaz de usuario del fragmento.
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,6 +47,13 @@ class ProfilePage : Fragment() {
         return binding.root
     }
 
+    /**
+     * Método llamado después de que la vista asociada con el fragmento haya sido creada.
+     *
+     * @param view La vista retornada por `onCreateView`.
+     * @param savedInstanceState Si no es nulo, este fragmento está siendo recreado a partir de un
+     * estado previamente guardado.
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -76,6 +96,9 @@ class ProfilePage : Fragment() {
         }
     }
 
+    /**
+     * Método llamado cuando la vista asociada con el fragmento está siendo destruida.
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null // Evita fugas de memoria

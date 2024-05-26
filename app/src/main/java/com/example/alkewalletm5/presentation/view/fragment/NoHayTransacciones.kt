@@ -6,7 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.alkewalletm5.R
+/**
+ * Fragmento que se muestra cuando no hay tansacciones
+ *
+ *
 
+ */
 class NoHayTransacciones : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

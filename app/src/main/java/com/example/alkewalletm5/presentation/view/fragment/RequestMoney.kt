@@ -1,5 +1,10 @@
 package com.example.alkewalletm5.presentation.view.fragment
-
+/**
+ * Clase Fragmento
+ * @author Fabiola Díaz
+ * @since v1.1 24/05/2024
+ *
+ */
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -22,7 +27,9 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-
+/**
+ * Fragmento que representa la página de solicitud de dinero.
+ */
 class RequestMoney : Fragment() {
 
     private var _binding: FragmentRequestMoneyBinding? = null
@@ -30,10 +37,16 @@ class RequestMoney : Fragment() {
     private val transaccionViewModel: TransaccionViewModel by activityViewModels()
     private val usuarioViewModel: UsuarioViewModel by activityViewModels()
     private val destinatarioViewModel: DestinatarioViewModel by activityViewModels()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
+    /**
+     * Crea y retorna la jerarquía de vistas asociada con el fragmento.
+     *
+     * @param inflater El LayoutInflater que se puede usar para inflar cualquier vista en el fragmento.
+     * @param container Si no es nulo, este es el padre que contiene la vista del fragmento.
+     * @param savedInstanceState Si no es nulo, este fragmento está siendo recreado a partir de un
+     * estado previamente guardado.
+     * @return La vista para la interfaz de usuario del fragmento.
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,6 +56,13 @@ class RequestMoney : Fragment() {
         return binding.root
     }
 
+    /**
+     * Método llamado después de que la vista asociada con el fragmento haya sido creada.
+     *
+     * @param view La vista retornada por `onCreateView`.
+     * @param savedInstanceState Si no es nulo, este fragmento está siendo recreado a partir de un
+     * estado previamente guardado.
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -56,11 +76,12 @@ class RequestMoney : Fragment() {
         binding.btnIngresarDinero.setOnClickListener() {
 
             val monto = binding.editTextMontoIngresarDinero.text.toString()
-            val destinatario = binding.spinnerRecibirDinero.selectedItem as Destinatario
+            val posicionDestinatarioSeleccionado = binding.spinnerRecibirDinero.selectedItemPosition
+            val destinatario = destinatarioViewModel.obtenerDestinatarioSeleccionado(posicionDestinatarioSeleccionado)
             val nota = binding.editTextNota.text.toString()
             val iconoRequest = R.drawable.request_icon2
 
-            //No permite Recibir dinero si no se han llenado los campos
+            //No permite Solicitar dinero si no se han llenado los campos
             if (monto.isBlank()) {
                 Toast.makeText(requireContext(), "Por favor ingrese un monto", Toast.LENGTH_SHORT)
                     .show()
@@ -75,13 +96,34 @@ class RequestMoney : Fragment() {
 
             val montoRecibido: Double = monto.toDouble()
 
-            transaccionViewModel.nuevaTransaccion(
-                fotoPerfil = destinatario.fotoPerfil,
-                idReceiver = destinatario.nombre,
-                monto = montoRecibido,
-                icono = iconoRequest,
-                fecha = obtenerFecha()
-            )
+            //llena los datos ecesarios para una nueva transacción
+            if (destinatario != null) {
+                transaccionViewModel.nuevaTransaccion(
+                    fotoPerfil = destinatario.fotoPerfil,
+                    idReceiver = destinatario.nombre,
+                    monto = montoRecibido,
+                    icono = iconoRequest,
+                    fecha = obtenerFecha(),
+                    simbolo = "+$"
+                )
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Debe seleccionar un destinatario",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            //Verifica que cuando se solicita el dinero, este más el monto actual no supere el máximo permitido
+            val saldoMaximo = usuarioViewModel.sumarSaldoUsuario(montoRecibido)
+            if (!saldoMaximo) {
+                Toast.makeText(
+                    requireContext(),
+                    "Excede el saldo máximo permitido de $5.000.000",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
 
 
             // Añadir la nueva transacción al ViewModel compartido
@@ -160,7 +202,9 @@ class RequestMoney : Fragment() {
         })
     }
 
-
+    /**
+     * Método llamado cuando la vista asociada con el fragmento está siendo destruida.
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
