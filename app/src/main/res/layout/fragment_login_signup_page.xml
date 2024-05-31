@@ -32,6 +32,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="14dp"
             android:text="@string/alkewallet"
+            android:textColor="@color/white"
             android:textSize="24sp" />
 
     </LinearLayout>
@@ -41,6 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/slogan"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,6 +55,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/botonceleste_style"
         android:text="@string/crear_cuenta"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

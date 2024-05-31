@@ -71,11 +71,8 @@ class SignupPage : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val navController = findNavController(view)
-        val btnSignup = view.findViewById<Button>(R.id.buttonLoginSignup)
-        val btnNuevaCuenta = view.findViewById<TextView>(R.id.enlaceYaTieneCuentaSignup)
-
-        btnSignup.setOnClickListener { llenarFormularioSignup()}
-        btnNuevaCuenta.setOnClickListener { v: View? -> navController.navigate(R.id.loginPage) }
+        binding.buttonLoginSignup.setOnClickListener{llenarFormularioSignup()}
+        binding.enlaceYaTieneCuentaSignup.setOnClickListener{navController.navigate(R.id.loginPage)}
     }
 
     /**
@@ -100,9 +97,9 @@ class SignupPage : Fragment() {
         }
 
 
-        val nuevoUsuario = Usuario(nombre, apellido, email, password)
-        usuarioViewModel.addUsuario(nuevoUsuario)
-        usuarioViewModel.setUsuarioLogueado(nuevoUsuario)
+        //val nuevoUsuario = Usuario(nombre, apellido, email, password)
+        usuarioViewModel.addUsuario(nombre, apellido, email, password)
+        //usuarioViewModel.setUsuarioLogueado(nuevoUsuario)
 
         Toast.makeText(requireContext(), "Registro exitoso", Toast.LENGTH_SHORT).show()
         findNavController().navigate(R.id.homePage)

@@ -164,6 +164,7 @@
             android:layout_marginTop="59dp"
             android:background="@drawable/botonazul_style"
             android:text="@string/login_signup_btn"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout7" />

@@ -128,7 +128,6 @@ class RequestMoney : Fragment() {
 
             // Añadir la nueva transacción al ViewModel compartido
             transaccionViewModel.addTransaccion()
-            usuarioViewModel.sumarSaldoUsuario(montoRecibido)
 
             Toast.makeText(requireContext(), "Envío de dinero exitoso", Toast.LENGTH_SHORT).show()
 
