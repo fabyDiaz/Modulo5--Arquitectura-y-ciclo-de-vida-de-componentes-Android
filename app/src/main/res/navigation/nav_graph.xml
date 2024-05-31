@@ -67,11 +67,7 @@
             android:id="@+id/action_signupPage_to_loginPage"
             app:destination="@id/loginPage" />
     </fragment>
-    <fragment
-        android:id="@+id/homePageEmpty"
-        android:name="com.example.alkewalletm5.presentation.view.fragment.HomePageEmpty"
-        android:label="fragment_home_page_empty"
-        tools:layout="@layout/fragment_home_page_empty" />
+
     <fragment
         android:id="@+id/requestMoney"
         android:name="com.example.alkewalletm5.presentation.view.fragment.RequestMoney"

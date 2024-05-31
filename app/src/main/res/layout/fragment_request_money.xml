@@ -111,7 +111,8 @@
             android:drawablePadding="4.38dp"
             android:gravity="center_vertical"
             android:paddingStart="85dp"
-            android:text="@string/ingresar_dinero_request_btn" />
+            android:text="@string/ingresar_dinero_request_btn"
+            android:textColor="@color/white"/>
 
     </LinearLayout>
 

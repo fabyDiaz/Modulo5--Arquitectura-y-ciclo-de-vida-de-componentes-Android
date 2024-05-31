@@ -5,6 +5,7 @@ package com.example.alkewalletm5.presentation.view.fragment
  * @since v1.1 24/05/2024
  *
  */
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -62,7 +63,8 @@ class HomePage : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 // Navegar de vuelta a Fragment1
-                findNavController().navigate(R.id.loginSignupPage)
+                //findNavController().navigate(R.id.loginSignupPage)
+                mostrarCuadroDialogo()
             }
         })
 
@@ -121,6 +123,21 @@ class HomePage : Fragment() {
             binding.layoutTransaccionesEmpty.visibility = View.GONE
             binding.recyclerTransacciones.visibility = View.VISIBLE
         }
+    }
+
+    private fun mostrarCuadroDialogo() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setMessage("¿Está seguro que desea salir?")
+            .setPositiveButton("Sí") { dialog, id ->
+                // Navegar de vuelta a loginSignupPage
+                findNavController().navigate(R.id.loginSignupPage)
+            }
+            .setNegativeButton("No") { dialog, id ->
+                // Cerrar el diálogo
+                dialog.dismiss()
+            }
+        // Mostrar el diálogo
+        builder.create().show()
     }
 
 

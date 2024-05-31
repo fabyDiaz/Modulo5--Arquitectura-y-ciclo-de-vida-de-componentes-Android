@@ -45,11 +45,22 @@ class UsuarioViewModel: ViewModel() {
      *
      * @param usuario El nuevo usuario a añadir (Tipo Usuario)
      */
-    fun addUsuario(usuario: Usuario) {
+   /* fun addUsuario(usuario: Usuario) {
         // currentList garantizamos que no modificamos la lista directamente en LiveData sin notificar a los observadores.
         val currentList = _usuarios.value ?: mutableListOf()
         currentList.add(usuario)
         _usuarios.value = currentList
+    }*/
+
+    fun addUsuario(nombre: String, apellido: String, email: String, password: String) {
+        val usuario = Usuario(nombre, apellido, email, password)
+        // currentList garantizamos que no modificamos la lista directamente en LiveData sin notificar a los observadores.
+        val currentList = _usuarios.value ?: mutableListOf()
+        currentList.add(usuario)
+        _usuarios.value = currentList
+
+        // Establecer el usuario logueado
+        setUsuarioLogueado(usuario)
     }
 
     /**

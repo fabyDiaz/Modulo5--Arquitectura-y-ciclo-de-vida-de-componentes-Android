@@ -54,7 +54,7 @@ class TransaccionAdapter(): RecyclerView.Adapter<TransaccionAdapter.ViewHolder>(
      * @param position la posición del elemento en el dataset del adaptador
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = items[position]
+        val item = items[items.size - position - 1]
         holder.imagen.setImageResource(item.fotoPerfil)
         holder.nombreReceptor.text = item.idReceriver
         holder.monto.text = item.monto.toString()
