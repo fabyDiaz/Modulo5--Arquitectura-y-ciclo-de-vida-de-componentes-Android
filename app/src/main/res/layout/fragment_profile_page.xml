@@ -45,10 +45,13 @@
 
         <ImageView
             android:id="@+id/imagenFotoPerfil"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="65dp"
+            android:layout_height="74dp"
             app:srcCompat="@mipmap/perfil_amanda"
-            android:layout_marginTop="13dp"/>
+            android:layout_marginTop="13dp"
+            android:layout_gravity="center"
+            android:background="@drawable/imagen_semiredondeada"
+            android:clipToOutline="true"/>
 
         <TextView
             android:id="@+id/textNombrePerfil"

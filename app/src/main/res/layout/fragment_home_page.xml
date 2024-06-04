@@ -89,7 +89,8 @@
         app:layout_constraintTop_toTopOf="@+id/textInicio"
         android:layout_marginEnd="30dp"
         app:srcCompat="@mipmap/amanda"
-
+        android:background="@drawable/imagen_redonda"
+        android:clipToOutline="true"
         />
 
     <ImageView

@@ -14,6 +14,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.example.alkewalletm5.R
 import com.example.alkewalletm5.data.model.Destinatario
+import com.squareup.picasso.Picasso
+
 /**
  * Adapter para manejar una lista de destinatarios en un Spinner.
  *
@@ -59,12 +61,17 @@ class DestinatarioAdpater (context: Context, private val items: List<Destinatari
         val view = convertView ?: LayoutInflater.from(context).inflate(resource, parent, false)
         val item = getItem(position)
 
-        val imageView = view.findViewById<ImageView>(R.id.imagenPerfilEnviarDinero)
+        //val imageView = view.findViewById<ImageView>(R.id.imagenPerfilEnviarDinero)
         val nameTextView = view.findViewById<TextView>(R.id.textNombreEnviarDinero)
         val emailTextView = view.findViewById<TextView>(R.id.textEmailEnviarDinero)
     // Si item no es nulo, se ejecuta el bloque dentro de let
         item?.let {
-            imageView.setImageResource(it.fotoPerfil)
+            Picasso.get()
+                .load(it.fotoPerfil)
+                .centerCrop()
+                .fit()
+                .into(view.findViewById<ImageView>(R.id.imagenPerfilEnviarDinero))
+           // imageView.setImageResource(it.fotoPerfil)
             nameTextView.text = it.nombre
             emailTextView.text = it.correo
         }

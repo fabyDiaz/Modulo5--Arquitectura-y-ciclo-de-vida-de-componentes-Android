@@ -25,6 +25,7 @@ import com.example.alkewalletm5.presentation.view.adapter.TransaccionAdapter
 import com.example.alkewalletm5.presentation.viewmodel.TransaccionViewModel
 import com.example.alkewalletm5.presentation.viewmodel.UsuarioViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.squareup.picasso.Picasso
 
 /**
  * Fragmento que representa la página principal de la aplicación.
@@ -103,7 +104,12 @@ class HomePage : Fragment() {
         usuarioViewModel.usuarioLogueado.observe(viewLifecycleOwner) { usuario ->
             binding.textSaludo.text = "Hola, ${usuario.nombre}"
             binding.textMontoTotal.text = usuario.saldo.toString()
-            binding.imagenHomeAmanda.setImageResource(usuario.imgPerfil)
+            Picasso.get()
+                .load(usuario.imgPerfil)
+                .centerCrop()
+                .fit()
+                .into(binding.imagenHomeAmanda)
+            //binding.imagenHomeAmanda.setImageResource(usuario.imgPerfil)
             transaccionViewModel.setListTransactionsData(usuario.transacciones)
         }
 

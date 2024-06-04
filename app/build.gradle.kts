@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.androidx.lifecycle.livedata)
     implementation(libs.androidx.core.splashscreen)
+    implementation(libs.picasso)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

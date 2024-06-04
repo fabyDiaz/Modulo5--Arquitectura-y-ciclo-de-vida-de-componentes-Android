@@ -13,6 +13,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.alkewalletm5.R
 import com.example.alkewalletm5.data.model.Transaccion
+import com.squareup.picasso.Picasso
+
 /**
  * Adapter para manejar una lista de transacciones en un RecyclerView.
  */
@@ -55,7 +57,14 @@ class TransaccionAdapter(): RecyclerView.Adapter<TransaccionAdapter.ViewHolder>(
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[items.size - position - 1]
-        holder.imagen.setImageResource(item.fotoPerfil)
+        // Cargar la imagen usando Picasso
+        Picasso.get()
+            .load(item.fotoPerfil) // Aquí item.fotoPerfil debe ser una URL
+            .centerCrop()
+            .fit()
+            .into(holder.imagen)
+
+      //  holder.imagen.setImageResource(item.fotoPerfil)
         holder.nombreReceptor.text = item.idReceriver
         holder.monto.text = item.monto.toString()
         holder.icono.setImageResource((item.icono))

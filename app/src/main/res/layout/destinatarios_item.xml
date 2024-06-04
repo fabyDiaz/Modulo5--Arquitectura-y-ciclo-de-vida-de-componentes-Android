@@ -8,14 +8,16 @@
 
     <ImageView
         android:id="@+id/imagenPerfilEnviarDinero"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         app:layout_constraintEnd_toStartOf="@+id/textNombreEnviarDinero"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="24dp"
         android:layout_marginStart="15dp"
+        android:background="@drawable/imagen_redonda"
         app:srcCompat="@mipmap/pp_standar"
+        android:clipToOutline="true"
         />
 
     <TextView

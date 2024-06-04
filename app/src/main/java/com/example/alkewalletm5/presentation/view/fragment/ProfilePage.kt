@@ -16,6 +16,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.alkewalletm5.R
 import com.example.alkewalletm5.databinding.FragmentProfilePageBinding
 import com.example.alkewalletm5.presentation.viewmodel.UsuarioViewModel
+import com.squareup.picasso.Picasso
+
 /**
  * Fragmento que representa la página de perfil del usuario.
  */
@@ -60,7 +62,12 @@ class ProfilePage : Fragment() {
         //Actualiza la foto y nombre del perfil del  usuario logueado
         usuarioViewModel.usuarioLogueado.observe(viewLifecycleOwner) { usuario ->
             binding.textNombrePerfil.text = usuario.nombre
-            binding.imagenFotoPerfil.setImageResource(usuario.imgPerfil)
+            Picasso.get()
+                .load(usuario.imgPerfil)
+                .centerCrop()
+                .fit()
+                .into(binding.imagenFotoPerfil)
+           // binding.imagenFotoPerfil.setImageResource(usuario.imgPerfil)
         }
 
         //Actualiza los cardView del usuario logueado. Por el momento solo muestra
