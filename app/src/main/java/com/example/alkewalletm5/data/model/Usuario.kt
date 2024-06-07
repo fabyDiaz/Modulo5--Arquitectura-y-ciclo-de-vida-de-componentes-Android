@@ -1,5 +1,6 @@
 package com.example.alkewalletm5.data.model
 
+import android.net.Uri
 import com.example.alkewalletm5.R
 /**
  *  Clase Destinatario
@@ -22,6 +23,7 @@ data class Usuario(
     val email: String,
     val password: String,
     val imgPerfil: Int = R.mipmap.pp_standar,
+    //val imgPerfil: Uri? = null,
     val saldo: Double = 1000.0,
     val transacciones: MutableList<Transaccion> = mutableListOf()
 ) {

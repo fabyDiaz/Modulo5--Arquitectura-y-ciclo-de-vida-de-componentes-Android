@@ -88,7 +88,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textInicio"
         android:layout_marginEnd="30dp"
-        app:srcCompat="@mipmap/amanda"
+        app:srcCompat="@mipmap/fotoamanda"
         android:background="@drawable/imagen_redonda"
         android:clipToOutline="true"
         />

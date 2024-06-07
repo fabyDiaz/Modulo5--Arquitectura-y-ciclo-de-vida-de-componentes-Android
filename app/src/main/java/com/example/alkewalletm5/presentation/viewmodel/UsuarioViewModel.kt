@@ -6,6 +6,7 @@ package com.example.alkewalletm5.presentation.viewmodel
  * @since v1.1 24/05/2024
  *
  */
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,6 +25,8 @@ class UsuarioViewModel: ViewModel() {
 
     private val _usuarioLogueado = MutableLiveData<Usuario>()
     val usuarioLogueado: LiveData<Usuario> get() = _usuarioLogueado
+
+    val imagenesUsuario: MutableLiveData<MutableList<Uri>> = MutableLiveData(mutableListOf())
 
 
     init {
@@ -129,4 +132,12 @@ class UsuarioViewModel: ViewModel() {
         }
         return false
     }
+
+   /* fun actualizarImagenUsuarioLogueado(uri: Uri) {
+        _usuarioLogueado.value?.let { usuario ->
+            val usuarioActualizado = usuario.copy(imgPerfil = uri)
+            _usuarioLogueado.value = usuarioActualizado
+            actualizarListaUsuarios(usuarioActualizado)
+        }
+    }*/
 }
