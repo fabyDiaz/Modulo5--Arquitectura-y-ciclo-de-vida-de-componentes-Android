@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<network-security-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">wallet-main.eba-ccwdurgr.us-east-1.elasticbeanstalk.com</domain>
     </domain-config>
-</PreferenceScreen>
+</network-security-config>

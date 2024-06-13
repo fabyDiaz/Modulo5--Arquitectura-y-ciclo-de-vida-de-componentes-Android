@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -33,6 +34,7 @@ class SplashScreen : Fragment() {
 
     private val SPLASH_SCREEN_DURATION = 1000L
     private lateinit var userViewModel: UserViewModel
+    private lateinit var userViewModelFactory: UserViewModelFactory
     val apiService = RetrofitHelper.getRetrofit().create(AlkeWalletService::class.java)
     val repository = AlkeWalletImpl(apiService)
     val useCase =AlkeWalletUseCase(repository)
@@ -74,22 +76,22 @@ class SplashScreen : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-      /*  val viewModelFactory = UserViewModelFactory(useCase)
-        userViewModel = ViewModelProvider(this, viewModelFactory).get(UserViewModel::class.java)
+        userViewModelFactory = UserViewModelFactory(useCase)
+        userViewModel = ViewModelProvider(this, userViewModelFactory).get(UserViewModel::class.java)
 
 
         val userId = 5L // Asume que tienes el ID del usuario
 
-        userViewModel.getUserById(userId)
 
-        userViewModel.users.observe(viewLifecycleOwner) { user ->
-            user?.let {
-                Log.i("Usuario", it.toString())
-            }
-        }*/
+        userViewModel.user.observe(viewLifecycleOwner, Observer { user ->
+            // Registra la información del usuario en los logs
+            Log.d("UserFragment", "Usuario recibido: ${user.firstName} ${user.lastName}")
+        })
+
+        userViewModel.getUserById(5)
 
 
-        // Retraso antes de navegar al siguiente fragmento
+       //  Retraso antes de navegar al siguiente fragmento
         Handler(Looper.getMainLooper()).postDelayed({
             // Navegar al siguiente destino después del tiempo deseado
             findNavController().navigate(R.id.action_spashScreen_to_loginSignupPage)

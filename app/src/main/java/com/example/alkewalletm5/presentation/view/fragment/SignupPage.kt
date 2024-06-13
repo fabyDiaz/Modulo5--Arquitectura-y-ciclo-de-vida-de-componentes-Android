@@ -6,6 +6,7 @@ package com.example.alkewalletm5.presentation.view.fragment
  *
  */
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,11 +16,20 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.alkewalletm5.R
 import com.example.alkewalletm5.data.model.Usuario
+import com.example.alkewalletm5.data.network.api.AlkeWalletService
+import com.example.alkewalletm5.data.network.retrofit.RetrofitHelper
+import com.example.alkewalletm5.data.repository.AlkeWalletImpl
+import com.example.alkewalletm5.data.response.UserResponse
 import com.example.alkewalletm5.databinding.FragmentSignupPageBinding
+import com.example.alkewalletm5.domain.AlkeWalletUseCase
+import com.example.alkewalletm5.presentation.viewmodel.UserViewModel
+import com.example.alkewalletm5.presentation.viewmodel.UserViewModelFactory
 import com.example.alkewalletm5.presentation.viewmodel.UsuarioViewModel
 /**
  * Fragmento que representa la página de registro de usuario.
@@ -29,6 +39,11 @@ class SignupPage : Fragment() {
     private var _binding: FragmentSignupPageBinding? = null
     private val binding get() = _binding!!
     private val usuarioViewModel: UsuarioViewModel by activityViewModels()
+    private lateinit var userViewModel: UserViewModel
+    private lateinit var userViewModelFactory: UserViewModelFactory
+    val apiService = RetrofitHelper.getRetrofit().create(AlkeWalletService::class.java)
+    val repository = AlkeWalletImpl(apiService)
+    val useCase = AlkeWalletUseCase(repository)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,6 +88,23 @@ class SignupPage : Fragment() {
         val navController = findNavController(view)
         binding.buttonLoginSignup.setOnClickListener{llenarFormularioSignup()}
         binding.enlaceYaTieneCuentaSignup.setOnClickListener{navController.navigate(R.id.loginPage)}
+
+        userViewModelFactory = UserViewModelFactory(useCase)
+        userViewModel = ViewModelProvider(this, userViewModelFactory).get(UserViewModel::class.java)
+
+        userViewModel.user.observe(viewLifecycleOwner, Observer { user ->
+            // Registra la información del usuario en los logs
+            //Log.d("UserFragment", "Usuario recibido: ${user.firstName} ${user.lastName}")
+        })
+
+       userViewModel.createdUserId.observe(viewLifecycleOwner, Observer { userId ->
+            Log.d("UserFragment", "ID del usuario creado: $userId")
+            // Haz lo que necesites con el ID del usuario creado
+            // Por ejemplo, navegar a la página de perfil del usuario
+        })
+
+        //userViewModel.getUserById(5)
+
     }
 
     /**
@@ -96,10 +128,29 @@ class SignupPage : Fragment() {
             return
         }
 
+        userViewModelFactory = UserViewModelFactory(useCase)
+        userViewModel = ViewModelProvider(this, userViewModelFactory).get(UserViewModel::class.java)
 
-        //val nuevoUsuario = Usuario(nombre, apellido, email, password)
-        usuarioViewModel.addUsuario(nombre, apellido, email, password)
-        //usuarioViewModel.setUsuarioLogueado(nuevoUsuario)
+        val newUser = UserResponse(
+            id = 0,
+            firstName = nombre,
+            lastName = apellido,
+            email = email,
+            password = password,
+            points = 0,
+            roleId = 2, // Debes establecer el roleId apropiado aquí
+            createdAt = "", // Este valor probablemente será establecido por el servidor
+            updatedAt = "" // Este valor probablemente será establecido por el servidor
+        )
+
+        userViewModel.createUserAndGetId(newUser)
+
+        Log.d("UserFragment", "Usuario enviado a la API: "+userViewModel.user.toString())
+        userViewModel.createdUserId.observe(viewLifecycleOwner, Observer { userId ->
+            Log.d("UserFragment", "ID del usuario creado: $userId")
+            // Haz lo que necesites con el ID del usuario creado
+            // Por ejemplo, navegar a la página de perfil del usuario
+        })
 
         Toast.makeText(requireContext(), "Registro exitoso", Toast.LENGTH_SHORT).show()
         findNavController().navigate(R.id.homePage)
