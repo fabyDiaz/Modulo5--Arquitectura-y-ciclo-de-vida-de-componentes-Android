@@ -76,7 +76,7 @@ class SplashScreen : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        userViewModelFactory = UserViewModelFactory(useCase)
+      /*  userViewModelFactory = UserViewModelFactory(useCase, requireContext())
         userViewModel = ViewModelProvider(this, userViewModelFactory).get(UserViewModel::class.java)
 
 
@@ -88,7 +88,7 @@ class SplashScreen : Fragment() {
             Log.d("UserFragment", "Usuario recibido: ${user.firstName} ${user.lastName}")
         })
 
-        userViewModel.getUserById(5)
+        userViewModel.getUserById(5)*/
 
 
        //  Retraso antes de navegar al siguiente fragmento

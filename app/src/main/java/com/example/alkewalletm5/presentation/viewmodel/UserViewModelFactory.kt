@@ -1,13 +1,14 @@
 package com.example.alkewalletm5.presentation.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.alkewalletm5.domain.AlkeWalletUseCase
 
-class UserViewModelFactory(private val useCase: AlkeWalletUseCase): ViewModelProvider.Factory {
+class UserViewModelFactory(private val useCase: AlkeWalletUseCase, private val context: Context): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(UserViewModel::class.java)) {
-            return UserViewModel(useCase) as T
+            return UserViewModel(useCase,context) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

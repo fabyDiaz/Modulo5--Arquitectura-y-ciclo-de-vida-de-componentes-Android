@@ -41,10 +41,10 @@ class SignupPage : Fragment() {
     private val usuarioViewModel: UsuarioViewModel by activityViewModels()
     private lateinit var userViewModel: UserViewModel
     private lateinit var userViewModelFactory: UserViewModelFactory
+
     val apiService = RetrofitHelper.getRetrofit().create(AlkeWalletService::class.java)
     val repository = AlkeWalletImpl(apiService)
     val useCase = AlkeWalletUseCase(repository)
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,18 +89,17 @@ class SignupPage : Fragment() {
         binding.buttonLoginSignup.setOnClickListener{llenarFormularioSignup()}
         binding.enlaceYaTieneCuentaSignup.setOnClickListener{navController.navigate(R.id.loginPage)}
 
-        userViewModelFactory = UserViewModelFactory(useCase)
+
+        userViewModelFactory = UserViewModelFactory(useCase,  requireContext())
         userViewModel = ViewModelProvider(this, userViewModelFactory).get(UserViewModel::class.java)
 
         userViewModel.user.observe(viewLifecycleOwner, Observer { user ->
-            // Registra la información del usuario en los logs
-            //Log.d("UserFragment", "Usuario recibido: ${user.firstName} ${user.lastName}")
+
         })
 
        userViewModel.createdUserId.observe(viewLifecycleOwner, Observer { userId ->
-            Log.d("UserFragment", "ID del usuario creado: $userId")
-            // Haz lo que necesites con el ID del usuario creado
-            // Por ejemplo, navegar a la página de perfil del usuario
+            Log.d("TOKEN", "ID del usuario creado: $userId")
+
         })
 
         //userViewModel.getUserById(5)
@@ -128,7 +127,7 @@ class SignupPage : Fragment() {
             return
         }
 
-        userViewModelFactory = UserViewModelFactory(useCase)
+        userViewModelFactory = UserViewModelFactory(useCase, requireContext())
         userViewModel = ViewModelProvider(this, userViewModelFactory).get(UserViewModel::class.java)
 
         val newUser = UserResponse(
@@ -138,18 +137,16 @@ class SignupPage : Fragment() {
             email = email,
             password = password,
             points = 0,
-            roleId = 2, // Debes establecer el roleId apropiado aquí
+            roleId = 1, // Debes establecer el roleId apropiado aquí
             createdAt = "", // Este valor probablemente será establecido por el servidor
             updatedAt = "" // Este valor probablemente será establecido por el servidor
         )
 
         userViewModel.createUserAndGetId(newUser)
 
-        Log.d("UserFragment", "Usuario enviado a la API: "+userViewModel.user.toString())
+        Log.d("USUARIO", "Usuario enviado a la API: "+userViewModel.user.toString())
         userViewModel.createdUserId.observe(viewLifecycleOwner, Observer { userId ->
-            Log.d("UserFragment", "ID del usuario creado: $userId")
-            // Haz lo que necesites con el ID del usuario creado
-            // Por ejemplo, navegar a la página de perfil del usuario
+            Log.d("USUARIO", "ID del usuario creado: $userId")
         })
 
         Toast.makeText(requireContext(), "Registro exitoso", Toast.LENGTH_SHORT).show()
