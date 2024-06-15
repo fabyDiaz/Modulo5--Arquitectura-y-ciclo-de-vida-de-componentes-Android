@@ -32,4 +32,13 @@ class AlkeWalletUseCase(private val repository: AlkeWalletImpl) {
 
     }
 
+    suspend fun createAccount(account: AccountResponse): Response<AccountResponse> {
+        return repository.createAccount(account)
+    }
+
+    suspend fun getUserByToken(token: String): UserResponse {
+        return repository.getUserByToken(token)
+    }
+
+
 }

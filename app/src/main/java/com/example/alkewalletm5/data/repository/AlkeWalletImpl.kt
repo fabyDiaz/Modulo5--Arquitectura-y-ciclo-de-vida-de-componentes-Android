@@ -48,4 +48,14 @@ class AlkeWalletImpl(private var apiservice: AlkeWalletService): AlkeWalletRepos
             apiservice.getAllUsers()
         }
     }
+
+    override suspend fun createAccount(account: AccountResponse): Response<AccountResponse> {
+        return apiservice.createAccount(account)
+    }
+
+    override suspend fun getUserByToken(token: String): UserResponse {
+        return withContext(Dispatchers.IO) {
+            apiservice.getUserByToken("Bearer $token")
+        }
+    }
 }

@@ -102,8 +102,6 @@ class SignupPage : Fragment() {
 
         })
 
-        //userViewModel.getUserById(5)
-
     }
 
     /**

@@ -81,15 +81,6 @@ class LoginPage : Fragment() {
                 Toast.makeText(requireContext(), "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
             }
         }
-
-      /*  // Observa cambios en el ViewModel para redirigir después del login
-        userViewModel.user.observe(viewLifecycleOwner) { user ->
-            if (user != null) {
-                findNavController().navigate(R.id.homePage)
-            } else {
-                Toast.makeText(requireContext(), "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
-            }
-        }*/
     }
 
     fun VerificarEmailPassword() {

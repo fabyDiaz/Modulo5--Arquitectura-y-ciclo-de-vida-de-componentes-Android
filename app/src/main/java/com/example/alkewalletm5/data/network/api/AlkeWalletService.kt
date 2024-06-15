@@ -7,6 +7,7 @@ import com.example.alkewalletm5.data.response.UserResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -32,9 +33,9 @@ interface AlkeWalletService {
     @GET("accounts/{id}")
     suspend fun getAccountById(@Path("id") id: Long): AccountResponse
 
-
-
-
-
+    @POST("accounts")
+    suspend fun createAccount(account: AccountResponse): Response<AccountResponse>
+    @GET("auth/me")
+    suspend fun getUserByToken(@Header("Authorization") token: String): UserResponse
 
 }

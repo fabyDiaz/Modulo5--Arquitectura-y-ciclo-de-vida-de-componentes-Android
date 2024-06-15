@@ -7,6 +7,7 @@ package com.example.alkewalletm5.presentation.view.fragment
  */
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,13 +17,20 @@ import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.alkewalletm5.R
+import com.example.alkewalletm5.data.network.api.AlkeWalletService
+import com.example.alkewalletm5.data.network.retrofit.RetrofitHelper
+import com.example.alkewalletm5.data.repository.AlkeWalletImpl
 import com.example.alkewalletm5.databinding.FragmentHomePageBinding
+import com.example.alkewalletm5.domain.AlkeWalletUseCase
 import com.example.alkewalletm5.presentation.view.adapter.TransaccionAdapter
 import com.example.alkewalletm5.presentation.viewmodel.TransaccionViewModel
+import com.example.alkewalletm5.presentation.viewmodel.UserViewModel
+import com.example.alkewalletm5.presentation.viewmodel.UserViewModelFactory
 import com.example.alkewalletm5.presentation.viewmodel.UsuarioViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.squareup.picasso.Picasso
@@ -34,14 +42,13 @@ class HomePage : Fragment() {
 
     private lateinit var binding: FragmentHomePageBinding
     private lateinit var adapter: TransaccionAdapter
-    private val usuarioViewModel: UsuarioViewModel by activityViewModels()
+    //private val usuarioViewModel: UsuarioViewModel by activityViewModels()
+    private lateinit var userViewModel: UserViewModel
+    private lateinit var useCase: AlkeWalletUseCase
+    private lateinit var userViewModelFactory: UserViewModelFactory
+
     private val transaccionViewModel: TransaccionViewModel by activityViewModels()
-    /**
-     * Método llamado para hacer la inicialización de la instancia del Fragment.
-     *
-     * @param savedInstanceState Si el fragmento está siendo recreado a partir de un estado previamente guardado,
-     * este es el estado.
-     */
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -73,9 +80,6 @@ class HomePage : Fragment() {
     }
 
     /**
-     * Método llamado inmediatamente después de que `onCreateView` ha retornado,
-     * pero antes de que cualquier estado guardado haya sido restaurado en la vista.
-     *
      * @param view La vista retornada por `onCreateView`.
      * @param savedInstanceState Si no es nulo, este fragmento está siendo recreado a partir de un
      * estado previamente guardado.
@@ -84,6 +88,14 @@ class HomePage : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val navController = findNavController(view)
+
+        val apiService = RetrofitHelper.getRetrofit().create(AlkeWalletService::class.java)
+        val repository = AlkeWalletImpl(apiService)
+
+        useCase = AlkeWalletUseCase(repository)
+        userViewModelFactory = UserViewModelFactory(useCase,  requireContext())
+        userViewModel = ViewModelProvider(this, userViewModelFactory).get(UserViewModel::class.java)
+
         //Navegación de lo botones de la aplicación
         binding.btnIngresarDineroHome.setOnClickListener { navController.navigate(R.id.requestMoney) }
         binding.btnEnviarDineroHome.setOnClickListener { navController.navigate(R.id.sendMoney) }
@@ -100,17 +112,14 @@ class HomePage : Fragment() {
             adapter.notifyDataSetChanged()
             updateEmptyState()
         }
+
+        userViewModel.fetchLoggedUser()
         //Actualiza cabecera del home
-        usuarioViewModel.usuarioLogueado.observe(viewLifecycleOwner) { usuario ->
-            binding.textSaludo.text = "Hola, ${usuario.nombre}"
-            binding.textMontoTotal.text = usuario.saldo.toString()
-            Picasso.get()
-                .load(usuario.imgPerfil)
-                .centerCrop()
-                .fit()
-                .into(binding.imagenHomeAmanda)
-            //binding.imagenHomeAmanda.setImageResource(usuario.imgPerfil)
-            transaccionViewModel.setListTransactionsData(usuario.transacciones)
+        userViewModel.usuarioLogueado.observe(viewLifecycleOwner) { usuario ->
+            if (usuario != null) {
+                Log.e("USUARIO", usuario.toString())
+                binding.textSaludo.text = "Hola, ${usuario.firstName}"
+            }
         }
 
         updateEmptyState()

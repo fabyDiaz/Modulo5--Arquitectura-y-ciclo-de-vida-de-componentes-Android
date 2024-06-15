@@ -18,5 +18,10 @@ interface AlkeWalletRepository {
 
     suspend fun getAllUsers(): MutableList<UserResponse>
 
+    suspend fun createAccount(account: AccountResponse): Response<AccountResponse>
+
+    suspend fun getUserByToken(token: String): UserResponse
+
+
 
 }
