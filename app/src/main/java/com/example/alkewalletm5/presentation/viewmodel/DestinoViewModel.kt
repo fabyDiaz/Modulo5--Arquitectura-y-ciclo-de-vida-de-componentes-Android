@@ -16,6 +16,8 @@ class DestinoViewModel(private val useCase: AlkeWalletUseCase, private val conte
     private val _usuarios = MutableLiveData<List<UserResponse>>()
     val usuarios: LiveData<List<UserResponse>> get() = _usuarios
 
+
+
     private val authManager = AuthManager(context)
 
     private val currentPage = 2 // Definir la página que deseas cargar

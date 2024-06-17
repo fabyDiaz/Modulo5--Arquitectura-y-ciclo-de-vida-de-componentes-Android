@@ -82,6 +82,7 @@ class LoginPage : Fragment() {
 
         // Observa cambios en el usuario logueado para navegar al home
         userViewModel.usuarioLogueado.observe(viewLifecycleOwner) { usuario ->
+            Log.d("USUARIO", usuario.firstName)
             if (usuario != null) {
                 findNavController().navigate(R.id.homePage)
             }

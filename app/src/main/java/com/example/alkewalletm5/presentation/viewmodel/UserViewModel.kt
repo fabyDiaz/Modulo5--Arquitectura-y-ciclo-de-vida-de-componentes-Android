@@ -69,7 +69,7 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
         }
     }
 
-    fun login(email: String, password: String) {
+   fun login(email: String, password: String) {
         viewModelScope.launch {
             try {
                 val token = useCase.login(email, password)
@@ -84,6 +84,8 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
         }
         }
     }
+
+
 
     private fun createAccountForUser(account: AccountResponse) {
         viewModelScope.launch {

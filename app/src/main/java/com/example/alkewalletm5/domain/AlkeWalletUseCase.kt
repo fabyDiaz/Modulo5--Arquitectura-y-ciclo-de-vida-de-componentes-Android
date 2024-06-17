@@ -1,5 +1,6 @@
 package com.example.alkewalletm5.domain
 
+import android.util.Log
 import com.example.alkewalletm5.data.repository.AlkeWalletImpl
 import com.example.alkewalletm5.data.response.AccountResponse
 import com.example.alkewalletm5.data.response.TransactionResponse
@@ -25,8 +26,8 @@ class AlkeWalletUseCase(private val repository: AlkeWalletImpl) {
         return repository.getUserById(idUser)
     }
 
-    suspend fun getAccountsById(idUser: Long): AccountResponse {
-        return repository.getAccountsById(idUser)
+    suspend fun getAccountsById(token: String, idUser: Long): AccountResponse {
+        return repository.getAccountsById(token, idUser)
     }
 
     suspend fun getAllUsers(): MutableList<UserResponse>{
@@ -52,6 +53,8 @@ class AlkeWalletUseCase(private val repository: AlkeWalletImpl) {
     suspend fun updateAccount(token: String, account: AccountResponse): Response<AccountResponse> {
         return repository.updateAccount(token, account)
     }
+
+
     suspend fun getUsersByPage(token: String, page: Int): Response<UserListResponse> {
         // Verifica si la página solicitada está fuera de los límites esperados.
         if (page < 0) throw IllegalArgumentException("Page number cannot be negative")
@@ -71,7 +74,5 @@ class AlkeWalletUseCase(private val repository: AlkeWalletImpl) {
 
         return users
     }
-
-
 
 }

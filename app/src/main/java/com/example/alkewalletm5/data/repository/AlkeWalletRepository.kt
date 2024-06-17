@@ -17,7 +17,7 @@ interface AlkeWalletRepository {
 
     suspend fun getUserById(idUser: Long): UserResponse
 
-    suspend fun getAccountsById(idUser: Long): AccountResponse
+    suspend fun getAccountsById(token: String, idUser: Long): AccountResponse
 
     suspend fun getAllUsers(): MutableList<UserResponse>
 

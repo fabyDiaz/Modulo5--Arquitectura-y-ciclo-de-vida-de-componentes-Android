@@ -48,9 +48,9 @@ class AlkeWalletImpl(private var apiservice: AlkeWalletService): AlkeWalletRepos
         }
     }
 
-    override suspend fun getAccountsById(idUser: Long): AccountResponse {
+    override suspend fun getAccountsById(token: String, idUser: Long): AccountResponse {
         return withContext(Dispatchers.IO) {
-            apiservice.getAccountById(idUser)
+            apiservice.getAccountById("Bearer $token", idUser)
         }
     }
 

@@ -31,7 +31,7 @@ interface AlkeWalletService {
     suspend fun getAllUsers(): MutableList<UserResponse>
 
     @GET("accounts/{id}") //Falta agregar el token
-    suspend fun getAccountById(@Path("id") id: Long): AccountResponse
+    suspend fun getAccountById(@Header("Authorization") token: String, @Path("id") id: Long): AccountResponse
 
     @POST("accounts") //Falta agregar el token
     suspend fun createAccount(account: AccountResponse): Response<AccountResponse>
@@ -52,4 +52,6 @@ interface AlkeWalletService {
         @Path("id") id: Long,
         @Body account: AccountResponse
     ): Response<AccountResponse>
+
+
 }

@@ -17,12 +17,14 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.alkewalletm5.R
 import com.example.alkewalletm5.data.model.Destinatario
 import com.example.alkewalletm5.data.network.api.AlkeWalletService
 import com.example.alkewalletm5.data.network.retrofit.RetrofitHelper
 import com.example.alkewalletm5.data.repository.AlkeWalletImpl
+import com.example.alkewalletm5.data.response.TransactionResponse
 import com.example.alkewalletm5.data.response.UserResponse
 import com.example.alkewalletm5.databinding.FragmentSendMoneyBinding
 import com.example.alkewalletm5.domain.AlkeWalletUseCase
@@ -33,9 +35,12 @@ import com.example.alkewalletm5.presentation.viewmodel.DestinatarioViewModel
 import com.example.alkewalletm5.presentation.viewmodel.DestinoViewModel
 import com.example.alkewalletm5.presentation.viewmodel.DestinoViewModelFactory
 import com.example.alkewalletm5.presentation.viewmodel.TransaccionViewModel
+import com.example.alkewalletm5.presentation.viewmodel.TransactionViewModel
+import com.example.alkewalletm5.presentation.viewmodel.TransactionViewModelFactory
 import com.example.alkewalletm5.presentation.viewmodel.UserViewModel
 import com.example.alkewalletm5.presentation.viewmodel.UserViewModelFactory
 import com.example.alkewalletm5.presentation.viewmodel.UsuarioViewModel
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -50,11 +55,13 @@ class SendMoney : Fragment(){
     private lateinit var userViewModel: UserViewModel
     private lateinit var destinoViewModel: DestinoViewModel
     private lateinit var accountViewModel: AccountViewModel
+    private lateinit var transactionViewModel: TransactionViewModel
 
     private lateinit var useCase: AlkeWalletUseCase
     private lateinit var userViewModelFactory: UserViewModelFactory
     private lateinit var destinoViewModelFactory: DestinoViewModelFactory
     private lateinit var accountViewModelFactory: AccountViewModelFactory
+    private lateinit var transactionViewModelFactory: TransactionViewModelFactory
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,10 +75,12 @@ class SendMoney : Fragment(){
         destinoViewModelFactory = DestinoViewModelFactory(useCase, requireContext())
         userViewModelFactory = UserViewModelFactory(useCase, requireContext())
         accountViewModelFactory = AccountViewModelFactory(useCase, requireContext())
+        transactionViewModelFactory = TransactionViewModelFactory(useCase, requireContext())
 
         destinoViewModel = ViewModelProvider(this, destinoViewModelFactory).get(DestinoViewModel::class.java)
         userViewModel = ViewModelProvider(this, userViewModelFactory).get(UserViewModel::class.java)
         accountViewModel = ViewModelProvider(this, accountViewModelFactory).get(AccountViewModel::class.java)
+        transactionViewModel = ViewModelProvider(this, transactionViewModelFactory).get(TransactionViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -119,12 +128,7 @@ class SendMoney : Fragment(){
                 return@setOnClickListener
             }
 
-            if (destinatario !is UserResponse) {
-                Toast.makeText(requireContext(), "Por favor seleccione un destinatario válido", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            if (destinatario == null) {
+            if (destinatario !is UserResponse || destinatario == null) {
                 Toast.makeText(requireContext(), "Por favor seleccione un destinatario válido", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -136,7 +140,24 @@ class SendMoney : Fragment(){
                 return@setOnClickListener
             }
 
-            Toast.makeText(requireContext(), "Envío de dinero exitoso", Toast.LENGTH_SHORT).show()
+
+            // Obtener la cuenta del destinatario
+          accountViewModel.getAccountByUserId(destinatario.id).observe(viewLifecycleOwner) { account ->
+                val userLogueado= userViewModel.usuarioLogueado.value
+                if (account != null &&  userLogueado!= null) {
+                    transactionViewModel.createTransaction(montoEnviado.toLong(), nota, userLogueado.id,account.id)
+                    Toast.makeText(requireContext(), "Envío de dinero exitoso", Toast.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.homePage)
+                } else {
+                    Toast.makeText(requireContext(), "No se pudo obtener la cuenta del destinatario", Toast.LENGTH_SHORT).show()
+                    Log.e("SendMoneyFragment", "No se pudo obtener la cuenta del destinatario")
+                }
+            }
+
+
+
+
+          //  Toast.makeText(requireContext(), "Envío de dinero exitoso", Toast.LENGTH_SHORT).show()
 
             // Navegar de regreso a HomePage
             findNavController().navigate(R.id.homePage)
