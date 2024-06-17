@@ -140,31 +140,31 @@ class SendMoney : Fragment(){
                 return@setOnClickListener
             }
 
+            val user = userViewModel.user.value
+
+            if(user == null){
+                Toast.makeText(requireContext(), "Usuario no logueado", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             // Obtener la cuenta del destinatario
-          accountViewModel.getAccountByUserId(destinatario.id).observe(viewLifecycleOwner) { account ->
-                val userLogueado= userViewModel.usuarioLogueado.value
-                if (account != null &&  userLogueado!= null) {
-                    transactionViewModel.createTransaction(montoEnviado.toLong(), nota, userLogueado.id,account.id)
+          accountViewModel.getAccountByUserId(user.id).observe(viewLifecycleOwner) { account ->
+
+                if (account != null) {
+                    transactionViewModel.createTransaction(montoEnviado.toLong(), nota, account.id, user.id, account.id )
                     Toast.makeText(requireContext(), "Envío de dinero exitoso", Toast.LENGTH_SHORT).show()
                     findNavController().navigate(R.id.homePage)
                 } else {
                     Toast.makeText(requireContext(), "No se pudo obtener la cuenta del destinatario", Toast.LENGTH_SHORT).show()
                     Log.e("SendMoneyFragment", "No se pudo obtener la cuenta del destinatario")
                 }
-            }
-
-
-
+          }
 
           //  Toast.makeText(requireContext(), "Envío de dinero exitoso", Toast.LENGTH_SHORT).show()
 
             // Navegar de regreso a HomePage
             findNavController().navigate(R.id.homePage)
         }
-
-
-
 
     }
 
