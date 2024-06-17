@@ -48,6 +48,10 @@ class AlkeWalletUseCase(private val repository: AlkeWalletImpl) {
     ):  Response<TransactionResponse> {
         return repository.createTransaction(token, transaction)
     }
+
+    suspend fun updateAccount(token: String, account: AccountResponse): Response<AccountResponse> {
+        return repository.updateAccount(token, account)
+    }
     suspend fun getUsersByPage(token: String, page: Int): Response<UserListResponse> {
         // Verifica si la página solicitada está fuera de los límites esperados.
         if (page < 0) throw IllegalArgumentException("Page number cannot be negative")

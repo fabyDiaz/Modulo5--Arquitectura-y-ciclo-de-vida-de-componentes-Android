@@ -12,6 +12,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -44,4 +45,11 @@ interface AlkeWalletService {
 
     @GET("users")
     suspend fun getUsersByPage(@Header("Authorization") token: String, @Query("page") page: Int): Response<UserListResponse>
+
+    @PUT("accounts/{id}")
+    suspend fun updateAccount(
+        @Header("Authorization") token: String,
+        @Path("id") id: Long,
+        @Body account: AccountResponse
+    ): Response<AccountResponse>
 }

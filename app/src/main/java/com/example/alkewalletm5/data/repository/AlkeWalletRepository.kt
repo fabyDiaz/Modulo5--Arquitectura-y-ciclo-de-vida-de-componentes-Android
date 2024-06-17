@@ -29,6 +29,8 @@ interface AlkeWalletRepository {
 
     suspend fun getUsersByPage(token: String, page: Int): Response<UserListResponse>
 
+    suspend fun updateAccount(token: String,account: AccountResponse): Response<AccountResponse>
+
 
 
 

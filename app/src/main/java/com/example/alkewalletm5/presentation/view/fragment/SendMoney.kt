@@ -49,10 +49,12 @@ class SendMoney : Fragment(){
 
     private lateinit var userViewModel: UserViewModel
     private lateinit var destinoViewModel: DestinoViewModel
+    private lateinit var accountViewModel: AccountViewModel
 
     private lateinit var useCase: AlkeWalletUseCase
     private lateinit var userViewModelFactory: UserViewModelFactory
     private lateinit var destinoViewModelFactory: DestinoViewModelFactory
+    private lateinit var accountViewModelFactory: AccountViewModelFactory
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,9 +67,11 @@ class SendMoney : Fragment(){
         useCase = AlkeWalletUseCase(repository)
         destinoViewModelFactory = DestinoViewModelFactory(useCase, requireContext())
         userViewModelFactory = UserViewModelFactory(useCase, requireContext())
+        accountViewModelFactory = AccountViewModelFactory(useCase, requireContext())
 
         destinoViewModel = ViewModelProvider(this, destinoViewModelFactory).get(DestinoViewModel::class.java)
         userViewModel = ViewModelProvider(this, userViewModelFactory).get(UserViewModel::class.java)
+        accountViewModel = ViewModelProvider(this, accountViewModelFactory).get(AccountViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -86,6 +90,8 @@ class SendMoney : Fragment(){
 
         // Al presionar la flecha de la parte superior vuelve al homePage
         binding.volverSendMoney.setOnClickListener { findNavController().navigate(R.id.homePage) }
+
+        accountViewModel.fetchUserAccounts()
 
         destinoViewModel.usuarios.observe(viewLifecycleOwner) { usuarios ->
             mostrarListadeDestinatarios()
@@ -123,11 +129,20 @@ class SendMoney : Fragment(){
                 return@setOnClickListener
             }
 
+            val montoEnviado: Double = monto.toDouble()
+            val saldoSuficiente = accountViewModel.restarSaldoUsuario(montoEnviado)
+            if (!saldoSuficiente) {
+                Toast.makeText(requireContext(), "Saldo insuficiente para realizar la transacción", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             Toast.makeText(requireContext(), "Envío de dinero exitoso", Toast.LENGTH_SHORT).show()
 
             // Navegar de regreso a HomePage
             findNavController().navigate(R.id.homePage)
         }
+
+
 
 
     }

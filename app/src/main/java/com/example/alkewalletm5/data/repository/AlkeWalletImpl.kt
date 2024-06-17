@@ -78,4 +78,15 @@ class AlkeWalletImpl(private var apiservice: AlkeWalletService): AlkeWalletRepos
             response
         }
     }
+
+    override suspend fun updateAccount(
+        token: String,
+        account: AccountResponse
+    ): Response<AccountResponse> {
+        return withContext(Dispatchers.IO) {
+            apiservice.updateAccount("Bearer $token", account.id, account)
+        }
+    }
+
+
 }
