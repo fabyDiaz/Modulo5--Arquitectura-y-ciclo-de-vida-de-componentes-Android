@@ -28,6 +28,8 @@ import com.example.alkewalletm5.data.repository.AlkeWalletImpl
 import com.example.alkewalletm5.databinding.FragmentHomePageBinding
 import com.example.alkewalletm5.domain.AlkeWalletUseCase
 import com.example.alkewalletm5.presentation.view.adapter.TransaccionAdapter
+import com.example.alkewalletm5.presentation.viewmodel.AccountViewModel
+import com.example.alkewalletm5.presentation.viewmodel.AccountViewModelFactory
 import com.example.alkewalletm5.presentation.viewmodel.TransaccionViewModel
 import com.example.alkewalletm5.presentation.viewmodel.UserViewModel
 import com.example.alkewalletm5.presentation.viewmodel.UserViewModelFactory
@@ -44,23 +46,17 @@ class HomePage : Fragment() {
     private lateinit var adapter: TransaccionAdapter
     //private val usuarioViewModel: UsuarioViewModel by activityViewModels()
     private lateinit var userViewModel: UserViewModel
+    private lateinit var accountViewModel: AccountViewModel
+
     private lateinit var useCase: AlkeWalletUseCase
     private lateinit var userViewModelFactory: UserViewModelFactory
-
+    private lateinit var accountViewModelFactory: AccountViewModelFactory
     private val transaccionViewModel: TransaccionViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
-    /**
-     * Crea y retorna la jerarquía de vistas asociada con el fragmento.
-     *
-     * @param inflater El LayoutInflater que se puede usar para inflar cualquier vista en el fragmento.
-     * @param container Si no es nulo, este es el padre que contiene la vista del fragmento.
-     * @param savedInstanceState Si no es nulo, este fragmento está siendo recreado a partir de un estado previamente guardado.
-     * @return La vista para la interfaz de usuario del fragmento.
-     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -79,11 +75,7 @@ class HomePage : Fragment() {
         return binding.root
     }
 
-    /**
-     * @param view La vista retornada por `onCreateView`.
-     * @param savedInstanceState Si no es nulo, este fragmento está siendo recreado a partir de un
-     * estado previamente guardado.
-     */
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -93,20 +85,20 @@ class HomePage : Fragment() {
         val repository = AlkeWalletImpl(apiService)
 
         useCase = AlkeWalletUseCase(repository)
-        userViewModelFactory = UserViewModelFactory(useCase,  requireContext())
-        userViewModel = ViewModelProvider(this, userViewModelFactory).get(UserViewModel::class.java)
+        userViewModelFactory = UserViewModelFactory(useCase, requireContext())
+        accountViewModelFactory = AccountViewModelFactory(useCase, requireContext())
 
-        //Navegación de lo botones de la aplicación
+        userViewModel = ViewModelProvider(this, userViewModelFactory).get(UserViewModel::class.java)
+        accountViewModel = ViewModelProvider(this, accountViewModelFactory).get(AccountViewModel::class.java)
+
         binding.btnIngresarDineroHome.setOnClickListener { navController.navigate(R.id.requestMoney) }
         binding.btnEnviarDineroHome.setOnClickListener { navController.navigate(R.id.sendMoney) }
         binding.imagenHomeAmanda.setOnClickListener { navController.navigate(R.id.profilePage) }
 
-        //Intanciamos el adapter
         binding.recyclerTransacciones.layoutManager = LinearLayoutManager(context)
         adapter = TransaccionAdapter()
         binding.recyclerTransacciones.adapter = adapter
 
-        //Actualiza el recyclerview
         transaccionViewModel.transacciones.observe(viewLifecycleOwner) { transacciones ->
             adapter.items = transacciones
             adapter.notifyDataSetChanged()
@@ -114,22 +106,25 @@ class HomePage : Fragment() {
         }
 
         userViewModel.fetchLoggedUser()
-        //Actualiza cabecera del home
         userViewModel.usuarioLogueado.observe(viewLifecycleOwner) { usuario ->
             if (usuario != null) {
-                Log.e("USUARIO", usuario.toString())
                 binding.textSaludo.text = "Hola, ${usuario.firstName}"
+                accountViewModel.fetchUserAccounts()
+                Log.d("CUENTA", accountViewModel.accounts.value.toString())
+            }
+        }
+
+        accountViewModel.accounts.observe(viewLifecycleOwner) { accounts ->
+            if (accounts != null && accounts.isNotEmpty()) {
+                binding.textMontoTotal.text = "$"+ accounts[0].money
+            } else {
+                binding.textMontoTotal.text = "0"
             }
         }
 
         updateEmptyState()
     }
 
-    /**
-     * Actualiza el estado vacío de la lista de transacciones.
-     * Si hay transacciones muestra la lista de transacciones, sino la vista que dice que no hay
-     * transaciones
-     */
     private fun updateEmptyState() {
         if (adapter.items.isEmpty()) {
             binding.layoutTransaccionesEmpty.visibility = View.VISIBLE

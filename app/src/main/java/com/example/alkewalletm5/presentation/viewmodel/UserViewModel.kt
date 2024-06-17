@@ -11,6 +11,10 @@ import com.example.alkewalletm5.domain.AlkeWalletUseCase
 import com.example.alkewalletm5.data.network.api.AuthManager
 import com.example.alkewalletm5.data.response.AccountResponse
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class UserViewModel(private val useCase: AlkeWalletUseCase, private val context: Context) : ViewModel() {
 
@@ -27,11 +31,10 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
 
     private val authManager = AuthManager(context)
 
-    fun getUserById(userId: Long) {
-        viewModelScope.launch {
-            _user.value = useCase.getUserById(userId)
-        }
-    }
+    private val _error = MutableLiveData<String>()
+    val error: LiveData<String> get() = _error
+
+
 
     fun createUserAndGetId(user: UserResponse) {
         viewModelScope.launch {
@@ -41,11 +44,17 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
                 createdUser?.id?.let {
                     _createdUserId.value = it
                     Log.e("USUARIO", _createdUserId.value.toString())
+                    // Obtener la fecha actual
+                    val currentDate = Calendar.getInstance().time
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
+                    val formattedDate = dateFormat.format(currentDate)
+
+
                     // Crear cuenta para el nuevo usuario
                     val newAccount = AccountResponse(
                         id = 0,
-                        creationDate = "", // Establecer la fecha de creación según lo necesario
-                        money = 1000.0,
+                        creationDate = formattedDate, // Establecer la fecha de creación según lo necesario
+                        money = "1000.0",
                         isBlocked = false,
                         userId = it,
                         updatedAt = "", // Estos valores serán establecidos por el servidor
@@ -67,10 +76,12 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
                 authManager.saveToken(token)
                 _token.value = token
                 Log.e("USUARIO", _token.value.toString())
+            } catch (e: HttpException) {
+                _error.value = "Error: ${e.code()} ${e.message()}"
             } catch (e: Exception) {
+            _error.value = "Error: ${e.message}"
                 _token.value = null
-                Log.e("USUARIO", _token.value.toString())
-            }
+        }
         }
     }
 
@@ -92,7 +103,7 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
             if (token != null) {
                 val usuario = useCase.getUserByToken(token)
                 _usuarioLogueado.value = usuario
-                Log.i("USUARIO", _usuarioLogueado.toString())
+                Log.i("USUARIO", _usuarioLogueado.value.toString())
             }
         }
     }

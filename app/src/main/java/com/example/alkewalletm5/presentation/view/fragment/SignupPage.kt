@@ -31,9 +31,7 @@ import com.example.alkewalletm5.domain.AlkeWalletUseCase
 import com.example.alkewalletm5.presentation.viewmodel.UserViewModel
 import com.example.alkewalletm5.presentation.viewmodel.UserViewModelFactory
 import com.example.alkewalletm5.presentation.viewmodel.UsuarioViewModel
-/**
- * Fragmento que representa la página de registro de usuario.
- */
+
 class SignupPage : Fragment() {
 
     private var _binding: FragmentSignupPageBinding? = null
@@ -52,15 +50,6 @@ class SignupPage : Fragment() {
         }
     }
 
-    /**
-     * Crea y retorna la jerarquía de vistas asociada con el fragmento.
-     *
-     * @param inflater El LayoutInflater que se puede usar para inflar cualquier vista en el fragmento.
-     * @param container Si no es nulo, este es el padre que contiene la vista del fragmento.
-     * @param savedInstanceState Si no es nulo, este fragmento está siendo recreado a partir de un
-     * estado previamente guardado.
-     * @return La vista para la interfaz de usuario del fragmento.
-     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -75,13 +64,7 @@ class SignupPage : Fragment() {
         })
         return binding.root
     }
-    /**
-     * Método llamado después de que la vista asociada con el fragmento haya sido creada.
-     *
-     * @param view La vista retornada por `onCreateView`.
-     * @param savedInstanceState Si no es nulo, este fragmento está siendo recreado a partir de un
-     * estado previamente guardado.
-     */
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -93,21 +76,20 @@ class SignupPage : Fragment() {
         userViewModelFactory = UserViewModelFactory(useCase,  requireContext())
         userViewModel = ViewModelProvider(this, userViewModelFactory).get(UserViewModel::class.java)
 
-        userViewModel.user.observe(viewLifecycleOwner, Observer { user ->
-
+        userViewModel.createdUserId.observe(viewLifecycleOwner, Observer { userId ->
+            if (userId != null) {
+                userViewModel.fetchLoggedUser()
+                userViewModel.usuarioLogueado.observe(viewLifecycleOwner) { usuario ->
+                    if (usuario != null) {
+                        findNavController().navigate(R.id.homePage)
+                    }
+                }
+            } else {
+                Toast.makeText(requireContext(), "Error en el registro", Toast.LENGTH_SHORT).show()
+            }
         })
-
-       userViewModel.createdUserId.observe(viewLifecycleOwner, Observer { userId ->
-            Log.d("TOKEN", "ID del usuario creado: $userId")
-
-        })
-
     }
 
-    /**
-     * Verifica y llena el formulario de registro.
-     * Realiza validaciones de los campos y agrega un nuevo usuario si todas las validaciones pasan.
-     */
     private fun llenarFormularioSignup() {
         val nombre = binding.inputNombre.text.toString()
         val apellido = binding.inputApellidoSignup.text.toString()

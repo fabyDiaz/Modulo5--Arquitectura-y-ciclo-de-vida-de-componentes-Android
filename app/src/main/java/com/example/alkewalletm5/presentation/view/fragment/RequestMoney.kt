@@ -69,7 +69,7 @@ class RequestMoney : Fragment() {
         //Al presionar la flecha de la aprte superior vuelve al homePage
         binding.btnVolverRequest.setOnClickListener{findNavController().navigate(R.id.homePage)}
 
-        mostrarListadeDestinatarios()
+        //mostrarListadeDestinatarios()
 
         cambioColorTextViewMonto()
 
@@ -145,7 +145,7 @@ class RequestMoney : Fragment() {
      * Dentro de este bloque, se crea un adaptador (DestinatarioAdapter) utilizando la lista actualizada de
      * destinatarios y se establece este adaptador en el spinner.
      */
-    fun mostrarListadeDestinatarios(){
+   /* fun mostrarListadeDestinatarios(){
         val spinner = binding.spinnerRecibirDinero
 
         // Lista de elementos para el Spinner
@@ -154,7 +154,7 @@ class RequestMoney : Fragment() {
             val adapter = DestinatarioAdpater(requireContext(), destinatarios)
             spinner.adapter = adapter
         }
-    }
+    }*/
 
     /**
      * Obtener la fecha actual y retornarla como un String

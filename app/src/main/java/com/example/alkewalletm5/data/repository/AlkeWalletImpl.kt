@@ -4,6 +4,8 @@ import android.util.Log
 import com.example.alkewalletm5.data.network.api.AlkeWalletService
 import com.example.alkewalletm5.data.response.AccountResponse
 import com.example.alkewalletm5.data.response.LoginRequest
+import com.example.alkewalletm5.data.response.TransactionResponse
+import com.example.alkewalletm5.data.response.UserListResponse
 import com.example.alkewalletm5.data.response.UserResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -24,9 +26,18 @@ class AlkeWalletImpl(private var apiservice: AlkeWalletService): AlkeWalletRepos
         }
     }
 
-    override suspend fun myAccount(): MutableList<AccountResponse> {
+    override suspend fun myAccount(token: String): MutableList<AccountResponse> {
         return withContext(Dispatchers.IO) {
-            apiservice.myAccount()
+            apiservice.myAccount("Bearer $token")
+        }
+    }
+
+    override suspend fun createTransaction(
+        token: String,
+        transaction: TransactionResponse
+    ): Response<TransactionResponse> {
+        return withContext(Dispatchers.IO){
+            apiservice.createTransaction("Bearer $token",transaction)
         }
     }
 
@@ -56,6 +67,15 @@ class AlkeWalletImpl(private var apiservice: AlkeWalletService): AlkeWalletRepos
     override suspend fun getUserByToken(token: String): UserResponse {
         return withContext(Dispatchers.IO) {
             apiservice.getUserByToken("Bearer $token")
+        }
+    }
+
+    override suspend fun getUsersByPage(token: String, page: Int): Response<UserListResponse> {
+        return withContext(Dispatchers.IO) {
+            Log.d("AlkeWalletImpl", "Token enviado: $token, página: $page")
+            val response = apiservice.getUsersByPage("Bearer $token", page)
+            Log.d("AlkeWalletImpl", "Respuesta obtenida: ${response.code()} - ${response.message()}")
+            response
         }
     }
 }
