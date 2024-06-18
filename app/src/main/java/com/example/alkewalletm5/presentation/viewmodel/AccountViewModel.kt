@@ -20,9 +20,6 @@ class AccountViewModel(private val useCase: AlkeWalletUseCase, private val conte
     private val _accounts = MutableLiveData<MutableList<AccountResponse>>()
     val accounts: LiveData<MutableList<AccountResponse>> get() = _accounts
 
-    val _accountDestino = MutableLiveData<AccountResponse>()
-    val accountDestino = MutableLiveData<AccountResponse>get() = _accounts
-
     private val _error = MutableLiveData<String>()
 
     private val authManager = AuthManager(context)

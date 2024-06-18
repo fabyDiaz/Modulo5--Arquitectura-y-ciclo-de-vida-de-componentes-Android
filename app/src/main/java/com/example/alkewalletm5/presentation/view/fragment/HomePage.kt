@@ -17,6 +17,7 @@ import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -31,6 +32,8 @@ import com.example.alkewalletm5.presentation.view.adapter.TransaccionAdapter
 import com.example.alkewalletm5.presentation.viewmodel.AccountViewModel
 import com.example.alkewalletm5.presentation.viewmodel.AccountViewModelFactory
 import com.example.alkewalletm5.presentation.viewmodel.TransaccionViewModel
+import com.example.alkewalletm5.presentation.viewmodel.TransactionViewModel
+import com.example.alkewalletm5.presentation.viewmodel.TransactionViewModelFactory
 import com.example.alkewalletm5.presentation.viewmodel.UserViewModel
 import com.example.alkewalletm5.presentation.viewmodel.UserViewModelFactory
 import com.example.alkewalletm5.presentation.viewmodel.UsuarioViewModel
@@ -47,11 +50,13 @@ class HomePage : Fragment() {
     //private val usuarioViewModel: UsuarioViewModel by activityViewModels()
     private lateinit var userViewModel: UserViewModel
     private lateinit var accountViewModel: AccountViewModel
+    private lateinit var transactionViewModel: TransactionViewModel
 
     private lateinit var useCase: AlkeWalletUseCase
     private lateinit var userViewModelFactory: UserViewModelFactory
     private lateinit var accountViewModelFactory: AccountViewModelFactory
-    private val transaccionViewModel: TransaccionViewModel by activityViewModels()
+    private lateinit var transactionViewModelFactory: TransactionViewModelFactory
+    //private val transaccionViewModel: TransaccionViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,9 +92,11 @@ class HomePage : Fragment() {
         useCase = AlkeWalletUseCase(repository)
         userViewModelFactory = UserViewModelFactory(useCase, requireContext())
         accountViewModelFactory = AccountViewModelFactory(useCase, requireContext())
+        transactionViewModelFactory = TransactionViewModelFactory(useCase, requireContext())
 
         userViewModel = ViewModelProvider(this, userViewModelFactory).get(UserViewModel::class.java)
         accountViewModel = ViewModelProvider(this, accountViewModelFactory).get(AccountViewModel::class.java)
+        transactionViewModel = ViewModelProvider(this, transactionViewModelFactory).get(TransactionViewModel::class.java)
 
         binding.btnIngresarDineroHome.setOnClickListener { navController.navigate(R.id.requestMoney) }
         binding.btnEnviarDineroHome.setOnClickListener { navController.navigate(R.id.sendMoney) }
@@ -99,18 +106,19 @@ class HomePage : Fragment() {
         adapter = TransaccionAdapter()
         binding.recyclerTransacciones.adapter = adapter
 
-        transaccionViewModel.transacciones.observe(viewLifecycleOwner) { transacciones ->
+       /* transaccionViewModel.transacciones.observe(viewLifecycleOwner) { transacciones ->
             adapter.items = transacciones
             adapter.notifyDataSetChanged()
             updateEmptyState()
-        }
+        }*/
+
 
         userViewModel.fetchLoggedUser()
         userViewModel.usuarioLogueado.observe(viewLifecycleOwner) { usuario ->
             if (usuario != null) {
                 binding.textSaludo.text = "Hola, ${usuario.firstName}"
                 accountViewModel.fetchUserAccounts()
-                Log.d("CUENTA", accountViewModel.accounts.value.toString())
+                //Log.d("USUARIO", "la transacciones que tiene: " + transactionViewModel.transactions.value.toString())
             }
         }
 
@@ -121,6 +129,8 @@ class HomePage : Fragment() {
                 binding.textMontoTotal.text = "0"
             }
         }
+
+        transactionViewModel.getAlltransactions()
 
         updateEmptyState()
     }

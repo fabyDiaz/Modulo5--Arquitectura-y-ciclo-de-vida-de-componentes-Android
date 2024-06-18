@@ -151,7 +151,7 @@ class SendMoney : Fragment(){
           accountViewModel.getAccountByUserId(user.id).observe(viewLifecycleOwner) { account ->
 
                 if (account != null) {
-                    transactionViewModel.createTransaction(montoEnviado.toLong(), nota, account.id, user.id, account.id )
+                    transactionViewModel.createTransaction(montoEnviado.toLong(), nota, account.id, user.id )
                     Toast.makeText(requireContext(), "Envío de dinero exitoso", Toast.LENGTH_SHORT).show()
                     findNavController().navigate(R.id.homePage)
                 } else {

@@ -5,6 +5,7 @@ import com.example.alkewalletm5.data.network.api.AlkeWalletService
 import com.example.alkewalletm5.data.response.AccountResponse
 import com.example.alkewalletm5.data.response.LoginRequest
 import com.example.alkewalletm5.data.response.TransactionResponse
+import com.example.alkewalletm5.data.response.TransactionsListResponse
 import com.example.alkewalletm5.data.response.UserListResponse
 import com.example.alkewalletm5.data.response.UserResponse
 import kotlinx.coroutines.Dispatchers
@@ -38,6 +39,12 @@ class AlkeWalletImpl(private var apiservice: AlkeWalletService): AlkeWalletRepos
     ): Response<TransactionResponse> {
         return withContext(Dispatchers.IO){
             apiservice.createTransaction("Bearer $token",transaction)
+        }
+    }
+
+    override suspend fun getAllTransactionUser(token: String): TransactionsListResponse {
+        return withContext(Dispatchers.IO) {
+            apiservice.getAllTransactionUser("Bearer $token")
         }
     }
 

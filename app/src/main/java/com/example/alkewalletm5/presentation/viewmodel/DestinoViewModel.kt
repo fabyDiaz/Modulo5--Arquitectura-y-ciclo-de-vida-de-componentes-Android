@@ -17,8 +17,6 @@ class DestinoViewModel(private val useCase: AlkeWalletUseCase, private val conte
     private val _usuarios = MutableLiveData<List<UserResponse>>()
     val usuarios: LiveData<List<UserResponse>> get() = _usuarios
 
-    private val _account = MutableLiveData<AccountResponse>()
-    val account: LiveData<AccountResponse> get() = _account
 
     private val _error = MutableLiveData<String>()
 
@@ -48,20 +46,4 @@ class DestinoViewModel(private val useCase: AlkeWalletUseCase, private val conte
         }
     }
 
-    fun obtenerCuentaPorUsuarioId(userId: Long) {
-        viewModelScope.launch {
-            try {
-                val token = authManager.getToken()
-                if (token != null) {
-                    val account = useCase.getAccountsById(token, userId)
-                    _account.postValue(account)
-                } else {
-                    _error.postValue("No se pudo obtener el token de autenticación")
-                }
-            } catch (e: Exception) {
-                _error.postValue("Error al obtener la cuenta del usuario")
-                Log.e("DestinatarioViewModel", "Error al obtener la cuenta del usuario", e)
-            }
-        }
-    }
 }
