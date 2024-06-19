@@ -162,14 +162,14 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_transacciones"
+        android:id="@+id/recyclerTransacciones"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/transaccion_item"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="15dp"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtultimasTransacciones"
-        android:visibility="gone"/>
+        tools:listitem="@layout/transaccion_item" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/layoutTransaccionesEmpty"

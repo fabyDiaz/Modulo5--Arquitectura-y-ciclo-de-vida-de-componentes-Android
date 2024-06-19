@@ -29,6 +29,7 @@ import com.example.alkewalletm5.data.repository.AlkeWalletImpl
 import com.example.alkewalletm5.databinding.FragmentHomePageBinding
 import com.example.alkewalletm5.domain.AlkeWalletUseCase
 import com.example.alkewalletm5.presentation.view.adapter.TransaccionAdapter
+import com.example.alkewalletm5.presentation.view.adapter.TransactionAdapter
 import com.example.alkewalletm5.presentation.viewmodel.AccountViewModel
 import com.example.alkewalletm5.presentation.viewmodel.AccountViewModelFactory
 import com.example.alkewalletm5.presentation.viewmodel.TransaccionViewModel
@@ -46,7 +47,7 @@ import com.squareup.picasso.Picasso
 class HomePage : Fragment() {
 
     private lateinit var binding: FragmentHomePageBinding
-    private lateinit var adapter: TransaccionAdapter
+    private lateinit var adapter: TransactionAdapter
     //private val usuarioViewModel: UsuarioViewModel by activityViewModels()
     private lateinit var userViewModel: UserViewModel
     private lateinit var accountViewModel: AccountViewModel
@@ -103,14 +104,17 @@ class HomePage : Fragment() {
         binding.imagenHomeAmanda.setOnClickListener { navController.navigate(R.id.profilePage) }
 
         binding.recyclerTransacciones.layoutManager = LinearLayoutManager(context)
+
+        /*binding.recyclerTransacciones.layoutManager = LinearLayoutManager(context)
         adapter = TransaccionAdapter()
-        binding.recyclerTransacciones.adapter = adapter
+        binding.recyclerTransacciones.adapter = adapter*/
 
        /* transaccionViewModel.transacciones.observe(viewLifecycleOwner) { transacciones ->
             adapter.items = transacciones
             adapter.notifyDataSetChanged()
             updateEmptyState()
         }*/
+
 
 
         userViewModel.fetchLoggedUser()
@@ -130,13 +134,38 @@ class HomePage : Fragment() {
             }
         }
 
+        transactionViewModel.transactions.observe(viewLifecycleOwner) { transactionsListResponse ->
+            transactionsListResponse?.let { transactions ->
+                if (transactions.data.isNotEmpty()) {
+                    Log.d("USUARIO", "RecyclerViwe"+transactions.data.get(0).amount.toString())
+                    adapter =TransactionAdapter(transactions.data)  // Inicializar el adaptador aquí
+                    binding.recyclerTransacciones.adapter = adapter
+                    Log.d("USUARIO", "Muestra el adaptador"+ adapter.toString())
+                    adapter.notifyDataSetChanged()
+                } else {
+                    // Manejar el caso de que no haya transacciones
+                    updateEmptyState()
+                }
+            }
+        }
+
         transactionViewModel.getAlltransactions()
 
-        updateEmptyState()
     }
 
-    private fun updateEmptyState() {
+    /*private fun updateEmptyState() {
         if (adapter.items.isEmpty()) {
+            binding.layoutTransaccionesEmpty.visibility = View.VISIBLE
+            binding.recyclerTransacciones.visibility = View.GONE
+        } else {
+            binding.layoutTransaccionesEmpty.visibility = View.GONE
+            binding.recyclerTransacciones.visibility = View.VISIBLE
+        }
+    }*/
+
+    private fun updateEmptyState() {
+        // Verificar si el adaptador está inicializado y tiene elementos
+        if (::adapter.isInitialized && adapter.itemCount == 0) {
             binding.layoutTransaccionesEmpty.visibility = View.VISIBLE
             binding.recyclerTransacciones.visibility = View.GONE
         } else {

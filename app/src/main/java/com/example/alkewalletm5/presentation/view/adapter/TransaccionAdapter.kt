@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.alkewalletm5.R
 import com.example.alkewalletm5.data.model.Transaccion
+import com.example.alkewalletm5.data.response.TransactionsListResponse
 import com.squareup.picasso.Picasso
 
 /**
