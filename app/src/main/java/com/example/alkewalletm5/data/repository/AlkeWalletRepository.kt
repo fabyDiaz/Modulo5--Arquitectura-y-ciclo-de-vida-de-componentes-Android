@@ -18,11 +18,11 @@ interface AlkeWalletRepository {
 
     suspend fun getUserById(idUser: Long): UserResponse
 
-    suspend fun getAccountsById(token: String, idUser: Long): AccountResponse
+    suspend fun getAccountsById(token: String, idAccount: Long): AccountResponse
 
     suspend fun getAllUsers(): MutableList<UserResponse>
 
-    suspend fun createAccount(account: AccountResponse): Response<AccountResponse>
+    suspend fun createAccount(token: String, account: AccountResponse): Response<AccountResponse>
 
     suspend fun getUserByToken(token: String): UserResponse
     suspend fun myAccount(token: String): MutableList<AccountResponse>

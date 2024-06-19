@@ -36,7 +36,6 @@ class SignupPage : Fragment() {
 
     private var _binding: FragmentSignupPageBinding? = null
     private val binding get() = _binding!!
-    private val usuarioViewModel: UsuarioViewModel by activityViewModels()
     private lateinit var userViewModel: UserViewModel
     private lateinit var userViewModelFactory: UserViewModelFactory
 
@@ -117,9 +116,7 @@ class SignupPage : Fragment() {
             email = email,
             password = password,
             points = 0,
-            roleId = 1, // Debes establecer el roleId apropiado aquí
-            createdAt = "", // Este valor probablemente será establecido por el servidor
-            updatedAt = "" // Este valor probablemente será establecido por el servidor
+            roleId = 1
         )
 
         userViewModel.createUserAndGetId(newUser)

@@ -27,8 +27,8 @@ class AlkeWalletUseCase(private val repository: AlkeWalletImpl) {
         return repository.getUserById(idUser)
     }
 
-    suspend fun getAccountsById(token: String, idUser: Long): AccountResponse {
-        return repository.getAccountsById(token, idUser)
+    suspend fun getAccountsById(token: String, idAccount: Long): AccountResponse {
+        return repository.getAccountsById(token, idAccount)
     }
 
     suspend fun getAllUsers(): MutableList<UserResponse>{
@@ -36,8 +36,8 @@ class AlkeWalletUseCase(private val repository: AlkeWalletImpl) {
 
     }
 
-    suspend fun createAccount(account: AccountResponse): Response<AccountResponse> {
-        return repository.createAccount(account)
+    suspend fun createAccount(token: String, account: AccountResponse): Response<AccountResponse> {
+        return repository.createAccount(token, account)
     }
 
     suspend fun getUserByToken(token: String): UserResponse {

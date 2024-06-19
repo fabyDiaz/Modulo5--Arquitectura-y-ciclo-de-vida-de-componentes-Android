@@ -11,9 +11,7 @@ class UserResponse (
     val email: String,
     val password: String,
     val points: Long,
-    val roleId: Long,
-    val createdAt: String,
-    val updatedAt: String,
+    val roleId: Long
 ) {
 
 }

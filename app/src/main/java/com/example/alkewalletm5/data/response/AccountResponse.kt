@@ -5,8 +5,6 @@ data class AccountResponse(
     val creationDate: String,
     var money: String,
     val isBlocked: Boolean,
-    val userId: Long,
-    val updatedAt: String,
-    val createdAt: String,
+    val userId: Long
 ) {
 }

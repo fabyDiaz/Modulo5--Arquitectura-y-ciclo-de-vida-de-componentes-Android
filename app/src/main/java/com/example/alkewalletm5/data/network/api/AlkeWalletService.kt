@@ -35,7 +35,7 @@ interface AlkeWalletService {
     suspend fun getAccountById(@Header("Authorization") token: String, @Path("id") id: Long): AccountResponse
 
     @POST("accounts") //Falta agregar el token
-    suspend fun createAccount(account: AccountResponse): Response<AccountResponse>
+    suspend fun createAccount(@Header("Authorization") token: String, account: AccountResponse): Response<AccountResponse>
     @GET("auth/me")
     suspend fun getUserByToken(@Header("Authorization") token: String): UserResponse
 

@@ -41,13 +41,13 @@ class AccountViewModel(private val useCase: AlkeWalletUseCase, private val conte
     }
 
 
-    fun getAccountByUserId(userId: Long): LiveData<AccountResponse> {
+    fun getAccountById(accountId: Long): LiveData<AccountResponse> {
         val result = MutableLiveData<AccountResponse>()
         viewModelScope.launch {
             try {
                 val token = authManager.getToken()
                 if (token != null) {
-                    val account = useCase.getAccountsById(token, userId)
+                    val account = useCase.getAccountsById(token, accountId)
                     result.postValue(account)
                 }
             } catch (e: Exception) {

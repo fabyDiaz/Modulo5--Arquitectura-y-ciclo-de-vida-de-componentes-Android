@@ -25,14 +25,12 @@ class TransactionViewModel(private val useCase: AlkeWalletUseCase, private val c
 
     private val authManager = AuthManager(context)
 
-    fun createTransaction(amount: Long, concept: String, accountId:Long, userId: Long) {
+    fun createTransaction(amount: Long, concept: String, accountId: Long, userId: Long) {
         viewModelScope.launch {
-
             // Obtener el token de autenticación
             val token = authManager.getToken()
             if (token != null) {
                 // Construir el objeto de transacción
-
                 val currentDate = Calendar.getInstance().time
                 val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
                 val formattedDate = dateFormat.format(currentDate)
@@ -57,6 +55,19 @@ class TransactionViewModel(private val useCase: AlkeWalletUseCase, private val c
                         _transaction.value = createdTransaction
 
                         Log.d("USUARIO", "Transacción creada: ${createdTransaction?.id}")
+
+                        // Agregar la nueva transacción a la lista existente
+                        createdTransaction?.let {
+                            val updatedTransactions = _transactions.value?.data?.toMutableList() ?: mutableListOf()
+                            updatedTransactions.add(it)
+
+                            _transactions.value = TransactionsListResponse(
+                                previousPage = _transactions.value?.previousPage,
+                                nextPage = _transactions.value?.nextPage,
+                                data = updatedTransactions
+                            )
+
+                        }
                     } else {
                         Log.e("USUARIO", "Error al crear la transacción: ${response.message()}")
                         // Manejar el error según sea necesario
@@ -65,7 +76,6 @@ class TransactionViewModel(private val useCase: AlkeWalletUseCase, private val c
                     Log.e("USUARIO", "Excepción al crear la transacción: ${e.message}")
                     // Manejar la excepción según sea necesario
                 }
-
             } else {
                 // Manejar la falta de token según sea necesario
                 Log.e("USUARIO", "No se pudo obtener el token de autenticación")
@@ -81,7 +91,7 @@ class TransactionViewModel(private val useCase: AlkeWalletUseCase, private val c
                 try {
                     val transactions = useCase.getAllTransactionUser(token)
                     _transactions.value = transactions
-                    Log.i("USUARIO", "LAs transacciones son: "+_transactions.value.toString())
+                    Log.i("USUARIO", "Las transacciones son: "+_transactions.value.toString())
                     // Imprimir las transacciones una por una
                     transactions.data.forEach { transaction ->
                         Log.i("USUARIO", "Transacción - ID: ${transaction.id}, Amount: ${transaction.amount}, Concept: ${transaction.concept}")

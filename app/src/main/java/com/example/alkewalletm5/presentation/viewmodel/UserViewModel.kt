@@ -49,7 +49,6 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
                     val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
                     val formattedDate = dateFormat.format(currentDate)
 
-
                     // Crear cuenta para el nuevo usuario
                     val newAccount = AccountResponse(
                         id = 0,
@@ -57,8 +56,6 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
                         money = "1000.0",
                         isBlocked = false,
                         userId = it,
-                        updatedAt = "", // Estos valores serán establecidos por el servidor
-                        createdAt = ""
                     )
 
                     createAccountForUser(newAccount)
@@ -89,12 +86,25 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
 
     private fun createAccountForUser(account: AccountResponse) {
         viewModelScope.launch {
-            val response = useCase.createAccount(account)
-            if (response.isSuccessful) {
-                val createdAccount = response.body()
-                Log.d("CUENTA", "Cuenta creada: ${createdAccount?.id}")
-            } else {
-                // Manejar el error de creación de cuenta
+            try {
+                val token = authManager.getToken()
+                if (token != null) {
+                    val response = useCase.createAccount(token, account)
+                    if (response.isSuccessful) {
+                        val createdAccount = response.body()
+                        Log.d("CUENTA", "Cuenta creada: ${createdAccount?.id}")
+                    } else {
+                        Log.e("CUENTA", "Error al crear la cuenta: ${response.message()}")
+                        // Manejar el error de creación de cuenta
+                    }
+                } else {
+                    Log.e("CUENTA", "Token de autenticación no disponible")
+                    _error.value = "Error: Token de autenticación no disponible"
+                }
+            } catch (e: HttpException) {
+                _error.value = "Error: ${e.code()} ${e.message()}"
+            } catch (e: Exception) {
+                _error.value = "Error: ${e.message}"
             }
         }
     }
@@ -106,6 +116,8 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
                 val usuario = useCase.getUserByToken(token)
                 _usuarioLogueado.value = usuario
                 Log.i("USUARIO", _usuarioLogueado.value.toString())
+            } else {
+                Log.e("USUARIO", "No se pudo obtener el token de autenticación")
             }
         }
     }
