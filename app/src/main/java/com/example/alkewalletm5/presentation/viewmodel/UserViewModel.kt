@@ -105,13 +105,24 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
 
     fun fetchLoggedUser() {
         viewModelScope.launch {
-            val token = authManager.getToken()
-            if (token != null) {
-                val usuario = useCase.getUserByToken(token)
-                _usuarioLogueado.value = usuario
-                Log.i("USUARIO", _usuarioLogueado.value.toString())
-            } else {
-                Log.e("USUARIO", "No se pudo obtener el token de autenticación")
+            try {
+                val token = authManager.getToken()
+                if (token != null) {
+                    val usuario = useCase.getUserByToken(token)
+                    _usuarioLogueado.value = usuario
+                    Log.i("USUARIO", _usuarioLogueado.value.toString())
+                } else {
+                    Log.e("USUARIO", "No se pudo obtener el token de autenticación")
+                }
+            } catch (e: Exception) {
+                // Intenta cargar el usuario desde la base de datos local
+                try {
+                    val localUser = useCase.getLocalUser()
+                    _usuarioLogueado.value = localUser
+                } catch (dbException: Exception) {
+                    Log.e("USUARIO", "Error al obtener el usuario: ${e.message}")
+                    _error.value = "Error al obtener el usuario: ${e.message}"
+                }
             }
         }
     }

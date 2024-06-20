@@ -26,10 +26,9 @@ import com.example.alkewalletm5.data.repository.AlkeWalletImpl
 import com.example.alkewalletm5.databinding.FragmentProfilePageBinding
 import com.example.alkewalletm5.domain.AlkeWalletUseCase
 import com.example.alkewalletm5.presentation.viewmodel.AccountViewModel
-import com.example.alkewalletm5.presentation.viewmodel.AccountViewModelFactory
+import com.example.alkewalletm5.presentation.viewmodel.factory.AccountViewModelFactory
 import com.example.alkewalletm5.presentation.viewmodel.UserViewModel
-import com.example.alkewalletm5.presentation.viewmodel.UserViewModelFactory
-import com.squareup.picasso.Picasso
+import com.example.alkewalletm5.presentation.viewmodel.factory.UserViewModelFactory
 
 /**
  * Fragmento que representa la página de perfil del usuario.

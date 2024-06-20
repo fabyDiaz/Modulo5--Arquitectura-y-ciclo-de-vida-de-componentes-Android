@@ -25,7 +25,7 @@ import com.example.alkewalletm5.data.response.UserResponse
 import com.example.alkewalletm5.databinding.FragmentSignupPageBinding
 import com.example.alkewalletm5.domain.AlkeWalletUseCase
 import com.example.alkewalletm5.presentation.viewmodel.UserViewModel
-import com.example.alkewalletm5.presentation.viewmodel.UserViewModelFactory
+import com.example.alkewalletm5.presentation.viewmodel.factory.UserViewModelFactory
 
 class SignupPage : Fragment() {
 

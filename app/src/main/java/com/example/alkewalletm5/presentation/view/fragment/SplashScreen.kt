@@ -14,12 +14,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.alkewalletm5.R
-import com.example.alkewalletm5.data.network.api.AlkeWalletService
-import com.example.alkewalletm5.data.network.retrofit.RetrofitHelper
-import com.example.alkewalletm5.data.repository.AlkeWalletImpl
-import com.example.alkewalletm5.domain.AlkeWalletUseCase
-import com.example.alkewalletm5.presentation.viewmodel.UserViewModel
-import com.example.alkewalletm5.presentation.viewmodel.UserViewModelFactory
 
 /**
  * Fragmento que representa la pantalla de carga inicial de la aplicación.

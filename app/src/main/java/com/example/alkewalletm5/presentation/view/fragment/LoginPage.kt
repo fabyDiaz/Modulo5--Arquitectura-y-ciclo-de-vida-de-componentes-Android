@@ -24,7 +24,7 @@ import com.example.alkewalletm5.data.repository.AlkeWalletImpl
 import com.example.alkewalletm5.databinding.FragmentLoginPageBinding
 import com.example.alkewalletm5.domain.AlkeWalletUseCase
 import com.example.alkewalletm5.presentation.viewmodel.UserViewModel
-import com.example.alkewalletm5.presentation.viewmodel.UserViewModelFactory
+import com.example.alkewalletm5.presentation.viewmodel.factory.UserViewModelFactory
 
 /**
  * Fragmento que representa la página de inicio de sesión.

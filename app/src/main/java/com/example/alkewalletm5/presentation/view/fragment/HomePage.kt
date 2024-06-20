@@ -26,11 +26,11 @@ import com.example.alkewalletm5.databinding.FragmentHomePageBinding
 import com.example.alkewalletm5.domain.AlkeWalletUseCase
 import com.example.alkewalletm5.presentation.view.adapter.TransactionAdapter
 import com.example.alkewalletm5.presentation.viewmodel.AccountViewModel
-import com.example.alkewalletm5.presentation.viewmodel.AccountViewModelFactory
+import com.example.alkewalletm5.presentation.viewmodel.factory.AccountViewModelFactory
 import com.example.alkewalletm5.presentation.viewmodel.TransactionViewModel
-import com.example.alkewalletm5.presentation.viewmodel.TransactionViewModelFactory
+import com.example.alkewalletm5.presentation.viewmodel.factory.TransactionViewModelFactory
 import com.example.alkewalletm5.presentation.viewmodel.UserViewModel
-import com.example.alkewalletm5.presentation.viewmodel.UserViewModelFactory
+import com.example.alkewalletm5.presentation.viewmodel.factory.UserViewModelFactory
 
 /**
  * Fragmento que representa la página principal de la aplicación.

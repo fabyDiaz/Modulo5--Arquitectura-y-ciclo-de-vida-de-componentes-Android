@@ -18,8 +18,8 @@ import retrofit2.HttpException
 
 class AccountViewModel(private val useCase: AlkeWalletUseCase, private val context: Context) : ViewModel()  {
 
-    private val _accounts = MutableLiveData<MutableList<AccountResponse>>()
-    val accounts: LiveData<MutableList<AccountResponse>> get() = _accounts
+    private val _accounts = MutableLiveData<List<AccountResponse>>()
+    val accounts: LiveData<List<AccountResponse>> get() = _accounts
 
     private val _error = MutableLiveData<String>()
 
@@ -40,7 +40,13 @@ class AccountViewModel(private val useCase: AlkeWalletUseCase, private val conte
                     Log.e("AccountViewModel", "Token de autenticación no disponible")
                 }
             } catch (e: Exception) {
-                Log.e("AccountViewModel", "Error al obtener cuentas: ${e.message}")
+                // Intenta cargar las cuentas desde la base de datos local
+                try {
+                    val localAccounts = useCase.getLocalAccounts()
+                    _accounts.value = localAccounts
+                } catch (dbException: Exception) {
+                    Log.e("AccountViewModel", "Error al obtener cuentas: ${e.message}")
+                }
             }
         }
     }

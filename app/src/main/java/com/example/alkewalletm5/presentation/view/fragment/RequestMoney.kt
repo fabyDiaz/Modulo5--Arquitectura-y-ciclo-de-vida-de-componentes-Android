@@ -27,16 +27,13 @@ import com.example.alkewalletm5.databinding.FragmentRequestMoneyBinding
 import com.example.alkewalletm5.domain.AlkeWalletUseCase
 import com.example.alkewalletm5.presentation.view.adapter.DestinatarioAdpater
 import com.example.alkewalletm5.presentation.viewmodel.AccountViewModel
-import com.example.alkewalletm5.presentation.viewmodel.AccountViewModelFactory
+import com.example.alkewalletm5.presentation.viewmodel.factory.AccountViewModelFactory
 import com.example.alkewalletm5.presentation.viewmodel.DestinoViewModel
-import com.example.alkewalletm5.presentation.viewmodel.DestinoViewModelFactory
+import com.example.alkewalletm5.presentation.viewmodel.factory.DestinoViewModelFactory
 import com.example.alkewalletm5.presentation.viewmodel.TransactionViewModel
-import com.example.alkewalletm5.presentation.viewmodel.TransactionViewModelFactory
+import com.example.alkewalletm5.presentation.viewmodel.factory.TransactionViewModelFactory
 import com.example.alkewalletm5.presentation.viewmodel.UserViewModel
-import com.example.alkewalletm5.presentation.viewmodel.UserViewModelFactory
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
+import com.example.alkewalletm5.presentation.viewmodel.factory.UserViewModelFactory
 
 /**
  * Fragmento que representa la página de solicitud de dinero.

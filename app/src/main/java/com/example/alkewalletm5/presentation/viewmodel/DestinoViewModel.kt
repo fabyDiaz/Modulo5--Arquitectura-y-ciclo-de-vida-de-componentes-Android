@@ -29,9 +29,9 @@ class DestinoViewModel(private val useCase: AlkeWalletUseCase, private val conte
 
     fun cargarUsuarios() {
         viewModelScope.launch {
-            val token = authManager.getToken()
-            if (token != null) {
-                try {
+            try {
+                val token = authManager.getToken()
+                if (token != null) {
                     Log.d("DestinoViewModel", "Token obtenido: $token")
                     val response = useCase.getUsersByPage(token, currentPage)
                     if (response.isSuccessful) {
@@ -40,11 +40,17 @@ class DestinoViewModel(private val useCase: AlkeWalletUseCase, private val conte
                     } else {
                         Log.e("DestinoViewModel", "Error al cargar usuarios: ${response.message()} - ${response.code()}")
                     }
-                } catch (e: Exception) {
-                    Log.e("DestinoViewModel", "Excepción al cargar usuarios: ${e.message}")
+                } else {
+                    Log.e("DestinoViewModel", "No se pudo obtener el token de autenticación")
                 }
-            } else {
-                Log.e("DestinoViewModel", "No se pudo obtener el token de autenticación")
+            } catch (e: Exception) {
+                // Intenta cargar los usuarios desde la base de datos local
+                try {
+                    val localUsers = useCase.getLocalUsers(currentPage)
+                    _usuarios.value = localUsers
+                } catch (dbException: Exception) {
+                    Log.e("DestinoViewModel", "Error al cargar usuarios: ${e.message}")
+                }
             }
         }
     }

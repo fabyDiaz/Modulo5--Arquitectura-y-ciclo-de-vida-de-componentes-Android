@@ -86,21 +86,30 @@ class TransactionViewModel(private val useCase: AlkeWalletUseCase, private val c
 
     fun getAlltransactions() {
         viewModelScope.launch {
-            val token = authManager.getToken()
-            if (token != null) {
-                try {
+            try {
+                val token = authManager.getToken()
+                if (token != null) {
                     val transactions = useCase.getAllTransactionUser(token)
                     _transactions.value = transactions
                     Log.i("USUARIO", "Las transacciones son: "+_transactions.value.toString())
-                    // Imprimir las transacciones una por una
                     transactions.data.forEach { transaction ->
                         Log.i("USUARIO", "Transacción - ID: ${transaction.id}, Amount: ${transaction.amount}, Concept: ${transaction.concept}")
                     }
-                } catch (e: Exception) {
-                    Log.e("USUARIO", "Error al obtener las transacciones: ${e.message}")
+                } else {
+                    Log.e("USUARIO", "No se pudo obtener el token de autenticación")
                 }
-            } else {
-                Log.e("USUARIO", "No se pudo obtener el token de autenticación")
+            } catch (e: Exception) {
+                // Intenta cargar las transacciones desde la base de datos local
+                try {
+                    val localTransactions = useCase.getLocalTransactions()
+                    _transactions.value = TransactionsListResponse(
+                        previousPage = null,
+                        nextPage = null,
+                        data = localTransactions
+                    )
+                } catch (dbException: Exception) {
+                    Log.e("TransactionViewModel", "Error al obtener las transacciones: ${e.message}")
+                }
             }
         }
     }
