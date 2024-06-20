@@ -29,7 +29,7 @@ class UsuarioViewModel: ViewModel() {
     val imagenesUsuario: MutableLiveData<MutableList<Uri>> = MutableLiveData(mutableListOf())
 
 
-    init {
+   /* init {
         // Inicializa con una lista vacía o con datos iniciales
         _usuarios.value = UsuariosDataSet().ListaUsuarios()
     }
@@ -125,13 +125,13 @@ class UsuarioViewModel: ViewModel() {
             }
         }
         return false
-    }
+    }*/
 
-   /* fun actualizarImagenUsuarioLogueado(uri: Uri) {
+  /* fun actualizarImagenUsuarioLogueado(uri: Uri) {
         _usuarioLogueado.value?.let { usuario ->
             val usuarioActualizado = usuario.copy(imgPerfil = uri)
             _usuarioLogueado.value = usuarioActualizado
-            actualizarListaUsuarios(usuarioActualizado)
+            //actualizarListaUsuarios(usuarioActualizado)
         }
     }*/
 }

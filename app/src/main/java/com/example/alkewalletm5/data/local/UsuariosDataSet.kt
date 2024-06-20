@@ -14,7 +14,7 @@ import com.example.alkewalletm5.data.model.Usuario
  */
 class UsuariosDataSet {
 
-    fun ListaUsuarios():MutableList<Usuario>{
+/*   fun ListaUsuarios():MutableList<Usuario>{
         return mutableListOf(
             Usuario("Amanda","Alkemy", "amanda@gmail.com", "amanda123", R.mipmap.fotoamanda, 25000.0),
         )
@@ -23,5 +23,5 @@ class UsuariosDataSet {
 
     fun dataEmpty():MutableList<Usuario>{
         return mutableListOf<Usuario>()
-    }
+    }*/
 }

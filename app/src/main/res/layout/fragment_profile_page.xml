@@ -47,11 +47,11 @@
             android:id="@+id/imagenFotoPerfil"
             android:layout_width="65dp"
             android:layout_height="74dp"
-            app:srcCompat="@mipmap/perfil_amanda"
-            android:layout_marginTop="13dp"
             android:layout_gravity="center"
+            android:layout_marginTop="13dp"
             android:background="@drawable/imagen_semiredondeada"
-            android:clipToOutline="true"/>
+            android:clipToOutline="true"
+            app:srcCompat="@mipmap/perfil_amanda" />
 
         <TextView
             android:id="@+id/textNombrePerfil"

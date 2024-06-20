@@ -22,8 +22,8 @@ data class Usuario(
     val apellido: String,
     val email: String,
     val password: String,
-    val imgPerfil: Int = R.mipmap.pp_standar,
-    //val imgPerfil: Uri? = null,
+   // val imgPerfil: Int = R.mipmap.pp_standar,
+    val imgPerfil: Uri? = null,
     val saldo: Double = 1000.0,
     val transacciones: MutableList<Transaccion> = mutableListOf()
 ) {
