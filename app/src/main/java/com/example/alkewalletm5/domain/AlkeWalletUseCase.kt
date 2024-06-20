@@ -20,7 +20,7 @@ class AlkeWalletUseCase(private val repository: AlkeWalletImpl) {
         return repository.login(email, password)
     }
 
-    suspend fun myAccount(token: String): MutableList<AccountResponse> {
+    suspend fun myAccount(token: String): Response<MutableList<AccountResponse>> {
         return repository.myAccount(token)
     }
     suspend fun getUserById(idUser: Long): UserResponse {

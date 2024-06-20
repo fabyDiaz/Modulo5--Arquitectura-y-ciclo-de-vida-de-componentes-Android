@@ -34,13 +34,13 @@ interface AlkeWalletService {
     @GET("accounts/{id}") //Falta agregar el token
     suspend fun getAccountById(@Header("Authorization") token: String, @Path("id") id: Long): AccountResponse
 
-    @POST("accounts") //Falta agregar el token
-    suspend fun createAccount(@Header("Authorization") token: String, account: AccountResponse): Response<AccountResponse>
+    @POST("accounts")
+    suspend fun createAccount(@Header("Authorization") token: String,@Body account: AccountResponse): Response<AccountResponse>
     @GET("auth/me")
     suspend fun getUserByToken(@Header("Authorization") token: String): UserResponse
 
     @GET("accounts/me")
-    suspend fun myAccount(@Header("Authorization") token: String): MutableList<AccountResponse>
+    suspend fun myAccount(@Header("Authorization") token: String): Response<MutableList<AccountResponse>>
     @POST("transactions")
     suspend fun createTransaction(@Header("Authorization") token: String, @Body transaction: TransactionResponse): Response<TransactionResponse>
 

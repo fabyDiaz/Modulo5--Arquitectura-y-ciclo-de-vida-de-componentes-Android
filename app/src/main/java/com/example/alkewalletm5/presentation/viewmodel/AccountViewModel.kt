@@ -31,14 +31,24 @@ class AccountViewModel(private val useCase: AlkeWalletUseCase, private val conte
 
     fun fetchUserAccounts() {
         viewModelScope.launch {
-            val token = authManager.getToken()
-            if (token != null) {
-                val result = useCase.myAccount(token)
-                _accounts.value = result
-                Log.d("USUARIO", _accounts.value.toString())
+            try {
+                val token = authManager.getToken()
+                if (token != null) {
+                    val response = useCase.myAccount(token)
+                    if (response.isSuccessful) {
+                        _accounts.value = response.body()
+                    } else {
+                        Log.e("AccountViewModel", "Error al obtener cuentas: ${response.message()}")
+                    }
+                } else {
+                    Log.e("AccountViewModel", "Token de autenticación no disponible")
+                }
+            } catch (e: Exception) {
+                Log.e("AccountViewModel", "Error al obtener cuentas: ${e.message}")
             }
         }
     }
+
 
 
     fun getAccountById(accountId: Long): LiveData<AccountResponse> {

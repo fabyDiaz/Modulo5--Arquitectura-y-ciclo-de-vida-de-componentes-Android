@@ -45,8 +45,8 @@ class SignupPage : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments != null) {
-        }
+        userViewModelFactory = UserViewModelFactory(useCase, requireContext())
+        userViewModel = ViewModelProvider(this, userViewModelFactory).get(UserViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -55,12 +55,14 @@ class SignupPage : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentSignupPageBinding.inflate(inflater, container, false)
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                // Navegar de vuelta a Fragment1
-                findNavController().navigate(R.id.loginSignupPage)
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    // Navegar de vuelta a Fragment1
+                    findNavController().navigate(R.id.loginSignupPage)
+                }
+            })
         return binding.root
     }
 
@@ -68,25 +70,25 @@ class SignupPage : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val navController = findNavController(view)
-        binding.buttonLoginSignup.setOnClickListener{llenarFormularioSignup()}
-        binding.enlaceYaTieneCuentaSignup.setOnClickListener{navController.navigate(R.id.loginPage)}
+        binding.buttonLoginSignup.setOnClickListener { llenarFormularioSignup() }
+        binding.enlaceYaTieneCuentaSignup.setOnClickListener { navController.navigate(R.id.loginPage) }
 
+        userViewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            errorMessage?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                Log.e("ERROR", it)
+            }
+        }
 
-        userViewModelFactory = UserViewModelFactory(useCase,  requireContext())
-        userViewModel = ViewModelProvider(this, userViewModelFactory).get(UserViewModel::class.java)
-
-        userViewModel.createdUserId.observe(viewLifecycleOwner, Observer { userId ->
+        userViewModel.createdUserId.observe(viewLifecycleOwner) { userId ->
             if (userId != null) {
-                userViewModel.fetchLoggedUser()
-                userViewModel.usuarioLogueado.observe(viewLifecycleOwner) { usuario ->
-                    if (usuario != null) {
-                        findNavController().navigate(R.id.homePage)
-                    }
-                }
+                Toast.makeText(requireContext(), "Registro exitoso", Toast.LENGTH_SHORT).show()
+                navController.navigate(R.id.loginPage)
             } else {
                 Toast.makeText(requireContext(), "Error en el registro", Toast.LENGTH_SHORT).show()
             }
-        })
+
+        }
     }
 
     private fun llenarFormularioSignup() {
@@ -97,17 +99,19 @@ class SignupPage : Fragment() {
         val confirmPassword = binding.inputPassword2Signup.text.toString()
 
         if (nombre.isEmpty() || apellido.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-            Toast.makeText(requireContext(), "Por favor complete todos los campos", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                "Por favor complete todos los campos",
+                Toast.LENGTH_SHORT
+            ).show()
             return
         }
 
         if (password != confirmPassword) {
-            Toast.makeText(requireContext(), "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Las contraseñas no coinciden", Toast.LENGTH_SHORT)
+                .show()
             return
         }
-
-        userViewModelFactory = UserViewModelFactory(useCase, requireContext())
-        userViewModel = ViewModelProvider(this, userViewModelFactory).get(UserViewModel::class.java)
 
         val newUser = UserResponse(
             id = 0,
@@ -121,22 +125,16 @@ class SignupPage : Fragment() {
 
         userViewModel.createUserAndGetId(newUser)
 
-        Log.d("USUARIO", "Usuario enviado a la API: "+userViewModel.user.toString())
-        userViewModel.createdUserId.observe(viewLifecycleOwner, Observer { userId ->
-            Log.d("USUARIO", "ID del usuario creado: $userId")
-        })
+        Log.d("USUARIO", "Usuario enviado a la API: " + userViewModel.user.toString())
 
         Toast.makeText(requireContext(), "Registro exitoso", Toast.LENGTH_SHORT).show()
-        findNavController().navigate(R.id.homePage)
+        findNavController().navigate(R.id.loginPage)
     }
-    /**
-     * Método llamado cuando la vista asociada con el fragmento está siendo destruida.
-     */
+
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-
 
 }

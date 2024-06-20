@@ -38,30 +38,39 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
 
     fun createUserAndGetId(user: UserResponse) {
         viewModelScope.launch {
-            val response = useCase.createUserApp(user)
-            if (response.isSuccessful) {
-                val createdUser = response.body()
-                createdUser?.id?.let {
-                    _createdUserId.value = it
-                    Log.e("USUARIO", _createdUserId.value.toString())
-                    // Obtener la fecha actual
-                    val currentDate = Calendar.getInstance().time
-                    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
-                    val formattedDate = dateFormat.format(currentDate)
+            try {
+                val response = useCase.createUserApp(user)
+                if (response.isSuccessful) {
+                    val createdUser = response.body()
+                    createdUser?.id?.let {
+                        _createdUserId.value = it
+                        Log.d("USUARIO", "Usuario creado con ID: $it")
 
-                    // Crear cuenta para el nuevo usuario
-                    val newAccount = AccountResponse(
-                        id = 0,
-                        creationDate = formattedDate, // Establecer la fecha de creación según lo necesario
-                        money = "1000.0",
-                        isBlocked = false,
-                        userId = it,
-                    )
+                        // Obtener la fecha actual
+                        val currentDate = Calendar.getInstance().time
+                        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
+                        val formattedDate = dateFormat.format(currentDate)
 
-                    createAccountForUser(newAccount)
+                        // Crear cuenta para el nuevo usuario
+                        val newAccount = AccountResponse(
+                            id = 0,
+                            creationDate = formattedDate, // Establecer la fecha de creación según lo necesario
+                            money = "1000.0",
+                            isBlocked = false,
+                            userId = it
+                        )
+
+                        Log.i("USUARIO", newAccount.id.toString() + "   "+ newAccount.money.toString() + "  " + newAccount.userId.toString())
+
+                        createAccountForUser(newAccount)
+                    }
+                } else {
+                    _error.value = "Error al crear usuario: ${response.message()}"
+                    Log.e("USUARIO", "Error al crear usuario: ${response.message()}")
                 }
-            } else {
-                // Manejar el error de creación de usuario
+            } catch (e: Exception) {
+                _error.value = "Error al crear usuario: ${e.message}"
+                Log.e("USUARIO", "Error al crear usuario: ${e.message}")
             }
         }
     }
@@ -90,12 +99,15 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
                 val token = authManager.getToken()
                 if (token != null) {
                     val response = useCase.createAccount(token, account)
+                    Log.d("CUENTA", "Token obtenido correctamente: $token")
+                    Log.d("CUENTA", "Datos de la cuenta a crear: $account")
                     if (response.isSuccessful) {
                         val createdAccount = response.body()
                         Log.d("CUENTA", "Cuenta creada: ${createdAccount?.id}")
+                        Log.d("CUENTA", "Cuenta creada con éxito: ${createdAccount?.id}, datos de la cuenta: $createdAccount")
                     } else {
-                        Log.e("CUENTA", "Error al crear la cuenta: ${response.message()}")
-                        // Manejar el error de creación de cuenta
+                        _error.value = "Error al crear cuenta: ${response.message()}"
+                        Log.e("CUENTA", "Error al crear cuenta: ${response.message()}")
                     }
                 } else {
                     Log.e("CUENTA", "Token de autenticación no disponible")

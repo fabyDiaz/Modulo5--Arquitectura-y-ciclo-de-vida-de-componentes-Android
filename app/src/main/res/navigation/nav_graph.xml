@@ -61,9 +61,6 @@
         android:label="fragment_signup_page"
         tools:layout="@layout/fragment_signup_page" >
         <action
-            android:id="@+id/action_signupPage_to_homePage"
-            app:destination="@id/homePage" />
-        <action
             android:id="@+id/action_signupPage_to_loginPage"
             app:destination="@id/loginPage" />
     </fragment>

@@ -27,7 +27,7 @@ class AlkeWalletImpl(private var apiservice: AlkeWalletService): AlkeWalletRepos
         }
     }
 
-    override suspend fun myAccount(token: String): MutableList<AccountResponse> {
+    override suspend fun myAccount(token: String): Response<MutableList<AccountResponse>> {
         return withContext(Dispatchers.IO) {
             apiservice.myAccount("Bearer $token")
         }
@@ -68,7 +68,7 @@ class AlkeWalletImpl(private var apiservice: AlkeWalletService): AlkeWalletRepos
     }
 
     override suspend fun createAccount(token: String, account: AccountResponse): Response<AccountResponse> {
-        return apiservice.createAccount(token, account)
+        return apiservice.createAccount("Bearer $token", account)
     }
 
     override suspend fun getUserByToken(token: String): UserResponse {

@@ -25,7 +25,7 @@ interface AlkeWalletRepository {
     suspend fun createAccount(token: String, account: AccountResponse): Response<AccountResponse>
 
     suspend fun getUserByToken(token: String): UserResponse
-    suspend fun myAccount(token: String): MutableList<AccountResponse>
+    suspend fun myAccount(token: String): Response<MutableList<AccountResponse>>
     suspend fun createTransaction(token: String,transaction: TransactionResponse): Response<TransactionResponse>
 
     suspend fun getAllTransactionUser(token: String): TransactionsListResponse
