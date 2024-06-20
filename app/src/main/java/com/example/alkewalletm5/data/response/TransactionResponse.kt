@@ -1,9 +1,12 @@
 package com.example.alkewalletm5.data.response
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import java.time.LocalDateTime
-
+@Entity(tableName = "transactions")
 data class TransactionResponse(
+    @PrimaryKey
     val id: Long,
     val amount: Long,
     val concept: String,

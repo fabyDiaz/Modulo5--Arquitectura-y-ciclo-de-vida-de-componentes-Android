@@ -11,17 +11,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.alkewalletm5.R
-import com.example.alkewalletm5.data.model.Usuario
+import com.example.alkewalletm5.data.local.databse.AppDataBase
 import com.example.alkewalletm5.data.network.api.AlkeWalletService
 import com.example.alkewalletm5.data.network.retrofit.RetrofitHelper
 import com.example.alkewalletm5.data.repository.AlkeWalletImpl
@@ -30,7 +26,6 @@ import com.example.alkewalletm5.databinding.FragmentSignupPageBinding
 import com.example.alkewalletm5.domain.AlkeWalletUseCase
 import com.example.alkewalletm5.presentation.viewmodel.UserViewModel
 import com.example.alkewalletm5.presentation.viewmodel.UserViewModelFactory
-import com.example.alkewalletm5.presentation.viewmodel.UsuarioViewModel
 
 class SignupPage : Fragment() {
 
@@ -39,12 +34,16 @@ class SignupPage : Fragment() {
     private lateinit var userViewModel: UserViewModel
     private lateinit var userViewModelFactory: UserViewModelFactory
 
-    val apiService = RetrofitHelper.getRetrofit().create(AlkeWalletService::class.java)
-    val repository = AlkeWalletImpl(apiService)
-    val useCase = AlkeWalletUseCase(repository)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val database = AppDataBase.getDatabase(requireContext())
+        val walletDao = database.WalletDao()
+
+        val apiService = RetrofitHelper.getRetrofit().create(AlkeWalletService::class.java)
+        val repository = AlkeWalletImpl(apiService, walletDao)
+        val useCase = AlkeWalletUseCase(repository)
+
         userViewModelFactory = UserViewModelFactory(useCase, requireContext())
         userViewModel = ViewModelProvider(this, userViewModelFactory).get(UserViewModel::class.java)
     }

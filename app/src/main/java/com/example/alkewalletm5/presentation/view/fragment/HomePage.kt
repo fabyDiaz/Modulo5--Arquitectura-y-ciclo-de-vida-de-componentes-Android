@@ -18,6 +18,7 @@ import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.alkewalletm5.R
+import com.example.alkewalletm5.data.local.databse.AppDataBase
 import com.example.alkewalletm5.data.network.api.AlkeWalletService
 import com.example.alkewalletm5.data.network.retrofit.RetrofitHelper
 import com.example.alkewalletm5.data.repository.AlkeWalletImpl
@@ -38,7 +39,6 @@ class HomePage : Fragment() {
 
     private lateinit var binding: FragmentHomePageBinding
     private lateinit var adapter: TransactionAdapter
-    //private val usuarioViewModel: UsuarioViewModel by activityViewModels()
     private lateinit var userViewModel: UserViewModel
     private lateinit var accountViewModel: AccountViewModel
     private lateinit var transactionViewModel: TransactionViewModel
@@ -49,12 +49,14 @@ class HomePage : Fragment() {
     private lateinit var accountViewModelFactory: AccountViewModelFactory
     private lateinit var transactionViewModelFactory: TransactionViewModelFactory
   //  private lateinit var destinoViewModelFactory: DestinoViewModelFactory
-    //private val transaccionViewModel: TransaccionViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val database = AppDataBase.getDatabase(requireContext())
+        val walletDao = database.WalletDao()
         val apiService = RetrofitHelper.getRetrofit().create(AlkeWalletService::class.java)
-        val repository = AlkeWalletImpl(apiService)
+        val repository = AlkeWalletImpl(apiService, walletDao)
 
         useCase = AlkeWalletUseCase(repository)
         userViewModelFactory = UserViewModelFactory(useCase, requireContext())
@@ -72,13 +74,9 @@ class HomePage : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentHomePageBinding.inflate(inflater, container, false)
-        // Manejar el botón de retroceso del dispositivo
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                // Navegar de vuelta a Fragment1
-                //findNavController().navigate(R.id.loginSignupPage)
                 mostrarCuadroDialogo()
             }
         })

@@ -25,11 +25,6 @@ class AccountViewModel(private val useCase: AlkeWalletUseCase, private val conte
 
     private val authManager = AuthManager(context)
 
-    /*init {
-        // Inicializa con una lista vacía
-         fetchUserAccounts()
-    }*/
-
     fun fetchUserAccounts() {
         viewModelScope.launch {
             try {
@@ -98,34 +93,6 @@ class AccountViewModel(private val useCase: AlkeWalletUseCase, private val conte
         return false
     }
 
-   /* fun sumarSaldoUsuario(monto: Double): Boolean {
-        Log.i("USUARIO", "El nuevo saldo es ${_accounts.value.toString()}")
-        _accounts.value?.let { userAccounts ->
-            val userAccount = userAccounts[0]
-            val nuevoSaldo = userAccount.money.toDouble() + monto
-            Log.i("USUARIO", "El nuevo saldo es $nuevoSaldo")
-            Log.i("USUARIO", "El nuevo saldo es ${_accounts.value.toString()}")
-            return if (nuevoSaldo >= 0) {
-                userAccount.money = nuevoSaldo.toString()
-                viewModelScope.launch {
-                    val token = authManager.getToken()
-                    if (token != null) {
-                        val response = useCase.updateAccount(token, userAccount)
-                        if (response.isSuccessful) {
-                            _accounts.value = _accounts.value // Actualiza LiveData para notificar los cambios
-                            Log.d("USUARIO", "Saldo actualizado: ${_accounts.value}")
-                        } else {
-                            Log.e("USUARIO", "Error al actualizar el saldo: ${response.message()}")
-                        }
-                    }
-                }
-                true
-            } else {
-                false
-            }
-        }
-        return false
-    }*/
 
     fun sumarSaldoUsuario(monto: Double): Boolean {
         Log.i("USUARIO", "Saldo actual de las cuentas: ${_accounts.value.toString()}")

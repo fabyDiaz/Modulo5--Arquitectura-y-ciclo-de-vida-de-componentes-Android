@@ -15,32 +15,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.alkewalletm5.R
-import com.example.alkewalletm5.data.model.Destinatario
+import com.example.alkewalletm5.data.local.databse.AppDataBase
 import com.example.alkewalletm5.data.network.api.AlkeWalletService
 import com.example.alkewalletm5.data.network.retrofit.RetrofitHelper
 import com.example.alkewalletm5.data.repository.AlkeWalletImpl
-import com.example.alkewalletm5.data.response.TransactionResponse
 import com.example.alkewalletm5.data.response.UserResponse
 import com.example.alkewalletm5.databinding.FragmentSendMoneyBinding
 import com.example.alkewalletm5.domain.AlkeWalletUseCase
 import com.example.alkewalletm5.presentation.view.adapter.DestinatarioAdpater
 import com.example.alkewalletm5.presentation.viewmodel.AccountViewModel
 import com.example.alkewalletm5.presentation.viewmodel.AccountViewModelFactory
-import com.example.alkewalletm5.presentation.viewmodel.DestinatarioViewModel
 import com.example.alkewalletm5.presentation.viewmodel.DestinoViewModel
 import com.example.alkewalletm5.presentation.viewmodel.DestinoViewModelFactory
-import com.example.alkewalletm5.presentation.viewmodel.TransaccionViewModel
 import com.example.alkewalletm5.presentation.viewmodel.TransactionViewModel
 import com.example.alkewalletm5.presentation.viewmodel.TransactionViewModelFactory
 import com.example.alkewalletm5.presentation.viewmodel.UserViewModel
 import com.example.alkewalletm5.presentation.viewmodel.UserViewModelFactory
-import com.example.alkewalletm5.presentation.viewmodel.UsuarioViewModel
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -67,9 +60,11 @@ class SendMoney : Fragment(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val database = AppDataBase.getDatabase(requireContext())
+        val walletDao = database.WalletDao()
         // Inicializar los ViewModels aquí
         val apiService = RetrofitHelper.getRetrofit().create(AlkeWalletService::class.java)
-        val repository = AlkeWalletImpl(apiService)
+        val repository = AlkeWalletImpl(apiService, walletDao)
 
         useCase = AlkeWalletUseCase(repository)
         destinoViewModelFactory = DestinoViewModelFactory(useCase, requireContext())
@@ -211,24 +206,3 @@ class SendMoney : Fragment(){
 
 }
 
-//val montoEnviado: Double = monto.toDouble()
-
-// Verificar si el saldo es suficiente antes de realizar la transacción
-/*val saldoSuficiente = usuarioViewModel.restarSaldoUsuario(montoEnviado)
-if (!saldoSuficiente) {
-    Toast.makeText(requireContext(), "Saldo insuficiente para realizar la transacción", Toast.LENGTH_SHORT).show()
-    return@setOnClickListener
-}*/
-
-// Creamos una nueva transacción
-/*transaccionViewModel.nuevaTransaccion(
-    fotoPerfil = destinatario.fotoPerfil,
-    idReceiver = destinatario.nombre,
-    monto = montoEnviado,
-    icono = iconoSend,
-    fecha = obtenerFecha(),
-    simbolo = "-$"
-)
-
-// Añadir la nueva transacción a la lista de transacciones
-transaccionViewModel.addTransaccion()*/

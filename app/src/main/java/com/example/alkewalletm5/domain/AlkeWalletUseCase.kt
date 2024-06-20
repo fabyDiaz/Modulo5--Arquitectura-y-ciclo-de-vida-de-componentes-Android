@@ -11,7 +11,6 @@ import retrofit2.Response
 
 class AlkeWalletUseCase(private val repository: AlkeWalletImpl) {
 
-
     suspend fun createUserApp(user: UserResponse): Response<UserResponse> {
         return repository.createUser(user)
     }
@@ -57,6 +56,22 @@ class AlkeWalletUseCase(private val repository: AlkeWalletImpl) {
 
     suspend fun updateAccount(token: String, account: AccountResponse): Response<AccountResponse> {
         return repository.updateAccount(token, account)
+    }
+
+    suspend fun getLocalUser(): UserResponse {
+        return repository.getLocalUser()
+    }
+
+    suspend fun getLocalAccounts(): List<AccountResponse> {
+        return repository.getLocalAccounts()
+    }
+
+    suspend fun getLocalTransactions(): List<TransactionResponse> {
+        return repository.getLocalTransactions()
+    }
+
+    suspend fun getLocalUsers(page: Int): List<UserResponse> {
+        return repository.getLocalUsers(page)
     }
 
 

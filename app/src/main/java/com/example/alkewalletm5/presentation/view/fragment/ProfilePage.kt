@@ -19,6 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.alkewalletm5.R
+import com.example.alkewalletm5.data.local.databse.AppDataBase
 import com.example.alkewalletm5.data.network.api.AlkeWalletService
 import com.example.alkewalletm5.data.network.retrofit.RetrofitHelper
 import com.example.alkewalletm5.data.repository.AlkeWalletImpl
@@ -44,13 +45,14 @@ class ProfilePage : Fragment() {
     private lateinit var accountViewModel: AccountViewModel
     private lateinit var accountViewModelFactory: AccountViewModelFactory
 
-    private val REQUEST_CODE_PERMISSION = 1001
-    private val REQUEST_CODE_IMAGE_PICK = 1002
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val database = AppDataBase.getDatabase(requireContext())
+        val walletDao = database.WalletDao()
         val apiService = RetrofitHelper.getRetrofit().create(AlkeWalletService::class.java)
-        val repository = AlkeWalletImpl(apiService)
+        val repository = AlkeWalletImpl(apiService, walletDao)
 
         useCase = AlkeWalletUseCase(repository)
         userViewModelFactory = UserViewModelFactory(useCase, requireContext())

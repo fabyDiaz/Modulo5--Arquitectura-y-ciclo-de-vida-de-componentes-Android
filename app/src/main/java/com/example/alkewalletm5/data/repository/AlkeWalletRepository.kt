@@ -34,6 +34,11 @@ interface AlkeWalletRepository {
 
     suspend fun updateAccount(token: String,account: AccountResponse): Response<AccountResponse>
 
+    suspend fun getLocalUser(): UserResponse
+    suspend fun getLocalAccounts(): List<AccountResponse>
+    suspend fun getLocalTransactions(): List<TransactionResponse>
+
+    suspend fun getLocalUsers(page: Int): List<UserResponse>
 
 
 

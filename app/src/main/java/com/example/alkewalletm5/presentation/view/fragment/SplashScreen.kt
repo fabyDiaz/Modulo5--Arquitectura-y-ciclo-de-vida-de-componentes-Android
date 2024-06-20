@@ -8,15 +8,10 @@ package com.example.alkewalletm5.presentation.view.fragment
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.alkewalletm5.R
 import com.example.alkewalletm5.data.network.api.AlkeWalletService
@@ -25,7 +20,6 @@ import com.example.alkewalletm5.data.repository.AlkeWalletImpl
 import com.example.alkewalletm5.domain.AlkeWalletUseCase
 import com.example.alkewalletm5.presentation.viewmodel.UserViewModel
 import com.example.alkewalletm5.presentation.viewmodel.UserViewModelFactory
-import com.example.alkewalletm5.presentation.viewmodel.UsuarioViewModel
 
 /**
  * Fragmento que representa la pantalla de carga inicial de la aplicación.
@@ -33,11 +27,6 @@ import com.example.alkewalletm5.presentation.viewmodel.UsuarioViewModel
 class SplashScreen : Fragment() {
 
     private val SPLASH_SCREEN_DURATION = 1000L
-    private lateinit var userViewModel: UserViewModel
-    private lateinit var userViewModelFactory: UserViewModelFactory
-    val apiService = RetrofitHelper.getRetrofit().create(AlkeWalletService::class.java)
-    val repository = AlkeWalletImpl(apiService)
-    val useCase =AlkeWalletUseCase(repository)
 
     /**
      * Método llamado para hacer la inicialización inicial del fragmento.
@@ -75,21 +64,6 @@ class SplashScreen : Fragment() {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-      /*  userViewModelFactory = UserViewModelFactory(useCase, requireContext())
-        userViewModel = ViewModelProvider(this, userViewModelFactory).get(UserViewModel::class.java)
-
-
-        val userId = 5L // Asume que tienes el ID del usuario
-
-
-        userViewModel.user.observe(viewLifecycleOwner, Observer { user ->
-            // Registra la información del usuario en los logs
-            Log.d("UserFragment", "Usuario recibido: ${user.firstName} ${user.lastName}")
-        })
-
-        userViewModel.getUserById(5)*/
-
 
        //  Retraso antes de navegar al siguiente fragmento
         Handler(Looper.getMainLooper()).postDelayed({

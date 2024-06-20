@@ -57,48 +57,6 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
     }
 
 
-
-    /*fun createUserAndGetId(user: UserResponse) {
-        viewModelScope.launch {
-            try {
-                val response = useCase.createUserApp(user)
-                if (response.isSuccessful) {
-                    val createdUser = response.body()
-                    createdUser?.id?.let {
-                        _createdUserId.value = it
-                        Log.d("USUARIO", "Usuario creado con ID: $it")
-
-                        // Obtener la fecha actual
-                        val currentDate = Calendar.getInstance().time
-                        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
-                        val formattedDate = dateFormat.format(currentDate)
-
-                        // Crear cuenta para el nuevo usuario
-                        val newAccount = AccountResponse(
-                            id = 0,
-                            creationDate = formattedDate, // Establecer la fecha de creación según lo necesario
-                            money = "1000.0",
-                            isBlocked = false,
-                            userId = it
-                        )
-
-                        Log.i("USUARIO", newAccount.id.toString() + "   "+ newAccount.money.toString() + "  " + newAccount.userId.toString())
-
-                        createAccountForUser(newAccount)
-                    }
-                } else {
-                    _error.value = "Error al crear usuario: ${response.message()}"
-                    Log.e("USUARIO", "Error al crear usuario: ${response.message()}")
-                }
-            } catch (e: Exception) {
-                _error.value = "Error al crear usuario: ${e.message}"
-                Log.e("USUARIO", "Error al crear usuario: ${e.message}")
-            }
-        }
-    }*/
-
-
-
    fun login(email: String, password: String) {
         viewModelScope.launch {
             try {

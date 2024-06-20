@@ -15,11 +15,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.alkewalletm5.R
-import com.example.alkewalletm5.data.model.Destinatario
+import com.example.alkewalletm5.data.local.databse.AppDataBase
 import com.example.alkewalletm5.data.network.api.AlkeWalletService
 import com.example.alkewalletm5.data.network.retrofit.RetrofitHelper
 import com.example.alkewalletm5.data.repository.AlkeWalletImpl
@@ -29,15 +28,12 @@ import com.example.alkewalletm5.domain.AlkeWalletUseCase
 import com.example.alkewalletm5.presentation.view.adapter.DestinatarioAdpater
 import com.example.alkewalletm5.presentation.viewmodel.AccountViewModel
 import com.example.alkewalletm5.presentation.viewmodel.AccountViewModelFactory
-import com.example.alkewalletm5.presentation.viewmodel.DestinatarioViewModel
 import com.example.alkewalletm5.presentation.viewmodel.DestinoViewModel
 import com.example.alkewalletm5.presentation.viewmodel.DestinoViewModelFactory
-import com.example.alkewalletm5.presentation.viewmodel.TransaccionViewModel
 import com.example.alkewalletm5.presentation.viewmodel.TransactionViewModel
 import com.example.alkewalletm5.presentation.viewmodel.TransactionViewModelFactory
 import com.example.alkewalletm5.presentation.viewmodel.UserViewModel
 import com.example.alkewalletm5.presentation.viewmodel.UserViewModelFactory
-import com.example.alkewalletm5.presentation.viewmodel.UsuarioViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -63,8 +59,11 @@ class RequestMoney : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val database = AppDataBase.getDatabase(requireContext())
+        val walletDao = database.WalletDao()
         val apiService = RetrofitHelper.getRetrofit().create(AlkeWalletService::class.java)
-        val repository = AlkeWalletImpl(apiService)
+        val repository = AlkeWalletImpl(apiService, walletDao)
+
         useCase = AlkeWalletUseCase(repository)
         destinoViewModelFactory = DestinoViewModelFactory(useCase, requireContext())
         userViewModelFactory = UserViewModelFactory(useCase, requireContext())
@@ -191,38 +190,6 @@ class RequestMoney : Fragment() {
     }
 
 
-    /**
-     *Se obtiene una referencia al spinner desde el layout usando la propiedad binding.spinnerEnviarDinero
-     * observa el LiveData destinatarioViewModel.destinatarios utilizando viewLifecycleOwner
-     * Cuando el LiveData de destinatarios cambia, se ejecuta el bloque de código dentro del lambda.
-     * Dentro de este bloque, se crea un adaptador (DestinatarioAdapter) utilizando la lista actualizada de
-     * destinatarios y se establece este adaptador en el spinner.
-     */
-   /* fun mostrarListadeDestinatarios(){
-        val spinner = binding.spinnerRecibirDinero
-
-        // Lista de elementos para el Spinner
-        destinatarioViewModel.destinatarios.observe(viewLifecycleOwner) { destinatarios ->
-            // Adapter para el Spinner
-            val adapter = DestinatarioAdpater(requireContext(), destinatarios)
-            spinner.adapter = adapter
-        }
-    }*/
-
-    /**
-     * Obtener la fecha actual y retornarla como un String
-     * Se obtiene una instancia de Calendar que representa la fecha y hora actuales.
-     * Se crea un objeto SimpleDateFormat, que permite formatear fechas y horas
-     * @return La fecha y hora actual formateada como una cadena de texto en el formato "MMM d, hh:mm a"
-     */
-    fun obtenerFecha(): String{
-        // Obtener la fecha y hora actual
-        val calendar = Calendar.getInstance()
-
-        // Formatear la fecha y hora según el formato deseado
-        val dateFormat = SimpleDateFormat("MMM d, hh:mm a", Locale.getDefault())
-        return dateFormat.format(calendar.time)
-    }
 
     /**
      * Esta función pinta el editText del monto
