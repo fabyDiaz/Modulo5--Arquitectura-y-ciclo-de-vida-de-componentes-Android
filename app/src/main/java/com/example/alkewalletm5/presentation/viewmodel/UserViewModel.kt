@@ -75,34 +75,6 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
 
 
 
-    /*private fun createAccountForUser(account: AccountResponse) {
-        viewModelScope.launch {
-            try {
-                val token = authManager.getToken()
-                if (token != null) {
-                    val response = useCase.createAccount(token, account)
-                    Log.d("CUENTA", "Token obtenido correctamente: $token")
-                    Log.d("CUENTA", "Datos de la cuenta a crear: $account")
-                    if (response.isSuccessful) {
-                        val createdAccount = response.body()
-                        Log.d("CUENTA", "Cuenta creada: ${createdAccount?.id}")
-                        Log.d("CUENTA", "Cuenta creada con éxito: ${createdAccount?.id}, datos de la cuenta: $createdAccount")
-                    } else {
-                        _error.value = "Error al crear cuenta: ${response.message()}"
-                        Log.e("CUENTA", "Error al crear cuenta: ${response.message()}")
-                    }
-                } else {
-                    Log.e("CUENTA", "Token de autenticación no disponible")
-                    _error.value = "Error: Token de autenticación no disponible"
-                }
-            } catch (e: HttpException) {
-                _error.value = "Error: ${e.code()} ${e.message()}"
-            } catch (e: Exception) {
-                _error.value = "Error: ${e.message}"
-            }
-        }
-    }*/
-
     fun fetchLoggedUser() {
         viewModelScope.launch {
             try {
@@ -128,3 +100,31 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
     }
 
 }
+
+/*private fun createAccountForUser(account: AccountResponse) {
+    viewModelScope.launch {
+        try {
+            val token = authManager.getToken()
+            if (token != null) {
+                val response = useCase.createAccount(token, account)
+                Log.d("CUENTA", "Token obtenido correctamente: $token")
+                Log.d("CUENTA", "Datos de la cuenta a crear: $account")
+                if (response.isSuccessful) {
+                    val createdAccount = response.body()
+                    Log.d("CUENTA", "Cuenta creada: ${createdAccount?.id}")
+                    Log.d("CUENTA", "Cuenta creada con éxito: ${createdAccount?.id}, datos de la cuenta: $createdAccount")
+                } else {
+                    _error.value = "Error al crear cuenta: ${response.message()}"
+                    Log.e("CUENTA", "Error al crear cuenta: ${response.message()}")
+                }
+            } else {
+                Log.e("CUENTA", "Token de autenticación no disponible")
+                _error.value = "Error: Token de autenticación no disponible"
+            }
+        } catch (e: HttpException) {
+            _error.value = "Error: ${e.code()} ${e.message()}"
+        } catch (e: Exception) {
+            _error.value = "Error: ${e.message}"
+        }
+    }
+}*/

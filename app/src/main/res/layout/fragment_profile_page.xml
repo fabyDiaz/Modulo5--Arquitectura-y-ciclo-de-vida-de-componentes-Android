@@ -134,6 +134,22 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 style="@style/letra_negra"/>
+            <Button
+                android:id="@+id/btnCrearCuenta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Presiona aquí para crear una cuenta"
+                android:textColor="@color/azul"
+                android:background="@color/fondoGris"
+                android:textAllCaps="false"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_gravity="center"
+                android:textSize="16sp"/>
 
         </LinearLayout>
 

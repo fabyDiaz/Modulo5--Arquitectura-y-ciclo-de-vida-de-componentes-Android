@@ -8,6 +8,7 @@ import com.example.alkewalletm5.data.response.LoginRequest
 import com.example.alkewalletm5.data.response.TransactionResponse
 import com.example.alkewalletm5.data.response.TransactionsListResponse
 import com.example.alkewalletm5.data.response.UserListResponse
+import com.example.alkewalletm5.data.response.UserLogged
 import com.example.alkewalletm5.data.response.UserResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.alkewalletm5.data.response.AccountResponse
 import com.example.alkewalletm5.data.response.TransactionResponse
+import com.example.alkewalletm5.data.response.UserLogged
 import com.example.alkewalletm5.data.response.UserResponse
 @Dao
 interface WalletDao {
@@ -39,4 +40,5 @@ interface WalletDao {
 
     @Query("SELECT * FROM users LIMIT 1")
     suspend fun getUser(): UserResponse?
+
 }
