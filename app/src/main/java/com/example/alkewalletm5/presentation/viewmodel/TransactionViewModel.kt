@@ -25,7 +25,7 @@ class TransactionViewModel(private val useCase: AlkeWalletUseCase, private val c
 
     private val authManager = AuthManager(context)
 
-    fun createTransaction(amount: Long, concept: String, accountId: Long, userId: Long) {
+    fun createTransaction(amount: Long, concept: String, type: String,  accountId: Long, userId: Long) {
         viewModelScope.launch {
             // Obtener el token de autenticación
             val token = authManager.getToken()
@@ -40,7 +40,7 @@ class TransactionViewModel(private val useCase: AlkeWalletUseCase, private val c
                     amount = amount,
                     concept = concept,
                     date = formattedDate,  // Fecha actual
-                    type = "topup|payment",  // Tipo de transacción (suponiendo que es un pago)
+                    type = type,  // Tipo de transacción (suponiendo que es un pago)
                     accountId = accountId,  // ID de la cuenta del usuario que realiza la transacción
                     userId = userId,  // ID del usuario que realiza la transacción
                     toAccountId = 5  // ID de la cuenta destino

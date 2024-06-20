@@ -123,7 +123,7 @@ class SignupPage : Fragment() {
             roleId = 1
         )
 
-        userViewModel.createUserAndGetId(newUser)
+        userViewModel.createUser(newUser)
 
         Log.d("USUARIO", "Usuario enviado a la API: " + userViewModel.user.toString())
 

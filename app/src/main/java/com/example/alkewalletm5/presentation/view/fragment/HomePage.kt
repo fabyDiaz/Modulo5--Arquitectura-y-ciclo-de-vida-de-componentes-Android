@@ -12,12 +12,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.addCallback
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -28,18 +23,13 @@ import com.example.alkewalletm5.data.network.retrofit.RetrofitHelper
 import com.example.alkewalletm5.data.repository.AlkeWalletImpl
 import com.example.alkewalletm5.databinding.FragmentHomePageBinding
 import com.example.alkewalletm5.domain.AlkeWalletUseCase
-import com.example.alkewalletm5.presentation.view.adapter.TransaccionAdapter
 import com.example.alkewalletm5.presentation.view.adapter.TransactionAdapter
 import com.example.alkewalletm5.presentation.viewmodel.AccountViewModel
 import com.example.alkewalletm5.presentation.viewmodel.AccountViewModelFactory
-import com.example.alkewalletm5.presentation.viewmodel.TransaccionViewModel
 import com.example.alkewalletm5.presentation.viewmodel.TransactionViewModel
 import com.example.alkewalletm5.presentation.viewmodel.TransactionViewModelFactory
 import com.example.alkewalletm5.presentation.viewmodel.UserViewModel
 import com.example.alkewalletm5.presentation.viewmodel.UserViewModelFactory
-import com.example.alkewalletm5.presentation.viewmodel.UsuarioViewModel
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.squareup.picasso.Picasso
 
 /**
  * Fragmento que representa la página principal de la aplicación.
@@ -52,15 +42,30 @@ class HomePage : Fragment() {
     private lateinit var userViewModel: UserViewModel
     private lateinit var accountViewModel: AccountViewModel
     private lateinit var transactionViewModel: TransactionViewModel
+   // private lateinit var destinoViewModel: DestinoViewModel
 
     private lateinit var useCase: AlkeWalletUseCase
     private lateinit var userViewModelFactory: UserViewModelFactory
     private lateinit var accountViewModelFactory: AccountViewModelFactory
     private lateinit var transactionViewModelFactory: TransactionViewModelFactory
+  //  private lateinit var destinoViewModelFactory: DestinoViewModelFactory
     //private val transaccionViewModel: TransaccionViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val apiService = RetrofitHelper.getRetrofit().create(AlkeWalletService::class.java)
+        val repository = AlkeWalletImpl(apiService)
+
+        useCase = AlkeWalletUseCase(repository)
+        userViewModelFactory = UserViewModelFactory(useCase, requireContext())
+        accountViewModelFactory = AccountViewModelFactory(useCase, requireContext())
+        transactionViewModelFactory = TransactionViewModelFactory(useCase, requireContext())
+        // destinoViewModelFactory = DestinoViewModelFactory(useCase, requireContext())
+
+        userViewModel = ViewModelProvider(this, userViewModelFactory).get(UserViewModel::class.java)
+        accountViewModel = ViewModelProvider(this, accountViewModelFactory).get(AccountViewModel::class.java)
+        transactionViewModel = ViewModelProvider(this, transactionViewModelFactory).get(TransactionViewModel::class.java)
+        //  destinoViewModel = ViewModelProvider(this, destinoViewModelFactory).get(DestinoViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -87,35 +92,11 @@ class HomePage : Fragment() {
 
         val navController = findNavController(view)
 
-        val apiService = RetrofitHelper.getRetrofit().create(AlkeWalletService::class.java)
-        val repository = AlkeWalletImpl(apiService)
-
-        useCase = AlkeWalletUseCase(repository)
-        userViewModelFactory = UserViewModelFactory(useCase, requireContext())
-        accountViewModelFactory = AccountViewModelFactory(useCase, requireContext())
-        transactionViewModelFactory = TransactionViewModelFactory(useCase, requireContext())
-
-        userViewModel = ViewModelProvider(this, userViewModelFactory).get(UserViewModel::class.java)
-        accountViewModel = ViewModelProvider(this, accountViewModelFactory).get(AccountViewModel::class.java)
-        transactionViewModel = ViewModelProvider(this, transactionViewModelFactory).get(TransactionViewModel::class.java)
-
         binding.btnIngresarDineroHome.setOnClickListener { navController.navigate(R.id.requestMoney) }
         binding.btnEnviarDineroHome.setOnClickListener { navController.navigate(R.id.sendMoney) }
         binding.imagenHomeAmanda.setOnClickListener { navController.navigate(R.id.profilePage) }
 
         binding.recyclerTransacciones.layoutManager = LinearLayoutManager(context)
-
-        /*binding.recyclerTransacciones.layoutManager = LinearLayoutManager(context)
-        adapter = TransaccionAdapter()
-        binding.recyclerTransacciones.adapter = adapter*/
-
-       /* transaccionViewModel.transacciones.observe(viewLifecycleOwner) { transacciones ->
-            adapter.items = transacciones
-            adapter.notifyDataSetChanged()
-            updateEmptyState()
-        }*/
-
-
 
         userViewModel.fetchLoggedUser()
         userViewModel.usuarioLogueado.observe(viewLifecycleOwner) { usuario ->
@@ -153,15 +134,6 @@ class HomePage : Fragment() {
 
     }
 
-    /*private fun updateEmptyState() {
-        if (adapter.items.isEmpty()) {
-            binding.layoutTransaccionesEmpty.visibility = View.VISIBLE
-            binding.recyclerTransacciones.visibility = View.GONE
-        } else {
-            binding.layoutTransaccionesEmpty.visibility = View.GONE
-            binding.recyclerTransacciones.visibility = View.VISIBLE
-        }
-    }*/
 
     private fun updateEmptyState() {
         // Verificar si el adaptador está inicializado y tiene elementos

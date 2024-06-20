@@ -17,6 +17,9 @@ class DestinoViewModel(private val useCase: AlkeWalletUseCase, private val conte
     private val _usuarios = MutableLiveData<List<UserResponse>>()
     val usuarios: LiveData<List<UserResponse>> get() = _usuarios
 
+    private val _destinantario = MutableLiveData<UserResponse>()
+    val destinantario: LiveData<UserResponse> get() = _destinantario
+
 
     private val _error = MutableLiveData<String>()
 
@@ -45,5 +48,9 @@ class DestinoViewModel(private val useCase: AlkeWalletUseCase, private val conte
             }
         }
     }
+
+
+
+
 
 }

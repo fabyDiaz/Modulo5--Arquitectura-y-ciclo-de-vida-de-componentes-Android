@@ -65,16 +65,6 @@
                 app:layout_constraintStart_toStartOf="@+id/imagenYara"
                 app:layout_constraintTop_toTopOf="@+id/imagenYara" />
 
-            <TextView
-                android:id="@+id/simboloPeso"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="$-"
-                android:textColor="@color/semiblack"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/MontoEnvioYara"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/MontoEnvioYara"

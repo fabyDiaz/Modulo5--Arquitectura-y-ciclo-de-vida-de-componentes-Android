@@ -34,9 +34,30 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> get() = _error
 
+    fun createUser(user:UserResponse){
+        viewModelScope.launch {
+            try {
+                val response = useCase.createUserApp(user)
+                if (response.isSuccessful) {
+                    val createdUser = response.body()
+                    createdUser?.id?.let {
+                        _createdUserId.value = it
+                        Log.d("USUARIO", "Usuario creado con ID: $it")
+                    }
+                } else {
+                    _error.value = "Error al crear usuario: ${response.message()}"
+                    Log.e("USUARIO", "Error al crear usuario: ${response.message()}")
+                }
+            } catch (e: Exception) {
+                _error.value = "Error al crear usuario: ${e.message}"
+                Log.e("USUARIO", "Error al crear usuario: ${e.message}")
+            }
+        }
+    }
 
 
-    fun createUserAndGetId(user: UserResponse) {
+
+    /*fun createUserAndGetId(user: UserResponse) {
         viewModelScope.launch {
             try {
                 val response = useCase.createUserApp(user)
@@ -73,7 +94,9 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
                 Log.e("USUARIO", "Error al crear usuario: ${e.message}")
             }
         }
-    }
+    }*/
+
+
 
    fun login(email: String, password: String) {
         viewModelScope.launch {
@@ -93,7 +116,7 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
 
 
 
-    private fun createAccountForUser(account: AccountResponse) {
+    /*private fun createAccountForUser(account: AccountResponse) {
         viewModelScope.launch {
             try {
                 val token = authManager.getToken()
@@ -119,7 +142,7 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
                 _error.value = "Error: ${e.message}"
             }
         }
-    }
+    }*/
 
     fun fetchLoggedUser() {
         viewModelScope.launch {
@@ -133,5 +156,6 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
             }
         }
     }
+
 
 }

@@ -147,7 +147,7 @@ class SendMoney : Fragment(){
             accountViewModel.accounts.observe(viewLifecycleOwner) { accounts ->
                 if (accounts.isNotEmpty() && user != null) {
                     val userAccount = accounts[0]
-                    transactionViewModel.createTransaction(montoEnviado.toLong(), nota, userAccount.id, user.id )
+                    transactionViewModel.createTransaction(montoEnviado.toLong(), nota, "sendMoney", userAccount.id, user.id)
                     Toast.makeText(requireContext(), "Envío de dinero exitoso", Toast.LENGTH_SHORT).show()
                     findNavController().navigate(R.id.homePage)
                 } else {
@@ -161,7 +161,6 @@ class SendMoney : Fragment(){
             findNavController().navigate(R.id.homePage)
 
         }
-
 
     }
 
