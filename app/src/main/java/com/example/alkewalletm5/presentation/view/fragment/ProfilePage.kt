@@ -83,7 +83,26 @@ class ProfilePage : Fragment() {
             binding.txtMostrarInformaccion.text = "Nombre: ${it.firstName} \n" +
                     "Apellido: ${it.lastName} \n" +
                     "Email: ${it.email} \n"
-            binding.txtMostrarTarjetas.text = "No tiene tarjetas asociadas"
+        }
+
+        accountViewModel.account.observe(viewLifecycleOwner) { account ->
+            account?.let {
+                binding.txtMostrarTarjetas.text = "NUEVA CUENTA: \n" +
+                        "ID: ${it.id} \n" +
+                        "Fecha de creación: ${it.creationDate} \n" +
+                        "Saldo: ${it.money}"
+                binding.btnCrearCuenta.visibility = View.GONE
+
+            } ?: run {
+                binding.txtMostrarTarjetas.text = "No tiene tarjetas asociadas"
+            }
+        }
+
+
+        binding.btnCrearCuenta.setOnClickListener{
+            userViewModel.usuarioLogueado.value?.let { user ->
+                accountViewModel.createAccountForUser(user.id)
+            }
         }
 
         binding.tarjetaMiInformacion.setOnClickListener {

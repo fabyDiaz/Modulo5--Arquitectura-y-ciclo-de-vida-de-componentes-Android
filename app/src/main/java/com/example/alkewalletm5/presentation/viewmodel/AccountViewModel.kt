@@ -10,16 +10,23 @@ import androidx.lifecycle.viewModelScope
 import com.example.alkewalletm5.data.local.DestinatariosDataSet
 import com.example.alkewalletm5.data.network.api.AuthManager
 import com.example.alkewalletm5.data.response.AccountResponse
+import com.example.alkewalletm5.data.response.UserResponse
 import com.example.alkewalletm5.domain.AlkeWalletUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class AccountViewModel(private val useCase: AlkeWalletUseCase, private val context: Context) : ViewModel()  {
 
     private val _accounts = MutableLiveData<List<AccountResponse>>()
     val accounts: LiveData<List<AccountResponse>> get() = _accounts
+
+    private val _account = MutableLiveData<AccountResponse?>()
+    val account: MutableLiveData<AccountResponse?> get() = _account
 
     private val _error = MutableLiveData<String>()
 
@@ -133,18 +140,26 @@ class AccountViewModel(private val useCase: AlkeWalletUseCase, private val conte
         return false
     }
 
-    private fun createAccountForUser(account: AccountResponse) {
+    fun createAccountForUser(idUser:Long) {
         viewModelScope.launch {
             try {
                 val token = authManager.getToken()
                 if (token != null) {
+                    val currentDate = Calendar.getInstance().time
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
+                    val formattedDate = dateFormat.format(currentDate)
+                    val account = AccountResponse(
+                        id = 0, // El ID será generado por la base de datos
+                        creationDate = formattedDate, // Puedes definir la fecha de creación si es necesario
+                        money = "1000", // Saldo inicial
+                        isBlocked = false, // Por defecto no está bloqueada
+                        userId = idUser // ID del usuario logueado
+                    )
                     val response = useCase.createAccount(token, account)
-                    Log.d("CUENTA", "Token obtenido correctamente: $token")
-                    Log.d("CUENTA", "Datos de la cuenta a crear: $account")
                     if (response.isSuccessful) {
                         val createdAccount = response.body()
-                        Log.d("CUENTA", "Cuenta creada: ${createdAccount?.id}")
-                        Log.d("CUENTA", "Cuenta creada con éxito: ${createdAccount?.id}, datos de la cuenta: $createdAccount")
+                        _account.value = createdAccount
+
                     } else {
                         _error.value = "Error al crear cuenta: ${response.message()}"
                         Log.e("CUENTA", "Error al crear cuenta: ${response.message()}")
@@ -158,6 +173,7 @@ class AccountViewModel(private val useCase: AlkeWalletUseCase, private val conte
             } catch (e: Exception) {
                 _error.value = "Error: ${e.message}"
             }
+
         }
     }
 
