@@ -40,13 +40,13 @@ La implementación debe garantizar una experiencia de usuario fluida y
  mostrarse adecuadamente en la interfaz<br><br>
 
  **Consideraciones**<br>
- - Por el momento la app permite crear una cuenta e iniciar sesión, pero no guarda la sesión para poder ingresar sin conexión (Se está trabajando en ello) <b>
- - Se decide crear un nuevo usuario (SignUp Page) considerar que no tiene una cuenta aosicada, por lo que no podrá realizar transacciones. Para crear una cuenta y poder realizar transacciones debe ir al perfil (imagen superior derecha en homePage), ver tarjetas y presionar el botón. En ese momento se creará una nueva cuenta con un saldo inicial de $1000<br>
+ - Por el momento la app permite crear una cuenta e iniciar sesión, pero no guarda la sesión para poder ingresar sin conexión (Se está trabajando en ello) <br>
+ - Se decide crear un nuevo usuario (SignUp Page) considerar que no tiene una cuenta asociada, por lo que no podrá realizar transacciones. Para crear una cuenta y poder realizar transacciones debe ir al perfil (imagen superior derecha en homePage), ver tarjetas y presionar el botón. En ese momento se creará una nueva cuenta con un saldo inicial de $1000<br>
  - Si decide inicar sesión con una cuenta existente, puede intentar con las siguientes cuentas: <br>
  email: vicky@correo.com       password: abc123 <br>
  email: caro@correo.com        password: abc123 <br>
- - La app muestra el historial de transacciones, pero por facilidad, se muestra el ID de la transacción, fecha y monto. Esto debido a que la Api permite crear usuario, pero estos no necesariamente tienen una cuenta asociada. En el spinner tengo una lista de usuarios de la página 2 de la API a quienes les puedo hacer una transacción, pero como nosé si tienen cuenta, ni como acceder a ellas, decidi dejar fijo la cuenta 5 para realizar las transacciones. Por este motivo no se muestra el nombre del destinatario, ya que tampoco tienen relación con la cuenta. <br>
-- La app permite cargar una imagen de perfil, pero por el momento no se guarda en ninguna parte, por lo que solo es de prueba ( Se está trajando para guardar la imagen en la base de datos local ya que la api no permite guardar imágenes) <br><br>
+ - La app muestra el historial de transacciones, pero por facilidad se muestra el ID de la transacción, fecha y monto. Esto debido a que la Api permite crear usuario, pero estos no necesariamente tienen una cuenta asociada. En el spinner tengo una lista de usuarios de la página 2 de la API a quienes les puedo hacer una transacción, pero como nosé si tienen cuenta, ni como acceder a ellas, decidi dejar fijo la cuenta 5 para realizar las transacciones. Por este motivo no se muestra el nombre del destinatario, ya que tampoco tienen relación con la cuenta. <br>
+- La app permite cargar una imagen de perfil, pero por el momento no se guarda en ninguna parte, por lo que solo es de prueba ( Se está trabajando para guardar la imagen en la base de datos local ya que la api no permite guardar imágenes) <br><br>
 
 **Para cumplir con los requerimientos se utlizan las siguientes herramientas**<br>
 Estos requerimientos funcionales guiarán la implementación técnica de la
