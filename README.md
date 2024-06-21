@@ -2,6 +2,8 @@
 
 👀**Revisar las consideraciones que aparecen más abajo**
 
+Descargar APK : https://github.com/fabyDiaz/Modulo5--Arquitectura-y-ciclo-de-vida-de-componentes-Android/blob/version5/AlkeWalletM6.apk
+
 ## Objetivo 
 
 El primer objetivo es llevar a cabo la funcionalidad principal de la
@@ -47,6 +49,7 @@ La implementación debe garantizar una experiencia de usuario fluida y
  email: caro@correo.com        password: abc123 <br>
  - La app muestra el historial de transacciones, pero por facilidad se muestra el ID de la transacción, fecha y monto. Esto debido a que la Api permite crear usuario, pero estos no necesariamente tienen una cuenta asociada. En el spinner tengo una lista de usuarios de la página 2 de la API a quienes les puedo hacer una transacción, pero como nosé si tienen cuenta, ni como acceder a ellas, decidi dejar fijo la cuenta 5 para realizar las transacciones. Por este motivo no se muestra el nombre del destinatario, ya que tampoco tienen relación con la cuenta. <br>
 - La app permite cargar una imagen de perfil, pero por el momento no se guarda en ninguna parte, por lo que solo es de prueba ( Se está trabajando para guardar la imagen en la base de datos local ya que la api no permite guardar imágenes) <br><br>
+- La respuesta del servidor es un poco lenta. Esperar uno segundos a que cargue bien la vista con los datos correspondientes. 
 
 **Para cumplir con los requerimientos se utlizan las siguientes herramientas**<br>
 Estos requerimientos funcionales guiarán la implementación técnica de la
