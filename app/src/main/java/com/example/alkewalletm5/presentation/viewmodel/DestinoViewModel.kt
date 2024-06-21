@@ -20,7 +20,6 @@ class DestinoViewModel(private val useCase: AlkeWalletUseCase, private val conte
     private val _destinantario = MutableLiveData<UserResponse>()
     val destinantario: LiveData<UserResponse> get() = _destinantario
 
-
     private val _error = MutableLiveData<String>()
 
     private val authManager = AuthManager(context)

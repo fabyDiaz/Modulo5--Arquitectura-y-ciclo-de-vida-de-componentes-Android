@@ -1,7 +1,6 @@
 package com.example.alkewalletm5.presentation.viewmodel
 
 import android.content.Context
-import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,12 +9,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.alkewalletm5.data.response.UserResponse
 import com.example.alkewalletm5.domain.AlkeWalletUseCase
 import com.example.alkewalletm5.data.network.api.AuthManager
-import com.example.alkewalletm5.data.response.AccountResponse
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
+
 
 class UserViewModel(private val useCase: AlkeWalletUseCase, private val context: Context) : ViewModel() {
 

@@ -145,9 +145,9 @@ class AccountViewModel(private val useCase: AlkeWalletUseCase, private val conte
                     val formattedDate = dateFormat.format(currentDate)
                     val account = AccountResponse(
                         id = 0, // El ID será generado por la base de datos
-                        creationDate = formattedDate, // Puedes definir la fecha de creación si es necesario
+                        creationDate = formattedDate,
                         money = "1000", // Saldo inicial
-                        isBlocked = false, // Por defecto no está bloqueada
+                        isBlocked = false,
                         userId = idUser // ID del usuario logueado
                     )
                     val response = useCase.createAccount(token, account)

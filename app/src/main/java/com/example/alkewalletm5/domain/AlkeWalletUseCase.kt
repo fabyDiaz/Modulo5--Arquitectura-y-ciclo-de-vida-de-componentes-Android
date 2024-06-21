@@ -75,7 +75,6 @@ class AlkeWalletUseCase(private val repository: AlkeWalletImpl) {
         return repository.getLocalUsers(page)
     }
 
-
     suspend fun getUsersByPage(token: String, page: Int): Response<UserListResponse> {
         // Verifica si la página solicitada está fuera de los límites esperados.
         if (page < 0) throw IllegalArgumentException("Page number cannot be negative")
@@ -91,7 +90,6 @@ class AlkeWalletUseCase(private val repository: AlkeWalletImpl) {
         val users = repository.getUsersByPage(token, page)
 
         // Lógica adicional para manejar los usuarios obtenidos (si es necesario)
-        // ...
 
         return users
     }

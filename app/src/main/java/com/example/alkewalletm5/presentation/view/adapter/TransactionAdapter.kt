@@ -53,17 +53,11 @@ class TransactionAdapter(private val transactions: List<TransactionResponse>) : 
     }
 
     private fun cambiarFormatoFecha(fechaOriginal: String): String {
-        // Formato de entrada
+
         val formatoEntrada = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
         formatoEntrada.timeZone = TimeZone.getTimeZone("UTC") // Asegurarse de que el tiempo está en UTC
-
-        // Formato de salida
         val formatoSalida = SimpleDateFormat("MMM d, hh:mm a", Locale.getDefault())
-
-        // Parsear la fecha de entrada
         val fecha = formatoEntrada.parse(fechaOriginal)
-
-        // Formatear la fecha a la salida deseada
         return formatoSalida.format(fecha)
     }
 }
