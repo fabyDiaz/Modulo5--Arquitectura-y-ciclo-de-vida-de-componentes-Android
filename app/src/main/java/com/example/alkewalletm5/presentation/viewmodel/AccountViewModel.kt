@@ -27,7 +27,7 @@ class AccountViewModel(private val useCase: AlkeWalletUseCase, private val conte
 
     private val authManager = AuthManager(context)
 
-    fun fetchUserAccounts() {
+   fun fetchUserAccounts() {
         viewModelScope.launch {
             try {
                 val token = authManager.getToken()
@@ -46,6 +46,32 @@ class AccountViewModel(private val useCase: AlkeWalletUseCase, private val conte
                 try {
                     val localAccounts = useCase.getLocalAccounts()
                     _accounts.value = localAccounts
+                } catch (dbException: Exception) {
+                    Log.e("AccountViewModel", "Error al obtener cuentas: ${e.message}")
+                }
+            }
+        }
+    }
+
+    fun obtenerUserAccounts(userId: Long) {
+        viewModelScope.launch {
+            try {
+                val token = authManager.getToken()
+                if (token != null) {
+                    val response = useCase.myAccount(token)
+                    if (response.isSuccessful) {
+                        _accounts.value = response.body()?.filter { it.userId == userId }
+                    } else {
+                        Log.e("AccountViewModel", "Error al obtener cuentas: ${response.message()}")
+                    }
+                } else {
+                    Log.e("AccountViewModel", "Token de autenticación no disponible")
+                }
+            } catch (e: Exception) {
+                // Intenta cargar las cuentas desde la base de datos local
+                try {
+                    val localAccounts = useCase.getLocalAccounts()
+                    _accounts.value = localAccounts.filter { it.userId == userId }
                 } catch (dbException: Exception) {
                     Log.e("AccountViewModel", "Error al obtener cuentas: ${e.message}")
                 }

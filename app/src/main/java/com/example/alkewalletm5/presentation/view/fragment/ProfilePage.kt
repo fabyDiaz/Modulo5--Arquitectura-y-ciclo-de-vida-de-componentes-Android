@@ -83,20 +83,36 @@ class ProfilePage : Fragment() {
             binding.txtMostrarInformaccion.text = "Nombre: ${it.firstName} \n" +
                     "Apellido: ${it.lastName} \n" +
                     "Email: ${it.email} \n"
+
+            accountViewModel.obtenerUserAccounts(it.id)
+        }
+
+        accountViewModel.accounts.observe(viewLifecycleOwner) { accounts ->
+            if (accounts.isNullOrEmpty()) {
+                binding.txtMostrarTarjetas.text = "No tiene tarjetas asociadas"
+                binding.btnCrearCuenta.visibility = View.VISIBLE
+            } else {
+                binding.txtMostrarTarjetas.text = accounts.joinToString(separator = "\n\n") { account ->
+                    "ID: ${account.id} \n" +
+                            "Fecha de creación: ${account.creationDate} \n" +
+                            "Saldo: ${account.money}"
+                }
+                binding.btnCrearCuenta.visibility = View.GONE
+            }
         }
 
         accountViewModel.account.observe(viewLifecycleOwner) { account ->
-            account?.let {
-                binding.txtMostrarTarjetas.text = "NUEVA CUENTA: \n" +
-                        "ID: ${it.id} \n" +
-                        "Fecha de creación: ${it.creationDate} \n" +
-                        "Saldo: ${it.money}"
-                binding.btnCrearCuenta.visibility = View.GONE
+           account?.let {
+               binding.txtMostrarTarjetas.text = "NUEVA CUENTA: \n" +
+                       "ID: ${it.id} \n" +
+                       "Fecha de creación: ${it.creationDate} \n" +
+                       "Saldo: ${it.money}"
+               binding.btnCrearCuenta.visibility = View.GONE
 
-            } ?: run {
-                binding.txtMostrarTarjetas.text = "No tiene tarjetas asociadas"
-            }
-        }
+           } ?: run {
+               binding.txtMostrarTarjetas.text = "No tiene tarjetas asociadas"
+           }
+       }
 
 
         binding.btnCrearCuenta.setOnClickListener{
