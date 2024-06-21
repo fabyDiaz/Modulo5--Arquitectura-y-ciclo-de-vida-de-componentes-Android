@@ -1,6 +1,8 @@
 # Evaluación Integradora Módulo 5
 ## Proyecto Alke Wallet 
 
+**Evaluación integradora Módulo 6:** https://github.com/fabyDiaz/Modulo5--Arquitectura-y-ciclo-de-vida-de-componentes-Android/tree/version5 <br>
+
 **Situación inicial** 📍
 
 Unidad solicitante: Equipo de desarrollo de una empresa fintech <br>
