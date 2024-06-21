@@ -2,7 +2,7 @@
 
 👀**Revisar las consideraciones que aparecen más abajo**
 
-Descargar APK : https://github.com/fabyDiaz/Modulo5--Arquitectura-y-ciclo-de-vida-de-componentes-Android/blob/version5/AlkeWalletM6.apk
+Descargar APK : https://github.com/fabyDiaz/Modulo5--Arquitectura-y-ciclo-de-vida-de-componentes-Android/releases/tag/App
 
 ## Objetivo 
 
