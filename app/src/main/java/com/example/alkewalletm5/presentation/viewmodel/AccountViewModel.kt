@@ -1,20 +1,15 @@
 package com.example.alkewalletm5.presentation.viewmodel
 
-import android.accounts.Account
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.alkewalletm5.data.local.DestinatariosDataSet
 import com.example.alkewalletm5.data.network.api.AuthManager
 import com.example.alkewalletm5.data.response.AccountResponse
-import com.example.alkewalletm5.data.response.UserResponse
 import com.example.alkewalletm5.domain.AlkeWalletUseCase
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.text.SimpleDateFormat
 import java.util.Calendar

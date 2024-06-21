@@ -2,7 +2,7 @@ package com.example.alkewalletm5.presentation.view
 /**
  * Clase Fragmento
  * @author Fabiola Díaz
- * @since v1.1 24/05/2024
+ * @since v2.0 20/06/2024
  *
  */
 import android.os.Bundle

@@ -99,38 +99,7 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
         }
     }
 
-    fun createAccountForUser(user: UserResponse) {
-        viewModelScope.launch {
-            try {
-                val token = authManager.getToken()
-                if (token != null) {
-                    val account = AccountResponse(
-                        id = 0, // El ID será generado por la base de datos
-                        creationDate = "", // Puedes definir la fecha de creación si es necesario
-                        money = "0", // Saldo inicial
-                        isBlocked = false, // Por defecto no está bloqueada
-                        userId = user.id // ID del usuario logueado
-                    )
-                    val response = useCase.createAccount(token, account)
-                    if (response.isSuccessful) {
-                        _usuarioLogueado.value = user // Guardar el usuario logueado actualizado
-                        Log.d("CUENTA", "Cuenta creada con éxito para el usuario: ${user.id}")
 
-                    } else {
-                        _error.value = "Error al crear cuenta: ${response.message()}"
-                        Log.e("CUENTA", "Error al crear cuenta: ${response.message()}")
-                    }
-                } else {
-                    Log.e("CUENTA", "Token de autenticación no disponible")
-                    _error.value = "Error: Token de autenticación no disponible"
-                }
-            } catch (e: HttpException) {
-                _error.value = "Error: ${e.code()} ${e.message()}"
-            } catch (e: Exception) {
-                _error.value = "Error: ${e.message}"
-            }
-        }
-    }
 }
 
 
