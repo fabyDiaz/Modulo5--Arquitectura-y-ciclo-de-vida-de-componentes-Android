@@ -50,16 +50,16 @@
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
     <string name="inicio">Inicio</string>
-    <string name="hola_amanda">Hola Amanda!</string>
+    <string name="hola_amanda">Hola Nombre!</string>
     <string name="balance_total">Balance total</string>
-    <string name="monto_home">$124.57</string>
+    <string name="monto_home">$0</string>
     <string name="ingresar_dinerobtn">Ingresar Dinero</string>
     <string name="enviar_dinero_btn">Enviar Dinero</string>
     <string name="ultimas_transacciones_txt">Ultimas transacciones</string>
     <string name="inicio_home_empty">Inicio</string>
     <string name="bienvenida_home_empty">Hola Amanda!</string>
     <string name="balance_total_home_empty">Balance total</string>
-    <string name="monto_home_empty">$124.57</string>
+    <string name="monto_home_empty">$0</string>
     <string name="ultimas_transacciones_home_empty_txt">Ultimas transacciones</string>
     <string name="email_lb_loguea">Email</string>
     <string name="ingresa_tu_email_hint_logea">Ingresa tu email</string>
@@ -73,17 +73,17 @@
     <string name="mis_tarjetas_profilepage">Mis tarjetas</string>
     <string name="opciones_profilepage">Opciones</string>
     <string name="centro_de_ayuda_profilepage">Centro de ayuda</string>
-    <string name="nombre_request">Reem Khaled</string>
-    <string name="email_request">reem_1993@gmail.com</string>
+    <string name="nombre_request">Nombre Apellido</string>
+    <string name="email_request">example@correo.com</string>
     <string name="cantidad_ingresar_txt_request">Cantidad a Igresar</string>
-    <string name="monto_request">20.00</string>
+    <string name="monto_request">0</string>
     <string name="notas_transferencia_txt_request">Notas de transferencia</string>
     <string name="notas_transferencia_request">Agregar notas de transferencia</string>
     <string name="ingresar_dinero_request_btn">Ingresar Dinero</string>
-    <string name="nombre_send">Yara Khalil</string>
-    <string name="email_send">yara_khalil@gmail.com</string>
+    <string name="nombre_send">Nombre Apellido</string>
+    <string name="email_send">example@correo.com</string>
     <string name="cantidad_a_transferir_send">Cantidad a transferir</string>
-    <string name="monto_send">12.50</string>
+    <string name="monto_send">0</string>
     <string name="notas_transferencia_send">Notas de transferencia</string>
     <string name="notas_send">Agregar notas de transferencia</string>
     <string name="enviar_dinero_send_btn">Enviar Dinero</string>
