@@ -76,7 +76,7 @@ class LoginPage : Fragment() {
         // Observa cambios en el token para verificar si se recibe correctamente
         userViewModel.token.observe(viewLifecycleOwner) { token ->
             if (token != null) {
-                Toast.makeText(requireContext(), "Login exitoso. Token: $token", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Login exitoso", Toast.LENGTH_SHORT).show()
                 Log.e("TOKEN", token.toString())
                 userViewModel.fetchLoggedUser() // Fetch user data
             } else {
@@ -86,7 +86,6 @@ class LoginPage : Fragment() {
 
         // Observa cambios en el usuario logueado para navegar al home
         userViewModel.usuarioLogueado.observe(viewLifecycleOwner) { usuario ->
-            Log.d("USUARIO", usuario.firstName)
             if (usuario != null) {
                 findNavController().navigate(R.id.homePage)
             }
