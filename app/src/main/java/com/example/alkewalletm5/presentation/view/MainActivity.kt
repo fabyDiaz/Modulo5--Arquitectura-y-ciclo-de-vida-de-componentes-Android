@@ -5,11 +5,20 @@ package com.example.alkewalletm5.presentation.view
  * @since v2.0 20/06/2024
  *
  */
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.example.alkewalletm5.R
+import com.example.alkewalletm5.data.local.databse.AppDataBase
+import com.example.alkewalletm5.data.network.api.AlkeWalletService
 import com.example.alkewalletm5.data.network.api.AuthManager
+import com.example.alkewalletm5.data.network.retrofit.RetrofitHelper
+import com.example.alkewalletm5.data.repository.AlkeWalletImpl
+import com.example.alkewalletm5.domain.AlkeWalletUseCase
+import com.example.alkewalletm5.presentation.viewmodel.UserViewModel
+import com.example.alkewalletm5.presentation.viewmodel.factory.UserViewModelFactory
 
 /**
  * Actividad principal de la aplicación que se lanza al iniciar.
@@ -19,6 +28,10 @@ import com.example.alkewalletm5.data.network.api.AuthManager
 class MainActivity : AppCompatActivity() {
 
     private lateinit var authManager: AuthManager
+    private lateinit var userViewModel: UserViewModel
+    private lateinit var useCase: AlkeWalletUseCase
+    private lateinit var userViewModelFactory: UserViewModelFactory
+
 
     /**
      * Método llamado cuando la actividad es creada por primera vez.
@@ -30,6 +43,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         // Inicializa AuthManager
         authManager = AuthManager(this)
+        val database = AppDataBase.getDatabase(this)
+        val walletDao = database.WalletDao()
+        val apiService = RetrofitHelper.getRetrofit().create(AlkeWalletService::class.java)
+        val repository = AlkeWalletImpl(apiService, walletDao)
+        useCase = AlkeWalletUseCase(repository)
+        userViewModelFactory = UserViewModelFactory(useCase, this)
+        userViewModel = ViewModelProvider(this, userViewModelFactory).get(UserViewModel::class.java)
 
         // Obtiene el token
         val token = authManager.getToken()
@@ -51,5 +71,9 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         authManager.clearToken()
         authManager.clearUserLogged()
+    }
+
+    fun refreshUserData() {
+        userViewModel.fetchLoggedUser()
     }
 }

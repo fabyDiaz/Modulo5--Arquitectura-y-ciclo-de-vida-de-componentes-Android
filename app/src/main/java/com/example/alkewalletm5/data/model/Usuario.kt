@@ -1,6 +1,8 @@
 package com.example.alkewalletm5.data.model
 
 import android.net.Uri
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.example.alkewalletm5.R
 /**
  *  Clase Destinatario
@@ -8,24 +10,16 @@ import com.example.alkewalletm5.R
  *  @since v1.1 24/05/2024
  *
  * Clase de datos que representa un Usuario (quien utiliza la app)
- *
- * @property nombre el nombre del usuario
- * @property apellido el apellido del usuario
- * @property email la correo electrónico del usuario
- * @property password la contraseña del usuario
- * @property imgPerfil el identificador de recurso de la imagen de perfil del usuario
- * @property saldo el saldo de la cuenta del usuario
- * @property transacciones la lista de transacciones asociadas con el usuario
+
  */
+@Entity(tableName = "local_users")
 data class Usuario(
+    @PrimaryKey
+    val id: Long,
     val nombre: String,
     val apellido: String,
     val email: String,
-    val password: String,
-   // val imgPerfil: Int = R.mipmap.pp_standar,
-    val imgPerfil: Uri? = null,
-    val saldo: Double = 1000.0,
-    val transacciones: MutableList<Transaccion> = mutableListOf()
+    val imgPerfil: String? = null,
 ) {
 
 }

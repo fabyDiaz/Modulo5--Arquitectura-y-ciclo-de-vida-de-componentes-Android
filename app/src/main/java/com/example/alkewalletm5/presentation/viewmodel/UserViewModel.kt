@@ -1,11 +1,13 @@
 package com.example.alkewalletm5.presentation.viewmodel
 
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.alkewalletm5.data.model.Usuario
 import com.example.alkewalletm5.data.response.UserResponse
 import com.example.alkewalletm5.domain.AlkeWalletUseCase
 import com.example.alkewalletm5.data.network.api.AuthManager
@@ -26,10 +28,14 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
     private val _usuarioLogueado = MutableLiveData<UserResponse>()
     val usuarioLogueado: LiveData<UserResponse> get() = _usuarioLogueado
 
+    private val _localUser = MutableLiveData<Usuario?>()
+    val localUser: LiveData<Usuario?> get() = _localUser
+
     private val authManager = AuthManager(context)
 
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> get() = _error
+
 
     fun createUser(user:UserResponse){
         viewModelScope.launch {
@@ -77,7 +83,19 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
                 val token = authManager.getToken()
                 if (token != null) {
                     val usuario = useCase.getUserByToken(token)
+                    useCase.insertUser(usuario)
                     _usuarioLogueado.value = usuario
+                    _localUser.value = useCase.getLocalUserById(usuario.id)
+
+                    // Crear usuario local si no existe
+                    if (_localUser.value == null) {
+                        crearUsuarioLocal(
+                            id = usuario.id,
+                            nombre = usuario.firstName,
+                            apellido = usuario.lastName,
+                            correo = usuario.email
+                        )
+                    }
                     Log.i("USUARIO", _usuarioLogueado.value.toString())
                 } else {
                     Log.e("USUARIO", "No se pudo obtener el token de autenticación")
@@ -85,12 +103,54 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
             } catch (e: Exception) {
                 // Intenta cargar el usuario desde la base de datos local
                 try {
-                    val localUser = useCase.getLocalUser()
-                    _usuarioLogueado.value = localUser
+                    if (_localUser.value != null) {
+                        val localUser = useCase.getLocalUser(_localUser.value!!.id)
+                        _usuarioLogueado.value = localUser
+                    }
                 } catch (dbException: Exception) {
                     Log.e("USUARIO", "Error al obtener el usuario: ${e.message}")
                     _error.value = "Error al obtener el usuario: ${e.message}"
                 }
+            }
+        }
+    }
+
+    fun updateUserProfileImage(user: Usuario, imgPerfil: String) {
+        viewModelScope.launch {
+            val updatedUser = user.copy(imgPerfil = imgPerfil)
+            useCase.updateLocalUser(updatedUser)
+            _localUser.value = updatedUser
+        }
+    }
+    fun crearUsuarioLocal(id: Long, nombre: String, apellido: String, correo: String){
+        viewModelScope.launch {
+            try {
+                val localUser = Usuario(
+                    id = id,
+                    nombre = nombre,
+                    apellido = apellido,
+                    email = correo,
+                    imgPerfil = null )
+
+                useCase.insertLocalUser(localUser)
+                _localUser.value = localUser
+            } catch (e: Exception) {
+                Log.e("USUARIO", "Error al insertar usuario local: ${e.message}")
+            }
+        }
+    }
+
+    fun fetchLocalUser(userId: Long) {
+        viewModelScope.launch {
+            try {
+                val user = useCase.getLocalUserById(userId)
+                if (user != null) {
+                    _localUser.value = user
+                } else {
+                    _error.value = "No se encontró el usuario en la base de datos local"
+                }
+            } catch (e: Exception) {
+                _error.value = "Error al obtener el usuario local: ${e.message}"
             }
         }
     }

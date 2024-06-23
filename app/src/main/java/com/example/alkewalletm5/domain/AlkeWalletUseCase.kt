@@ -1,6 +1,7 @@
 package com.example.alkewalletm5.domain
 
 import android.util.Log
+import com.example.alkewalletm5.data.model.Usuario
 import com.example.alkewalletm5.data.repository.AlkeWalletImpl
 import com.example.alkewalletm5.data.response.AccountResponse
 import com.example.alkewalletm5.data.response.TransactionResponse
@@ -59,8 +60,8 @@ class AlkeWalletUseCase(private val repository: AlkeWalletImpl) {
         return repository.updateAccount(token, account)
     }
 
-    suspend fun getLocalUser(): UserResponse {
-        return repository.getLocalUser()
+    suspend fun getLocalUser(userId: Long): UserResponse {
+        return repository.getLocalUser(userId)
     }
 
     suspend fun getLocalAccounts(): List<AccountResponse> {
@@ -74,6 +75,24 @@ class AlkeWalletUseCase(private val repository: AlkeWalletImpl) {
     suspend fun getLocalUsers(page: Int): List<UserResponse> {
         return repository.getLocalUsers(page)
     }
+
+    suspend fun insertLocalUser(localUser: Usuario) {
+        return repository.insertLocalUser(localUser)
+    }
+
+    suspend fun getLocalUserById(userId: Long): Usuario? {
+        return repository.getLocalUserById(userId)
+    }
+
+    suspend fun updateLocalUser(user: Usuario) {
+        repository.updateLocalUser(user)
+    }
+
+    suspend fun insertUser(user:UserResponse){
+        repository.insertUser(user)
+    }
+
+
 
     suspend fun getUsersByPage(token: String, page: Int): Response<UserListResponse> {
         // Verifica si la página solicitada está fuera de los límites esperados.

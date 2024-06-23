@@ -1,7 +1,10 @@
 package com.example.alkewalletm5.data.repository
 
 import android.util.Log
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import com.example.alkewalletm5.data.local.dao.WalletDao
+import com.example.alkewalletm5.data.model.Usuario
 import com.example.alkewalletm5.data.network.api.AlkeWalletService
 import com.example.alkewalletm5.data.response.AccountResponse
 import com.example.alkewalletm5.data.response.LoginRequest
@@ -164,9 +167,9 @@ class AlkeWalletImpl(private var apiservice: AlkeWalletService, private val wall
         }
     }
 
-    override suspend fun getLocalUser(): UserResponse {
+    override suspend fun getLocalUser(userId: Long): UserResponse {
         return withContext(Dispatchers.IO) {
-            walletDao.getUser() ?: throw NoSuchElementException("User not found locally")
+            walletDao.getUser(userId) ?: throw NoSuchElementException("User not found locally")
         }
     }
 
@@ -186,6 +189,22 @@ class AlkeWalletImpl(private var apiservice: AlkeWalletService, private val wall
         return withContext(Dispatchers.IO) {
             walletDao.getAllUsers()
         }
+    }
+
+    override suspend fun insertLocalUser(localUser: Usuario) {
+        walletDao.insertLocalUser(localUser)
+    }
+
+    override suspend fun updateLocalUser(localUser: Usuario) {
+        walletDao.updateLocalUser(localUser)
+    }
+
+    override suspend fun getLocalUserById(userId: Long): Usuario? {
+        return walletDao.getLocalUserById(userId)
+    }
+
+    override suspend fun insertUser(user: UserResponse) {
+        walletDao.insertUsers(listOf(user))
     }
 
 

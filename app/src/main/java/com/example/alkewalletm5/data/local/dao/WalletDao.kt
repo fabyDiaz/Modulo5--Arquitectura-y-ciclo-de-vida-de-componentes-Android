@@ -4,6 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
+import com.example.alkewalletm5.data.model.Usuario
 import com.example.alkewalletm5.data.response.AccountResponse
 import com.example.alkewalletm5.data.response.TransactionResponse
 import com.example.alkewalletm5.data.response.UserLogged
@@ -38,7 +40,16 @@ interface WalletDao {
     @Query("SELECT * FROM transactions")
     suspend fun getAllTransactions(): List<TransactionResponse>
 
-    @Query("SELECT * FROM users LIMIT 1")
-    suspend fun getUser(): UserResponse?
+    @Query("SELECT * FROM users  WHERE id = :userId")
+    suspend fun getUser(userId: Long): UserResponse?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertLocalUser(localUser: Usuario)
+
+    @Update
+    suspend fun updateLocalUser(localUser: Usuario)
+
+    @Query("SELECT * FROM local_users WHERE id = :userId")
+    suspend fun getLocalUserById(userId: Long): Usuario?
 
 }

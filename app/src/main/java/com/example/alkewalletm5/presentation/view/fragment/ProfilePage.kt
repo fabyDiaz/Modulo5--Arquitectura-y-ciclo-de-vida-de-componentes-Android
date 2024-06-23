@@ -6,6 +6,7 @@ package com.example.alkewalletm5.presentation.view.fragment
  *
  */
 
+import android.net.Uri
 import android.os.Bundle
 
 import androidx.fragment.app.Fragment
@@ -25,10 +26,16 @@ import com.example.alkewalletm5.data.network.retrofit.RetrofitHelper
 import com.example.alkewalletm5.data.repository.AlkeWalletImpl
 import com.example.alkewalletm5.databinding.FragmentProfilePageBinding
 import com.example.alkewalletm5.domain.AlkeWalletUseCase
+import com.example.alkewalletm5.presentation.view.MainActivity
 import com.example.alkewalletm5.presentation.viewmodel.AccountViewModel
 import com.example.alkewalletm5.presentation.viewmodel.factory.AccountViewModelFactory
 import com.example.alkewalletm5.presentation.viewmodel.UserViewModel
 import com.example.alkewalletm5.presentation.viewmodel.factory.UserViewModelFactory
+import com.squareup.picasso.Picasso
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+import java.util.TimeZone
 
 /**
  * Fragmento que representa la página de perfil del usuario.
@@ -37,6 +44,7 @@ class ProfilePage : Fragment() {
     private var _binding: FragmentProfilePageBinding? = null
     private val binding get() = _binding!!
    // private val usuarioViewModel: UsuarioViewModel by activityViewModels()
+
 
     private lateinit var userViewModel: UserViewModel
     private lateinit var useCase: AlkeWalletUseCase
@@ -84,6 +92,17 @@ class ProfilePage : Fragment() {
                     "Apellido: ${it.lastName} \n" +
                     "Email: ${it.email} \n"
 
+            userViewModel.localUser.observe(viewLifecycleOwner) { localUser ->
+                if (localUser?.imgPerfil != null) {
+                    Picasso.get()
+                        .load(localUser.imgPerfil)
+                        .centerCrop()
+                        .fit()
+                        .into(binding.imagenFotoPerfil)
+                  //  binding.imagenFotoPerfil.setImageURI(Uri.parse(localUser.imgPerfil))
+                }
+            }
+
             accountViewModel.obtenerUserAccounts(it.id)
         }
 
@@ -105,7 +124,7 @@ class ProfilePage : Fragment() {
            account?.let {
                binding.txtMostrarTarjetas.text = "NUEVA CUENTA: \n" +
                        "ID: ${it.id} \n" +
-                       "Fecha de creación: ${it.creationDate} \n" +
+                       "Fecha de creación: ${convertirFecha(it.creationDate)} \n" +
                        "Saldo: ${it.money}"
                binding.btnCrearCuenta.visibility = View.GONE
 
@@ -144,6 +163,9 @@ class ProfilePage : Fragment() {
     val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()){ uri->
         if(uri!=null){
             binding.imagenFotoPerfil.setImageURI(uri)
+            userViewModel.localUser.value?.let { user ->
+                userViewModel.updateUserProfileImage(user, uri.toString())
+            }
         }else{
             Toast.makeText(requireContext(), "No selecciona ninguna imágen", Toast.LENGTH_SHORT).show()
         }
@@ -153,5 +175,14 @@ class ProfilePage : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    fun convertirFecha(fecha: String): String{
+        // Formatear la fecha y hora según el formato deseado
+        val formatoEntrada = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        formatoEntrada.timeZone = TimeZone.getTimeZone("UTC") // Asegurarse de que el tiempo está en UTC
+        val formatoSalida = SimpleDateFormat("MMM d, hh:mm a", Locale.getDefault())
+        val fecha = formatoEntrada.parse(fecha)
+        return formatoSalida.format(fecha)
     }
 }

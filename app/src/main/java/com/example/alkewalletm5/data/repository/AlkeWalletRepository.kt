@@ -1,5 +1,6 @@
 package com.example.alkewalletm5.data.repository
 
+import com.example.alkewalletm5.data.model.Usuario
 import com.example.alkewalletm5.data.response.AccountResponse
 import com.example.alkewalletm5.data.response.TransactionResponse
 import com.example.alkewalletm5.data.response.TransactionsListResponse
@@ -35,11 +36,20 @@ interface AlkeWalletRepository {
 
     suspend fun updateAccount(token: String,account: AccountResponse): Response<AccountResponse>
 
-    suspend fun getLocalUser(): UserResponse
+    suspend fun getLocalUser(userId: Long): UserResponse
     suspend fun getLocalAccounts(): List<AccountResponse>
     suspend fun getLocalTransactions(): List<TransactionResponse>
 
     suspend fun getLocalUsers(page: Int): List<UserResponse>
+
+    suspend fun insertLocalUser(localUser: Usuario)
+
+    suspend fun updateLocalUser(localUser: Usuario)
+
+    suspend fun getLocalUserById(userId: Long): Usuario?
+
+    suspend fun insertUser(user: UserResponse)
+
 
 
 
