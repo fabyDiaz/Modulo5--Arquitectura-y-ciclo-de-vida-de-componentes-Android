@@ -166,7 +166,7 @@ class RequestMoney : Fragment() {
             }
 
 
-            Toast.makeText(requireContext(), "Envío de dinero exitoso", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(requireContext(), "Envío de dinero exitoso", Toast.LENGTH_SHORT).show()
 
             // Navegar de regreso a HomePage
             findNavController().navigate(R.id.homePage)

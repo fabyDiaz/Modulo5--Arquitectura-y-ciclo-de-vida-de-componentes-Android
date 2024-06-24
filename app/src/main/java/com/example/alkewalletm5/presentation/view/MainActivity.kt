@@ -8,6 +8,7 @@ package com.example.alkewalletm5.presentation.view
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.alkewalletm5.R
@@ -40,6 +41,7 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_main)
         // Inicializa AuthManager
         authManager = AuthManager(this)

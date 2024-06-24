@@ -113,7 +113,7 @@ class ProfilePage : Fragment() {
             } else {
                 binding.txtMostrarTarjetas.text = accounts.joinToString(separator = "\n\n") { account ->
                     "ID: ${account.id} \n" +
-                            "Fecha de creación: ${account.creationDate} \n" +
+                            "Fecha de creación: ${convertirFecha(account.creationDate)}\n" +
                             "Saldo: ${account.money}"
                 }
                 binding.btnCrearCuenta.visibility = View.GONE
@@ -181,7 +181,7 @@ class ProfilePage : Fragment() {
         // Formatear la fecha y hora según el formato deseado
         val formatoEntrada = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
         formatoEntrada.timeZone = TimeZone.getTimeZone("UTC") // Asegurarse de que el tiempo está en UTC
-        val formatoSalida = SimpleDateFormat("MMM d, hh:mm a", Locale.getDefault())
+        val formatoSalida = SimpleDateFormat("MMM d, yyyy, hh:mm a", Locale.getDefault())
         val fecha = formatoEntrada.parse(fecha)
         return formatoSalida.format(fecha)
     }
