@@ -79,8 +79,6 @@ class LoginPage : Fragment() {
                 Toast.makeText(requireContext(), "Login exitoso", Toast.LENGTH_SHORT).show()
                 Log.e("TOKEN", token.toString())
                 userViewModel.fetchLoggedUser() // Fetch user data
-            } else {
-                Toast.makeText(requireContext(), "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -88,6 +86,13 @@ class LoginPage : Fragment() {
         userViewModel.usuarioLogueado.observe(viewLifecycleOwner) { usuario ->
             if (usuario != null) {
                 findNavController().navigate(R.id.homePage)
+            }
+        }
+
+        // Observe changes in the error message
+        userViewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            if (!errorMessage.isNullOrEmpty()) {
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
             }
         }
     }

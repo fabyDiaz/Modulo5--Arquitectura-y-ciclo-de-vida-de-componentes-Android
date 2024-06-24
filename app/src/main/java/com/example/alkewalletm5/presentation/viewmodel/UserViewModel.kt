@@ -67,9 +67,9 @@ class UserViewModel(private val useCase: AlkeWalletUseCase, private val context:
                 _token.value = token
                 Log.e("USUARIO", _token.value.toString())
             } catch (e: HttpException) {
-                _error.value = "Error: ${e.code()} ${e.message()}"
+                _error.value = "Usuario o contraseña incorrecto"
             } catch (e: Exception) {
-            _error.value = "Error: ${e.message}"
+            _error.value = "Necesita internet"
                 _token.value = null
         }
         }
