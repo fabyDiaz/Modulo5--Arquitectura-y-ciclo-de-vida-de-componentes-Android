@@ -8,7 +8,6 @@ import androidx.room.Update
 import com.example.alkewalletm5.data.model.Usuario
 import com.example.alkewalletm5.data.response.AccountResponse
 import com.example.alkewalletm5.data.response.TransactionResponse
-import com.example.alkewalletm5.data.response.UserLogged
 import com.example.alkewalletm5.data.response.UserResponse
 @Dao
 interface WalletDao {

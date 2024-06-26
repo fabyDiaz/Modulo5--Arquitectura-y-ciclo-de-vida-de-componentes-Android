@@ -1,8 +1,6 @@
 package com.example.alkewalletm5.data.repository
 
 import android.util.Log
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import com.example.alkewalletm5.data.local.dao.WalletDao
 import com.example.alkewalletm5.data.model.Usuario
 import com.example.alkewalletm5.data.network.api.AlkeWalletService
@@ -11,7 +9,6 @@ import com.example.alkewalletm5.data.response.LoginRequest
 import com.example.alkewalletm5.data.response.TransactionResponse
 import com.example.alkewalletm5.data.response.TransactionsListResponse
 import com.example.alkewalletm5.data.response.UserListResponse
-import com.example.alkewalletm5.data.response.UserLogged
 import com.example.alkewalletm5.data.response.UserResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -82,7 +79,7 @@ class AlkeWalletImpl(private var apiservice: AlkeWalletService, private val wall
     }
 
 
-    override suspend fun getUserById(idUser: Long): UserResponse {
+  override suspend fun getUserById(idUser: Long): UserResponse {
         return withContext(Dispatchers.IO){
             val user = walletDao.getUsersByIds(listOf(idUser)).firstOrNull()
             user ?: apiservice.getUserById(idUser).also { walletDao.insertUsers(listOf(it)) }

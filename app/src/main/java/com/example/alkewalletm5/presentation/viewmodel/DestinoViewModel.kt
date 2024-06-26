@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.alkewalletm5.data.model.Usuario
 import com.example.alkewalletm5.data.network.api.AuthManager
 import com.example.alkewalletm5.data.response.AccountResponse
 import com.example.alkewalletm5.data.response.UserResponse
@@ -54,8 +55,7 @@ class DestinoViewModel(private val useCase: AlkeWalletUseCase, private val conte
         }
     }
 
-
-
-
-
+    fun obtenerUsuario(user: UserResponse) {
+        _destinantario.value = user
+    }
 }

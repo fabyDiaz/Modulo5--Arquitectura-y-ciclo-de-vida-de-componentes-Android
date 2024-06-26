@@ -1,13 +1,11 @@
 package com.example.alkewalletm5.domain
 
-import android.util.Log
 import com.example.alkewalletm5.data.model.Usuario
 import com.example.alkewalletm5.data.repository.AlkeWalletImpl
 import com.example.alkewalletm5.data.response.AccountResponse
 import com.example.alkewalletm5.data.response.TransactionResponse
 import com.example.alkewalletm5.data.response.TransactionsListResponse
 import com.example.alkewalletm5.data.response.UserListResponse
-import com.example.alkewalletm5.data.response.UserLogged
 import com.example.alkewalletm5.data.response.UserResponse
 import retrofit2.Response
 

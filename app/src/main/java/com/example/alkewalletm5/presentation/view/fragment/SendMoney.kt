@@ -62,7 +62,6 @@ class SendMoney : Fragment(){
 
         val database = AppDataBase.getDatabase(requireContext())
         val walletDao = database.WalletDao()
-        // Inicializar los ViewModels aquí
         val apiService = RetrofitHelper.getRetrofit().create(AlkeWalletService::class.java)
         val repository = AlkeWalletImpl(apiService, walletDao)
 
@@ -103,7 +102,6 @@ class SendMoney : Fragment(){
             Log.e("USUARIO", mostrarListadeDestinatarios().toString())
         }
 
-       // mostrarListadeDestinatarios()
 
         cambioColorTextViewMonto()
 

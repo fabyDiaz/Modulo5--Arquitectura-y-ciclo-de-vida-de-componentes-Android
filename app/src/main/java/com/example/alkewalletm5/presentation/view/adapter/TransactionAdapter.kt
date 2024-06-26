@@ -18,6 +18,7 @@ import java.util.TimeZone
 
 class TransactionAdapter(private val transactions: List<TransactionResponse>) : RecyclerView.Adapter<TransactionAdapter.ViewHolder>() {
 
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nombreReceptor: TextView = itemView.findViewById(R.id.txtYaraMovimiento)
         val monto: TextView = itemView.findViewById(R.id.MontoEnvioYara)

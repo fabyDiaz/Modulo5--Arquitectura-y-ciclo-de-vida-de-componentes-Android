@@ -6,7 +6,8 @@ package com.example.alkewalletm5.presentation.view.fragment
  *
  */
 import android.app.AlertDialog
-import android.net.Uri
+import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -25,7 +26,6 @@ import com.example.alkewalletm5.data.network.retrofit.RetrofitHelper
 import com.example.alkewalletm5.data.repository.AlkeWalletImpl
 import com.example.alkewalletm5.databinding.FragmentHomePageBinding
 import com.example.alkewalletm5.domain.AlkeWalletUseCase
-import com.example.alkewalletm5.presentation.view.MainActivity
 import com.example.alkewalletm5.presentation.view.adapter.TransactionAdapter
 import com.example.alkewalletm5.presentation.viewmodel.AccountViewModel
 import com.example.alkewalletm5.presentation.viewmodel.factory.AccountViewModelFactory
@@ -42,9 +42,9 @@ class HomePage : Fragment() {
 
     private lateinit var binding: FragmentHomePageBinding
     private lateinit var adapter: TransactionAdapter
-    private lateinit var userViewModel: UserViewModel
-    private lateinit var accountViewModel: AccountViewModel
-    private lateinit var transactionViewModel: TransactionViewModel
+    lateinit var userViewModel: UserViewModel
+    lateinit var accountViewModel: AccountViewModel
+    lateinit var transactionViewModel: TransactionViewModel
    // private lateinit var destinoViewModel: DestinoViewModel
 
     private lateinit var useCase: AlkeWalletUseCase
@@ -171,6 +171,5 @@ class HomePage : Fragment() {
         // Mostrar el diálogo
         builder.create().show()
     }
-
 
 }

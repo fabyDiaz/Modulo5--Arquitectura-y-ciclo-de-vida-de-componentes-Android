@@ -5,11 +5,8 @@ import com.example.alkewalletm5.data.response.AccountResponse
 import com.example.alkewalletm5.data.response.TransactionResponse
 import com.example.alkewalletm5.data.response.TransactionsListResponse
 import com.example.alkewalletm5.data.response.UserListResponse
-import com.example.alkewalletm5.data.response.UserLogged
 import com.example.alkewalletm5.data.response.UserResponse
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.Header
 
 interface AlkeWalletRepository {
     //suspend fun fetchUserById(idUser: Long): UserResponse

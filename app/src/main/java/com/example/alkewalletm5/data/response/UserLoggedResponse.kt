@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 @Entity(tableName = "userlogged")
-data class UserLogged (
+data class UserLoggedResponse (
     @PrimaryKey
     val id: Long,
     @SerializedName("first_name")
