@@ -125,7 +125,7 @@ class ProfilePage : Fragment() {
                binding.txtMostrarTarjetas.text = "NUEVA CUENTA: \n" +
                        "ID: ${it.id} \n" +
                        "Fecha de creación: ${convertirFecha(it.creationDate)} \n" +
-                       "Saldo: ${it.money}"
+                       "Saldo: $${it.money}"
                binding.btnCrearCuenta.visibility = View.GONE
 
            } ?: run {
@@ -177,7 +177,23 @@ class ProfilePage : Fragment() {
         _binding = null
     }
 
-    fun convertirFecha(fecha: String): String{
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("imgPerfil", userViewModel.localUser.value?.imgPerfil)
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        savedInstanceState?.getString("imgPerfil")?.let { imgPerfil ->
+            Picasso.get()
+                .load(imgPerfil)
+                .centerCrop()
+                .fit()
+                .into(binding.imagenFotoPerfil)
+        }
+    }
+
+    private fun convertirFecha(fecha: String): String{
         // Formatear la fecha y hora según el formato deseado
         val formatoEntrada = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
         formatoEntrada.timeZone = TimeZone.getTimeZone("UTC") // Asegurarse de que el tiempo está en UTC
